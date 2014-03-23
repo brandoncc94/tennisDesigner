@@ -1,0 +1,187 @@
+/*Tag Elements*/
+body , html{
+	height: 100%;
+}
+
+.header-container,.footer-container{	
+	background: url(../img/header.png);
+	border: none;
+}
+
+.footer-container{
+	margin-top: 10px;
+	height: 37px;
+}
+
+header{
+	padding: 10px;
+	text-align: center;
+}
+
+header h1{
+	color: white;
+}
+
+nav{
+	text-align: center;
+	float: none;
+	margin: -20px auto;
+}
+
+nav ul li a{
+	width:inherit;
+	color: black;
+	padding: 10px 20px;
+	margin: 0;
+	border:1px solid;
+	border-bottom: none;
+}
+
+nav ul li a:hover{
+	text-decoration: none;
+}
+
+.footer-container footer{
+	padding: 0;
+	text-align: center;
+	color: white;
+}
+
+/*Id's*/
+/***************************************************************
+					NAVIGATION BUTTONS
+***************************************************************/
+#lieEdit a{
+	background: #d9534f;
+}
+
+#lieArcade a{
+	background: #5bc0de;	
+}
+
+#lieFire a{
+	background: #428bca;
+}
+
+#lieContact a{
+	background: #f0ad4e;
+}
+
+#contact-container{
+	z-index: 2;
+	position: fixed;
+	top: 138px;
+	left: 24%;	
+	width: 550px;
+	height: 200px;
+	background: #f0ad4e;
+	border: 1px solid;
+}	
+
+#contact-container h1{
+	font: bold 1.6em 'Colab-Thin',Helvetica,Arial,Verdana,sans-serif;
+	color: #FFFFFF;
+	letter-spacing: 5px;
+	padding: 20px 0 10px 25px; 
+}
+#contact-container ul {
+	padding: 10px 0 0 50px;
+
+}
+
+#contact-container ul li{
+	font: bold 1em 'Colab-Thin',Helvetica,Arial,Verdana,sans-serif;
+	letter-spacing: 1px;
+	padding: 0 0 10px 0;
+}
+
+/***************************************************************
+					MAIN CONTAINER
+***************************************************************/
+.main-container{
+	background: #d9534f;
+	height: 72%;
+	margin: 0 auto;
+	width: 92%;
+	
+	border: 1px solid;
+	
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+	/*background:rgba(45,124,227,0.7);*/
+	-webkit-box-shadow: #B3B3B3 10px 10px 10px;
+	-moz-box-shadow: #B3B3B3 10px 10px 10px;
+	 box-shadow: #B3B3B3 10px 10px 10px;
+	 
+	clear: both;
+}
+
+#create-container{
+	width: 50%;
+}
+
+/***************************************************************
+					ADD DESIGN
+***************************************************************/
+#imgAddDesign, #imgSelectDesign, #imgCancelOption{
+	cursor: pointer;
+	padding: 10px 20px 0px 20px;
+}
+
+#imgSelectDesign, #imgCancelOption{
+	padding: 12px 0 0px 55px;	
+}
+
+
+#tbxDesignName{
+	float: left;
+	display: block;
+}
+
+
+#nameDesign-container label{
+	float: left;
+}
+
+#nameDesign-container{
+	margin: 15px;
+}
+
+#showMessage{
+	font: 1em 'Colab-Thin',Helvetica,Arial,Verdana,sans-serif;
+	color: black;
+	height: 20px;
+}
+
+/*Classes*/
+
+/***************************************************************
+					EDIT CONTAINER
+***************************************************************/
+
+.edit-container{
+	background: white;
+	width:20%;
+	height: 92%;
+	float: left;
+	margin: 20px;
+	
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+
+.edit-container span{
+	display: inline-block;
+	padding: 20px;
+	font: bold 1.4em 'Colab-Thin',Helvetica,Arial,Verdana,sans-serif;
+}
+
+.container{
+	clear: both;
+}
+
+.buttonNav{
+	cursor: pointer;
+}

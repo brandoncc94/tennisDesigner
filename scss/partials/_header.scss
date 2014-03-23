@@ -1,0 +1,48 @@
+//
+// * All Rights Reserved
+// * This software is proprietary information of
+// * Intelligent Sense
+// * Use is subject to license terms.
+// * Filename: _header.scss
+//
+
+// *
+// * Author:      kchaves@intelligentsense.com
+// * Date:        28/10/2013
+// * Description: Header partial. Add here all the classes for the header
+//                of the site.
+// 
+
+nav { 
+
+    ul {
+        margin: 0;
+        padding: 0;
+    }
+
+    a {
+        display: block;
+        margin-bottom: 10px;
+        padding: 15px 0;
+        
+        font-family: $font-regular;
+        text-align: center;
+        text-decoration: none;
+        font-weight: bold;
+
+        color: white;
+        background: #e44d26;
+    }
+
+    a:hover,
+    a:visited {
+        color: white;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+
+}
+

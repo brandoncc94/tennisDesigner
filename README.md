@@ -1,4 +1,6 @@
-tennisDesigner
-==============
+web-boilerplate
+===============
 
-Web page to create and design tennis.
+boilerplate for web projects based on initializr. 
+
+Check the wiki for instructions on how to set up the development environment

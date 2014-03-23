@@ -1,0 +1,42 @@
+//
+// * All Rights Reserved
+// * This software is proprietary information of
+// * Intelligent Sense
+// * Use is subject to license terms.
+// * Filename: _base.scss
+//
+
+// *
+// * Author:      kchaves@intelligentsense.com
+// * Date:        28/10/2013
+// * Description: Base partial. Put here all the code that doesnt compile to css directly. (params, mixins, etc)
+// 
+
+
+$font-regular   : 'IntelligentSense', Verdana, Arial, sans;
+
+
+/**
+* Mixin for image replacement
+*/
+@mixin ir($height, $width, $imageUrl, $left, $top, $leftActive:0, $topActive:0){
+    height: $height;
+    width: $width;
+    display: block;
+    position: relative;
+    overflow: hidden;
+    
+    span {
+        
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: url($imageUrl) no-repeat $left $top;
+    }
+
+    &.active span {
+        background: url($imageUrl) no-repeat $leftActive $topActive;
+    }
+}

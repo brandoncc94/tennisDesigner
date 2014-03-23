@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!--
+    All Rights Reserved
+    This software is proprietary information of
+    Intelligent Sense
+    Use is subject to license terms.
+    Filename: index.html
+-->
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta name="description" content="" />
+        
+        <meta name="viewport" content="width=device-width" />
+
+        <title>Welcome to Tennis Designer</title>
+
+        <link rel="stylesheet" href="css/normalize.min.css" />
+        <link rel="stylesheet" href="css/style.css" />
+        <link rel="stylesheet" href="css/masterStyle.css"/>
+
+        <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+    </head>
+    <body>
+
+        <div class="header-container">
+            <header class="wrapper clearfix">
+                <h1><img src="img/tennisLogo.png" />Welcome to Tennis Designs<img src="img/tennisLogo.png" /></h1>
+            </header>
+
+             <nav>
+                <ul>
+                    <li id="lieEdit" class="buttonNav"><a >Edit</a></li>
+                    <li id="lieArcade" class="buttonNav"><a >Arcade</a></li>
+                    <li id="lieFire" class="buttonNav"><a >Fire</a></li>
+                    <li id="lieContact" class="buttonNav"><a >Contact</a></li>
+                </ul>
+            </nav>
+
+            <div id="contact-container">
+                <h1>Contact Me</h1>
+                <ul>
+                    <li> <img height="36" src="img/phone.png" /> Phone: 8322-6729 </li>
+                    <li> <img height="36" src="img/email.png" /> Email: brandonc94@hotmail.com </li>
+                </ul>
+            </div> <!-- #contact-container-->
+        </div>  <!-- #header-container-->
+
+        <div class="main-container">
+            <div class="edit-container">
+                <span>Select your design:</span>
+                <img id="imgAddDesign" src="img/add.png"/>
+                
+                <p id="showMessage"> </p>
+                <div id="nameDesign-container">
+                    <p>*The name must be unique.</p>
+                    <form>
+                        <fieldset>
+                            <label>Name: </label>
+                            <input type="text" id="tbxDesignName" placeholder="Design name">
+                        </fieldset>
+                    </form>
+                    <img id="imgCancelOption" src="img/delete.png"/>
+                    <img id="imgSelectDesign" src="img/check.png"/>
+                </div> <!-- #nameDesign-container-->
+            </div>
+            
+            <div class="edit-container" id="create-container">
+                <span>Create your design:</span>
+            </div>
+            
+            <div class="edit-container">
+                <span>Add your decoration:</span>
+            </div>
+        </div> <!-- #main-container -->
+
+        <div class="footer-container">
+            <footer>
+                &copy; Copyright  by brandoncc94 and Juankar1994
+            </footer>
+        </div>
+
+        <script src="js/vendor/jquery-2.1.0.js"></script>
+        <script src="js/vendor/jquery-ui.js"></script>
+        <script src="js/main.min.js"></script>
+        <script src="js/main/masterScript.js"></script>
+    </body>
+</html>
