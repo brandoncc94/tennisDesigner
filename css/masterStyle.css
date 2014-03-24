@@ -3,16 +3,6 @@ body , html{
 	height: 100%;
 }
 
-.header-container,.footer-container{	
-	background: url(../img/header.png);
-	border: none;
-}
-
-.footer-container{
-	margin-top: 10px;
-	height: 37px;
-}
-
 header{
 	padding: 10px;
 	text-align: center;
@@ -95,30 +85,14 @@ nav ul li a:hover{
 	padding: 0 0 10px 0;
 }
 
-/***************************************************************
-					MAIN CONTAINER
-***************************************************************/
-.main-container{
-	background: #d9534f;
-	height: 72%;
-	margin: 0 auto;
-	width: 92%;
-	
-	border: 1px solid;
-	
-	-webkit-border-radius: 20px;
-	-moz-border-radius: 20px;
-	border-radius: 20px;
-	/*background:rgba(45,124,227,0.7);*/
-	-webkit-box-shadow: #B3B3B3 10px 10px 10px;
-	-moz-box-shadow: #B3B3B3 10px 10px 10px;
-	 box-shadow: #B3B3B3 10px 10px 10px;
-	 
-	clear: both;
-}
-
 #create-container{
 	width: 50%;
+}
+
+#canvas-container{
+	margin: 10px;
+	border: 1px solid black;
+	display:block;
 }
 
 /***************************************************************
@@ -154,12 +128,42 @@ nav ul li a:hover{
 	height: 20px;
 }
 
-/*Classes*/
 
+/*Classes*/
+.header-container,.footer-container{	
+	background: url(../img/header.png);
+	border: none;
+}
+
+.footer-container{
+	margin-top: 10px;
+	height: 37px;
+}
+
+/***************************************************************
+					MAIN CONTAINER
+***************************************************************/
+.main-container{
+	background: #d9534f;
+	height: 72%;
+	margin: 0 auto;
+	width: 92%;
+	
+	border: 1px solid;
+	
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+	/*background:rgba(45,124,227,0.7);*/
+	-webkit-box-shadow: #B3B3B3 10px 10px 10px;
+	-moz-box-shadow: #B3B3B3 10px 10px 10px;
+	 box-shadow: #B3B3B3 10px 10px 10px;
+	 
+	clear: both;
+}
 /***************************************************************
 					EDIT CONTAINER
 ***************************************************************/
-
 .edit-container{
 	background: white;
 	width:20%;

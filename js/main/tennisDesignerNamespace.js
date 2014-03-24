@@ -1,34 +1,32 @@
 /*!
  * All Rights Reserved
- * This software is proprietary information of
- * Intelligent Sense
+ * This javascript file is proprietary information of
+ * Brandon Campos Calderón and Juan Carlos Martínez Ramírez
  * Use is subject to license terms.
- * Filename: main.js
+ * Filename: prueba.js
  */
 
  /*
-  * Author:      kchaves@intelligentsense.com
-  * Date:        28/10/2013
-  * Description: Template to create javascript namespaces and modules
+  * Author:      brandoncc94@gmail.com
+  * Date:        23/03/2014
+  * Description: Applying the concept of namespaces and modules of business layer
   */
 
 
 /**
- * Namespace declaration. Use the client's name and project. 
+ * Namespace declaration for avoiding overwriting files.
  */  
-var IntSenseNamespace = window.IntSenseNamespace || {};
+
+var logicalBusinessNamespace = window.logicalBusinessNamespace || {};
 
 /*
  * Global logic
  * @namespace
  */
+
 (function (pContext, $) {
-
+    //Improve safety and prevents global prohibited access 
     'use strict';
-
-    //Namespace var
-    var var1 = 'a';
-    var var2 = 'b';
 
     /**
      * Public method to be used outside of the module.
@@ -36,9 +34,8 @@ var IntSenseNamespace = window.IntSenseNamespace || {};
      * @return {type} description.
      * @public
      */
-    pContext.publicMethod = function () {
-        return privateMethod();
-
+    pContext.sayMyName = function (pName) {
+        return "Hello " + pName;
     };
 
     /**
@@ -46,7 +43,7 @@ var IntSenseNamespace = window.IntSenseNamespace || {};
      * private 
      */
     function privateMethod() {
-        return "Bye Intelligent Sense.";    
+        
     }
 
     /**
@@ -56,15 +53,33 @@ var IntSenseNamespace = window.IntSenseNamespace || {};
      * @private
      * @namespace
      **/
-    var IntSenseModule = (function() {
+    var tennisDesignerPersonModule = (function() {
 
         /**
         * Module's private var
         **/
-        var vars = {
-            moduleVar: false
+        var dimensions = {
+            width: 1000,
+            height: 400
         };
 
+        /**
+         *  Public Method description
+         * 
+         * @public
+         **/
+        var getWidth = function(){
+            return dimensions.width;
+        };
+
+        /**
+         *  Public Method description
+         * 
+         * @public
+         **/
+        var getHeight = function(){
+            return dimensions.height;
+        };
         /**
          *  Private Method description
          * 
@@ -73,15 +88,6 @@ var IntSenseNamespace = window.IntSenseNamespace || {};
         function modulePrivateMethod(pParams) {
 
         }
-
-        /**
-         *  Public Method description
-         * 
-         * @public
-         **/
-        var getName = function(){
-            return "Brandon";
-        };
 
         /**
          * Init the module.
@@ -95,9 +101,11 @@ var IntSenseNamespace = window.IntSenseNamespace || {};
         //Return the public methods of the module so that they are accessible outside this context. 
         return {
                     init : init,
-                    getTheName: getName
+                    getWidth: getWidth,
+                    getHeight: getHeight
                 };
     })();
+
 
     /**
      * Initializes the module.
@@ -106,7 +114,7 @@ var IntSenseNamespace = window.IntSenseNamespace || {};
     function init() {
 
         //Called the methods required to initialize all the modules.
-        IntSenseModule.init();
+        tennisDesignerPersonModule.init();
         
         privateMethod();
     }
@@ -114,5 +122,6 @@ var IntSenseNamespace = window.IntSenseNamespace || {};
     //Init.
     $(init);
 
-}(IntSenseNamespace, jQuery));
+}(logicalBusinessNamespace, jQuery));
+
 
