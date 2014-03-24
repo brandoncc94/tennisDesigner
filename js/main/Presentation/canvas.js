@@ -1,60 +1,114 @@
 $(function(){
-      //Some part were taken from: http://www.html5canvastutorials.com/kineticjs/html5-canvas-drag-and-drop-events-tutorial/
-      /*function getMousePosition(pCanvas, pEvt) {
-        var rect = pCanvas.getBoundingClientRect();
-        return {
-          x: pEvt.clientX - rect.left,
-          y: pEvt.clientY - rect.top
+      //We declare the stage to be working on 
+      var stage = new Kinetic.Stage({
+          container: 'canvas-container',
+          width: 600,
+          height: 350
+        });
+
+      //Layers of the stage
+      anchorLayer = new Kinetic.Layer();
+      lineLayer = new Kinetic.Layer();
+      curveLayer = new Kinetic.Layer();
+
+      var straight = new Kinetic.Line({
+          dashArray: [10, 10, 0, 10],
+          strokeWidth: 2,
+          stroke: 'black',
+          lineCap: 'round',
+          id: 'straightLine',
+          points: [0, 0]
+        });
+
+        lineLayer.add(straight);
+
+        straight = {
+          start: buildAnchor(150, 100),
+          control1: buildAnchor(300, 100),
+          control2: buildAnchor(375, 175),
+          control3: buildAnchor(450, 250),
+          end: buildAnchor(150, 250)
         };
-      }*/
 
+        // Sincronyze the curve lines with the straigth ones
+        anchorLayer.on('beforeDraw', function() {
+          drawCurves();
+          updateDottedLines();
+        });
+
+        stage.add(curveLayer);
+        stage.add(lineLayer);
+        stage.add(anchorLayer);
+
+        drawCurves();
+        updateDottedLines();
+
+
+      // globals
+
+      var curveLayer, lineLayer, anchorLayer, straight
       
-      var canvas = document.getElementById('canvas-container');
-      var context = canvas.getContext('2d');
-    
-      function drawDefault(){
-          //Draw default circles to move the scheme
-          drawCircle(150, 100, 12, 2, 2, '#000000', '#009999');
-          drawCircle(300, 100, 12, 2, 2, '#000000', '#009999');
-          drawCircle(150, 250, 12, 2, 2, '#000000', '#009999');
-          drawCircle(450, 250, 12, 2, 2, '#000000', '#009999');
+      function updateDottedLines() {
+        var s = straight;
 
-          //Draw linear functions
-          drawLinear(150, 250, 450, 250);
-          drawLinear(300, 100, 450, 250);
+        var straightLine = lineLayer.get('#straightLine')[0];
 
-          //Draw Quadratic function
-          drawQuadratic(150, 100, 150, 250, 100, 150);
-          drawQuadratic(150, 100, 300, 100, 200, 150);
+        straightLine.setPoints([s.control1.attrs.x, s.control1.attrs.y, s.control2.attrs.x, s.control2.attrs.y, s.control3.attrs.x, s.control3.attrs.y, s.end.attrs.x, s.end.attrs.y]);
+        lineLayer.draw();
       }
 
-      function drawCircle(pPosX, pPosY, pRadius, pEndAngle, pStrokeWidth, pStrokeColor, pFillColor){
-          context.beginPath();
-          context.arc(pPosX, pPosY, pRadius, 0, pEndAngle * Math.PI, false);
-          context.fillStyle = pFillColor;
-          context.fill();
-          context.lineWidth = pStrokeWidth;
-          context.strokeStyle = pStrokeColor;
-          context.stroke();
+      function buildAnchor(x, y) {
+        var anchor = new Kinetic.Circle({
+          x: x,
+          y: y,
+          radius: 20,
+          stroke: '#666',
+          fill: '#ddd',
+          strokeWidth: 2,
+          draggable: true
+        });
+
+        // add hover styling
+        anchor.on('mouseover', function() {
+          document.body.style.cursor = 'pointer';
+          this.setStrokeWidth(4);
+          anchorLayer.draw();
+        });
+        anchor.on('mouseout', function() {
+          document.body.style.cursor = 'default';
+          this.setStrokeWidth(2);
+          anchorLayer.draw();
+          
+        });
+
+        anchor.on('dragend', function() {
+          drawCurves();
+          updateDottedLines();
+        });
+
+        anchorLayer.add(anchor);
+        return anchor;
       }
 
-      function drawLinear(pStartPosX, pStartPosY, pEndPosX, pEndPosY){
-          context.beginPath();
-          context.moveTo(pStartPosX, pStartPosY);
-          context.lineTo(pEndPosX, pEndPosY);
-          context.stroke();
-      }
+      function drawCurves() {
+        var context = curveLayer.getContext();
 
-      function drawQuadratic(pStartPosX, pStartPosY, pEndPosX, pEndPosY, pXContext, pYContext){
-          context.beginPath();
-          context.moveTo(pStartPosX, pStartPosY);
-          context.quadraticCurveTo(pXContext, pYContext, pEndPosX, pEndPosY);
-          context.lineWidth = 2;
-          context.stroke();
-      }
+        context.clear();
+        // draw curve lines
+        context.beginPath();
+        context.moveTo(straight.start.attrs.x, straight.start.attrs.y);
+        context.quadraticCurveTo(100,150,straight.end.attrs.x, straight.end.attrs.y);
+        context.setAttr('strokeStyle', '#60a637');
+        context.setAttr('lineWidth', 4);
+        context.stroke();
 
-      //canvas.addEventListener('mousemove', function(pEvt) {
-      //  var mousePosition = getMousePosition(canvas, pEvt);
-        //alert('Mouse position: ' + mousePosition.x + ',' + mousePosition.y);
-      //}, false);
+
+        context.beginPath();
+        context.moveTo(straight.start.attrs.x, straight.start.attrs.y);
+        context.quadraticCurveTo(200,150,straight.control1.attrs.x, straight.control1.attrs.y);
+        context.setAttr('strokeStyle', '#60a637');
+        context.setAttr('lineWidth', 4);
+        context.stroke();
+
+      }      
 });
