@@ -1,5 +1,5 @@
-$(function(){
-      //We declare the stage to be working on 
+/*$(function(){
+      //We declare the stage to be working with 
       var stage = new Kinetic.Stage({
           container: 'canvas-container',
           width: 600,
@@ -111,4 +111,4 @@ $(function(){
         context.stroke();
 
       }      
-});
+});*/
