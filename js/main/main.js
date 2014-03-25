@@ -16,6 +16,10 @@
 /**
  * Namespace declaration. Use the client's name and project. 
  */  
+
+
+
+
 var IntSenseNamespace = window.IntSenseNamespace || {};
 
 /*
@@ -23,7 +27,6 @@ var IntSenseNamespace = window.IntSenseNamespace || {};
  * @namespace
  */
 (function (pContext, $) {
-
     'use strict';
 
     //Namespace var
@@ -37,10 +40,18 @@ var IntSenseNamespace = window.IntSenseNamespace || {};
      * @public
      */
     pContext.publicMethod = function () {
-        return privateMethod();
+        return var1;
 
     };
 
+    pContext.getModule = function() {
+        return module;
+    };
+
+
+    pContext.getModule2 = function() {
+        return module2;
+    };
     /**
      * Private method
      * private 
@@ -56,57 +67,50 @@ var IntSenseNamespace = window.IntSenseNamespace || {};
      * @private
      * @namespace
      **/
-    var IntSenseModule = (function() {
-
-        /**
-        * Module's private var
-        **/
-        var vars = {
-            moduleVar: false
-        };
-
-        /**
-         *  Private Method description
-         * 
-         * @private
-         **/
-        function modulePrivateMethod(pParams) {
-
-        }
-
-        /**
-         *  Public Method description
-         * 
-         * @public
-         **/
-        var getName = function(){
-            return "Brandon";
-        };
-
-        /**
-         * Init the module.
-         * @public
-         */
-        function init() {
-            //Called the methods to initialize the module 
-            modulePrivateMethod({});
-        }
-
-        //Return the public methods of the module so that they are accessible outside this context. 
-        return {
-                    init : init,
-                    getTheName: getName
-                };
-    })();
 
     /**
      * Initializes the module.
      * @private
      */
+
+        var module = (function(){
+        // private property
+        var number = 10;
+
+        // public api
+        return {
+            // OK
+            getNumber: function(){
+                 return number;   
+            },
+            // OK
+            incrNumber: function(){
+                 number++;  
+            }
+        };
+    })();
+
+
+        var module2 = (function(){
+        // private property
+        var number = 20;
+
+        // public api
+        return {
+            // OK
+            getNumber: function(){
+                 return number;   
+            },
+            // OK
+            incrNumber: function(){
+                 number++;  
+            }
+        };
+    })();
+
     function init() {
 
         //Called the methods required to initialize all the modules.
-        IntSenseModule.init();
         
         privateMethod();
     }
