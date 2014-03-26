@@ -29,7 +29,7 @@ var presentationNamespace = window.presentationNamespace || {};
      * Public method to return a reference of view module.
      * 
      * @return {viewModule} View declarations of the MVC.
-     * @public
+         * @public
      */
     pContext.getViewModule = function() {
         return viewModule;
@@ -54,9 +54,62 @@ var presentationNamespace = window.presentationNamespace || {};
      **/
 
     var viewModule = (function(){
-        
-        var designSpaceModule = (function(){
+        var onLoadModule = (function(){
+            function init(){
+                $('#nameDesign-container').hide();
+                $('#showMessage').hide();
+                $('#contact-container').hide();
 
+                $('#imgAddDesign').click(function() {
+                $('#nameDesign-container').slideDown();
+                });
+
+                $('#imgCancelOption').click(function() {
+                $('#nameDesign-container').effect( "explode" );
+                });
+
+                $("#lieEdit a").click(function(){
+                    $(".main-container").css('background-color', '#d9534f');
+                });
+
+                $("#lieArcade a").click(function(){
+                    $(".main-container").css('background-color', '#5bc0de');
+                });
+
+                $("#lieFire a").click(function(){
+                    $(".main-container").css('background-color', '#428bca');
+                });
+
+                $("#lieContact a").click(function(){
+                    $('#contact-container').fadeToggle(500);
+                });
+
+                $('#imgSelectDesign').click(function() {
+                    addDesign();
+                }); 
+            }
+
+            function addDesign(){                
+                if($('#tbxDesignName').val().length!=0){
+                    presentationNamespace.getHandlerModule().sendToData($('#tbxDesignName').val());
+                    $('#nameDesign-container').effect( "drop", 1000);
+                    $('#showMessage').text("Design created successfully.");
+                    $('#showMessage').fadeIn(1000);
+                    $('#showMessage').fadeOut(1000);
+                    $('#tbxDesignName').val("");
+                }else{
+                    $('#tbxDesignName').effect( "shake", 1000 );
+                    $('#tbxDesignName').val("");    
+                }
+            }
+
+            return {
+                init:init,
+                addDesign:addDesign
+            };  
+        })();
+
+        var designSpaceModule = (function(){
             var curveLayer, lineLayer, anchorLayer, straight;
 
             //We declare the stage to be working with 
@@ -100,7 +153,8 @@ var presentationNamespace = window.presentationNamespace || {};
             stage.add(curveLayer);
             stage.add(lineLayer);
             stage.add(anchorLayer);
-          
+            
+
             function updateLines() {
                 var s = straight;
                 var straightLine = lineLayer.get('#straightLine')[0];
@@ -139,7 +193,7 @@ var presentationNamespace = window.presentationNamespace || {};
 
                 // when mouseover let's increase the stroke
                 anchor.on('dragend', function() {
-                    //alert(anchor.getPosition().x);
+                    alert(anchor.getPosition().x);
                     drawCurves();
                     updateLines();
                 });
@@ -180,34 +234,31 @@ var presentationNamespace = window.presentationNamespace || {};
             return {
                 // init Components
                 init: init
-            };
+            };            
         })();
 
         function init(){
             designSpaceModule.init();
+            onLoadModule.init();
         }
-        // public methods return
+
         return {
-            // init Components
-            init: init
+            init:init
         };
     })();
 
-
-    /**
-     * Module.
-     *      Module of the handler
-     *
-     * @private
-     * @namespace
-     **/
     var handlerModule = (function(){
+        function sendToData(pName){
+            DataNamespace.getParseDataAcces().uploadParseData(pName);
+        }       
 
-    })();
+        return {
+            sendToData:sendToData
+        }; 
+    })();    
 
-    function init() {
-
-        //Called the methods required to initialize all the modules.
+    function init(){
+        viewModule.init();
     }
 
     //Init.
