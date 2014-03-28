@@ -76,6 +76,29 @@ var Presentation = window.Presentation || {};
             $('#imgSelectDesign').click(function() {
                 addDesign();
             }); 
+
+            $('#divBackgroundColor').colpick({
+                colorScheme:'dark',
+                layout:'rgbhex',
+                color:'ff8800',
+                onSubmit:function(hsb,hex,rgb,el) {
+                    $(el).css('background-color', '#'+hex);
+                    $(el).colpickHide();
+                    Presentation.getOnLoadHandler().drawGraphicalLabel("Background-color: ",hex);
+                }
+            }).css('background-color', '#ff8800');  
+
+
+            $('#divBorderSole').colpick({
+                colorScheme:'dark',
+                layout:'rgbhex',
+                color:'ff8800',
+                onSubmit:function(hsb,hex,rgb,el) {
+                    $(el).css('background-color', '#'+hex);
+                    $(el).colpickHide();
+                    Presentation.getOnLoadHandler().drawGraphicalLabel("BorderSole-color: ",hex);
+                }
+            }).css('background-color', '#ff8800');  
         }
 
         function addDesign(){                

@@ -18,7 +18,7 @@
  * @namespace
  */
 (function (pContext, $) {
-    'use strict'
+    //'use strict'
 
     /**
      * Public method to return a reference of onLoadModule.
@@ -38,7 +38,7 @@
      * @namespace
      **/
     var designSpace = (function(){
-        var curveLayer, lineLayer, anchorLayer, straight;
+        var curveLayer, lineLayer, anchorLayer, backgroundLayer, straight, labelText;
 
         //We declare the stage to be working with 
         var stage = new Kinetic.Stage({
@@ -51,6 +51,7 @@
         anchorLayer = new Kinetic.Layer();
         lineLayer = new Kinetic.Layer();
         curveLayer = new Kinetic.Layer();
+        backgroundLayer = new Kinetic.Layer();
 
         var straight = new Kinetic.Line({
             strokeWidth: 2,
@@ -78,10 +79,11 @@
         });
 
         //Add all layers to the main stage
+            
+        stage.add(backgroundLayer); 
         stage.add(curveLayer);
         stage.add(lineLayer);
-        stage.add(anchorLayer);
-        
+        stage.add(anchorLayer);   
 
         function updateLines() {
             var s = straight;
@@ -152,8 +154,94 @@
             context.setAttr('strokeStyle', '#60a637');
             context.setAttr('lineWidth', 4);
             context.stroke();
-
         }      
+
+        function getLabelUI(){
+            return LabelUI;
+        }
+
+        var LabelUI = (function () {
+
+            function init(pType, pColor) {
+                // Singleton
+                load();
+
+                //Load the graphical label with empty text
+                function load(){
+                    var group = new Kinetic.Group({
+                        draggable: true
+                    });
+
+                    labelText = new Kinetic.Text({
+                        x: 150,
+                        y: 200,
+                        text: pType + '#' + pColor,
+                        fontSize: 12,
+                        fontFamily: 'Calibri',
+                        fill: '#555',
+                        width: 180,
+                        padding: 5,
+                        align: 'center'
+                    });
+
+                    var labelFrame = new Kinetic.Rect({
+                        x: labelText.getPosition().x,
+                        y: labelText.getPosition().y,
+                        stroke: '#555',
+                        strokeWidth: 3,
+                        fill: '#ddd',
+                        width: labelText.width(),
+                        height: labelText.height(),
+                        shadowColor: 'black',
+                        shadowBlur: 10,
+                        shadowOffset: {x:5,y:5},
+                        shadowOpacity: 0.2,
+                        cornerRadius: 5
+                    });
+
+                    group.add(labelFrame);
+                    group.add(labelText);
+                    backgroundLayer.add(group);
+
+                    backgroundLayer.draw();
+                    
+                    return{
+                        changeName: function (pType, pColor){
+                            labelText.setText(pType + '#' + pColor);
+                        }
+                    }
+                }
+            }     
+
+            return{
+                init:init
+            };        
+        })();
+
+        /*function fillBackground(pColor){
+            var s = straight;
+
+            var figureBackground = new Kinetic.Shape({
+                sceneFunc: function(context) {
+                  context.beginPath();
+                  context.moveTo(s.start.attrs.x, s.start.attrs.y);
+                  context.quadraticCurveTo(100,150,s.end.attrs.x, s.end.attrs.y);
+
+                  context.lineTo(s.control3.attrs.x, s.control3.attrs.y);
+                  context.lineTo(s.control2.attrs.x, s.control2.attrs.y);
+                  context.lineTo(s.control1.attrs.x, s.control1.attrs.y);
+                  context.quadraticCurveTo(200,150,s.start.attrs.x, s.start.attrs.y);
+                  context.closePath();
+                  // KineticJS specific context method
+                  context.fillStrokeShape(this);
+                },
+                fill: pColor
+            });
+
+            backgroundLayer.add(figureBackground);
+
+            backgroundLayer.draw();
+        }*/
 
         function init(){
             drawCurves();
@@ -161,7 +249,8 @@
         }
 
         return {
-            init: init
+            init: init,
+            getLabelUI:getLabelUI
         };            
     })();
 

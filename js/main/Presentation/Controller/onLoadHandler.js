@@ -41,8 +41,15 @@
             DataNamespace.getParseDataAcces().uploadParseData(pName);
         }       
 
+        function drawGraphicalLabel(pType, pColor){
+            //Singleton instance
+            Presentation.getDesignSpace().getLabelUI().init(pType, pColor);
+            
+        }
+
         return {
-            sendToData:sendToData
+            sendToData:sendToData,
+            drawGraphicalLabel:drawGraphicalLabel
         }; 
     })();    
 

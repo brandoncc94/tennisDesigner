@@ -31,6 +31,12 @@ nav ul li a:hover{
 	text-decoration: none;
 }
 
+h2{
+	margin: 13px;
+	font: bold 1em 'Colab-Thin',Helvetica,Arial,Verdana,sans-serif;
+	float:left;
+}
+
 .footer-container footer{
 	padding: 0;
 	text-align: center;
@@ -188,4 +194,12 @@ nav ul li a:hover{
 
 .buttonNav{
 	cursor: pointer;
+}
+
+.color-box {
+	float:left;
+	width:30px;
+	height:30px;
+	margin:5px;
+	border: 1px solid white;
 }
