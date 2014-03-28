@@ -26,8 +26,8 @@
      * @return {onLoadModule} View declarations of the MVC.
          * @public
      */
-    pContext.getDesignSpaceModule = function() {
-        return designSpaceModule;
+    pContext.getDesignSpace = function() {
+        return designSpace;
     };
 
     /**
@@ -37,7 +37,7 @@
      * @private
      * @namespace
      **/
-    var designSpaceModule = (function(){
+    var designSpace = (function(){
         var curveLayer, lineLayer, anchorLayer, straight;
 
         //We declare the stage to be working with 

@@ -24,8 +24,8 @@
      * @return {handlerModule} Handler declarations of the MVC.
      * @public
      */
-    pContext.getHandlerModule = function() {
-        return handlerModule;
+    pContext.getOnLoadHandler = function() {
+        return onLoadHandler;
     };
 
     /**
@@ -35,7 +35,7 @@
      * @private
      * @namespace
      **/
-    var handlerModule = (function(){
+    var onLoadHandler = (function(){
         function sendToData(pName){
         	//Send data to its respective namespace reference
             DataNamespace.getParseDataAcces().uploadParseData(pName);

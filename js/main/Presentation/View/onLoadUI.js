@@ -31,8 +31,8 @@ var Presentation = window.Presentation || {};
      * @return {onLoadModule} View declarations of the MVC.
          * @public
      */
-    pContext.onLoadModule = function() {
-        return onLoadModule;
+    pContext.onLoad = function() {
+        return onLoad;
     };
 
 
@@ -43,7 +43,7 @@ var Presentation = window.Presentation || {};
      * @private
      * @namespace
      **/
-    var onLoadModule = (function(){
+    var onLoad = (function(){
         function init(){
             $('#nameDesign-container').hide();
             $('#showMessage').hide();
@@ -81,7 +81,7 @@ var Presentation = window.Presentation || {};
         function addDesign(){                
             if($('#tbxDesignName').val().length!=0){
                 //Sending the name design to parse
-                Presentation.getHandlerModule().sendToData($('#tbxDesignName').val());
+                Presentation.getOnLoadHandler().sendToData($('#tbxDesignName').val());
 
                 $('#nameDesign-container').effect( "drop", 1000);
                 $('#showMessage').text("Design created successfully.");
@@ -101,7 +101,7 @@ var Presentation = window.Presentation || {};
     })();
 
     function init(){
-        onLoadModule.init();
+        onLoad.init();
     }
 
     //Init.
