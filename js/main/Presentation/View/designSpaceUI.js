@@ -13,6 +13,10 @@
   */
 
 
+/*
+ * Global Presentation Layer to be used with MVC Pattern
+ * @namespace
+ */
 (function (pContext, $) {
     'use strict'
 

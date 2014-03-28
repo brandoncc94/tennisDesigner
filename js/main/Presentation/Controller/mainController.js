@@ -12,6 +12,10 @@
   * Description: Main controller to connect the view with data
   */
 
+/*
+ * Global Presentation Layer to be used with MVC Pattern
+ * @namespace
+ */
 (function (pContext, $) {
 	'use strict'
     /**
