@@ -30,6 +30,7 @@ var DataNamespace = window.DataNamespace || {};
     'use strict';
 
     //Namespace var
+    var var1 = 'a';
     Parse.initialize("DKofKQXu2AtXwkr5qSlWBJMxKBxnFzDhX8I0VEZH", "ojzZihBULwli0g5ZaKK3IB0lfS2Rw0WoTyYEaVW4");
     /**
      * Public method to be used outside of the module.
@@ -60,12 +61,6 @@ var DataNamespace = window.DataNamespace || {};
      * @private
      */
 
-
-
-
-
-
-
     var TennisDataAcces = (function(){
         // private property
         
@@ -87,7 +82,7 @@ var DataNamespace = window.DataNamespace || {};
         // public api
         return {
             // OK
-            uploadParseData  : function(pName){
+            uploadParseData: function(pName){
                 var tempDesign = new TennisDesign();
                 tempDesign.save({
                     Name : pName
