@@ -3,7 +3,7 @@
  * This software is proprietary information of
  * TEAMPRO
  * Use is subject to license terms.
- * Filename: dataNamespace.js
+ * Filename: DataAccess.js
  */
 
  /*
@@ -20,7 +20,7 @@
 
 
 
-var DataNamespace = window.DataNamespace || {};
+var DataAccess = window.DataAccess || {};
 
 /*
  * Global logic
@@ -117,5 +117,5 @@ var DataNamespace = window.DataNamespace || {};
     //Init.
     $(init);
 
-}(DataNamespace, jQuery));
+}(DataAccess, jQuery));
 
