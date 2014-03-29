@@ -32,6 +32,14 @@ var DataAccess = window.DataAccess || {};
     //Namespace var
     var var1 = 'a';
     Parse.initialize("8MeOaSAgl4qqGTAzYjUFJr2JYYng6TSEFFquHgDX", "MoAGjc9crYjb6QyyEcPMPDQtnv4e5KBbE4PIzLUA");
+    var fig1 = new LibraryData.getLibraryModule().newFigure(1,2,3,4);
+    var fig2 = new LibraryData.getLibraryModule().newFigure(11,21,31,41);
+    alert(fig1.getColor());
+    alert(fig2.getColor());
+    fig1.setColor(234);
+    alert(fig1.getColor());
+    alert(fig2.getColor());
+    
     /**
      * Public method to be used outside of the module.
      * 
