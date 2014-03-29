@@ -79,6 +79,7 @@ var LibraryDataNamespace = window.LibraryDataNamespace || {};
                 init: init
             };            
         })();
+
         LibraryDataNamespace.LibraryModule.StraightLine.prototype = new LibraryDataNamespace.LibraryModule.Figure;
 
 
@@ -183,7 +184,7 @@ var LibraryDataNamespace = window.LibraryDataNamespace || {};
                 init: init
             };            
         })();
-        LibraryDataNamespace.LibraryModule.Sole.prototype = new LibraryDataNamespace.LibraryModule.Figure;
+        LibraryDataNamespace.LibraryModule.Border.prototype = new LibraryDataNamespace.LibraryModule.Figure;
 
 
 
@@ -205,5 +206,5 @@ var LibraryDataNamespace = window.LibraryDataNamespace || {};
     //Init.
     $(init);
 
-}(presentationNamespace, jQuery));
+}(LibraryDataNamespace, jQuery));
 
