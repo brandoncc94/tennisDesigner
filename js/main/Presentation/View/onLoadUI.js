@@ -49,8 +49,12 @@ var Presentation = window.Presentation || {};
             $('#showMessage').hide();
             $('#contact-container').hide();
 
+            $('#imgSearchDesign').click(function(){
+                searchDesign();
+            });
+
             $('#imgAddDesign').click(function() {
-            $('#nameDesign-container').slideDown();
+                $('#nameDesign-container').slideDown();
             });
 
             $('#imgCancelOption').click(function() {
@@ -75,7 +79,8 @@ var Presentation = window.Presentation || {};
 
             $('#imgSelectDesign').click(function() {
                 addDesign();
-            }); 
+            });
+
 
             $('#divBackgroundColor').colpick({
                 colorScheme:'dark',
@@ -99,6 +104,22 @@ var Presentation = window.Presentation || {};
                     Presentation.getOnLoadHandler().drawGraphicalLabel("BorderSole-color: ",hex);
                 }
             }).css('background-color', '#ff8800');  
+        }
+
+        function searchDesign(){
+            var designList = new Array();
+            designList = DataAccess.getParseDataAcces().downloadDesignsName();
+                // Create a jqxDropDownList
+                $("#nameDesigns-container").jqxDropDownList({ source: designList, selectedIndex: 0, width: '200px', height: '25px' });
+                // disable the sixth item.
+                $("#nameDesigns-container").jqxDropDownList('disableAt', 5);
+                // bind to 'select' event.
+                $('#nameDesigns-container').bind('select', function (event) {
+                    var args = event.args;
+                    var item = $('#nameDesigns-container').jqxDropDownList('getItem', args.index);
+                    alert('Selected: ' + item.label);
+                });
+                
         }
 
         function addDesign(){                

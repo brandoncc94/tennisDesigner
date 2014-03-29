@@ -31,7 +31,8 @@ var DataAccess = window.DataAccess || {};
 
     //Namespace var
     var var1 = 'a';
-    Parse.initialize("DKofKQXu2AtXwkr5qSlWBJMxKBxnFzDhX8I0VEZH", "ojzZihBULwli0g5ZaKK3IB0lfS2Rw0WoTyYEaVW4");
+    Parse.initialize("8MeOaSAgl4qqGTAzYjUFJr2JYYng6TSEFFquHgDX", "MoAGjc9crYjb6QyyEcPMPDQtnv4e5KBbE4PIzLUA");
+    
     /**
      * Public method to be used outside of the module.
      * 
@@ -90,6 +91,28 @@ var DataAccess = window.DataAccess || {};
                 return;   
             },
             // OK
+
+            downloadDesignsName: function(){
+                var tennis_query = new Parse.Query(TennisDesign);
+                var designList = new Array();
+                tennis_query.find({
+                    success: function(results) {
+                        for (var i = 0 ;i<results.length;i++){
+                            var object = results[i];
+                            var name = object.get('Name');
+                            designList[i]=name;
+                            alert(designList[i]);
+                        }
+                        alert(designList);
+                        return designList;
+                    },
+                    error: function(error) {
+                        alert("Error: " + error.code + " " + error.message);
+                    }
+                });
+                
+            },
+
             downloadParseData: function(pKey,value){
                 var tennis_query = new Parse.Query(TennisDesign);
                 tennis_query.equalTo(pkey,value);

@@ -26,174 +26,150 @@ var LibraryData = window.LibraryData || {};
 (function (pContext, $) {
     'use strict';
     
+    pContext.getLibraryModule = function(){
+        return LibraryModule;
+    };
 
-    
     var LibraryModule = (function(){
-        var design = (function(){
-            function init(){
-                
-            }
+        
 
-            return {
-                init : init
-            };  
-        })();
+        var design = Class.extend({
+          init: function(pName){
+            this.Name = pName;
+          },
+          setName: function(pName){
+            this.Name = pName;
+          },
+          getName: function(){
+            return this.Name;
+          }
+        });
 
-        var Point = (function(pPositionX, pPositionY){
-            this.positionY = pPositionY;
-
-            this.positionX = pPositionX;     
-            function init(){
-                
-            }
-
-            return {
-                // init Components
-                init: init
-            };            
-        })();
-
-        var Figure = (function(pPointsFigure){
-            //Array
-            this.pointsFigure = pPointsFigure;
-
-            function init(){
-                
-            }
-
-            return {
-                // init Components
-                init: init
-            };            
-        })();
-
-        var StraightLine = (function(pPointsFigure){
-            Figure.call(this,pPointsFigure);
-
-            function init(){
-                
-            }
-
-            return {
-                // init Components
-                init: init
-            };            
-        })();
-
-        LibraryData.LibraryModule.StraightLine.prototype = new LibraryData.LibraryModule.Figure;
-
-
-        var CurveLine = (function(pPointsFigure){
-            Figure.call(this,pPointsFigure);
-
-            function init(){
-                
-            }
-
-            return {
-                // init Components
-                init: init
-            };            
-        })();
-        LibraryData.LibraryModule.CurveLine.prototype = new LibraryData.LibraryModule.Figure;
-
-        var Sole = (function(pPointsFigure){
-            Figure.call(this,pPointsFigure);
-
-            function init(){
-                
-            }
-
-            return {
-                // init Components
-                init: init
-            };            
-        })();
-        LibraryData.LibraryModule.Sole.prototype = new LibraryData.LibraryModule.Figure;
-
-        var Circle = (function(pPointsFigure , pRadio){
+        var Point = Class.extend({
             
-            Figure.call(this,pPointsFigure);
-            
-            this.radio = pRadio;
-            
-            this.getRadio = function(){
-                return (this.radio);
+            init: function(pPositionX, pPositionY){
+                this.positionY = pPositionY;
+                this.positionX = pPositionX;     
+            },
+
+            setPositionY: function(pPositionY){
+                this.positionY = pPositionY; 
+            },
+
+            setPositionX: function(pPositionX){
+                this.positionX = pPositionX; 
+            },
+
+            getPositionY: function(){
+                return this.positionY;
+            },
+
+            getPositionX: function(){
+                return this.positionX;
             }
+
+        });
+
+        var Figure = Class.extend({
+            init: function(pPointsFigure,pColor,pLabel,pThink){
+                this.colour = pColor;
+                this.labels = pLabel;
+                this.think = pThink;
+                this.pointsFigure = pPointsFigure;
+            },
             
-            this.setRadio = function(pRadio){
+            setColor: function(pColor){
+                this.colour = pColor;
+            },
+            
+            setLabel: function(pLabel){
+                this.labels = pLabel;
+            },
+            
+            setThink: function(pThink){
+                this.think = pThink;
+            },
+            
+            setPointsFigure : function(pPointsFigure){
+                this.pointsFigure = pPointsFigure;
+            },
+            
+            getColor: function(){
+                return this.colour;
+            },
+            
+            getLabel: function(){
+                return this.labels;
+            },
+            
+            getThink: function(){
+                return this.think;
+            },
+            
+            getPointsFigure : function(){
+                return this.pointsFigure;
+            }
+        });
+
+        var StraightLine = Figure.extend({
+            init: function(pPointsFigure,pColor,pLabel,pThink){
+                this._super(pPointsFigure,pColor,pLabel,pThink);
+            }        
+        });
+
+        var CurveLine = Figure.extend({
+            init: function(pPointsFigure,pColor,pLabel,pThink){
+                this._super(pPointsFigure,pColor,pLabel,pThink);
+            }        
+        });
+
+        var Sole = Figure.extend({
+            init: function(pPointsFigure,pColor,pLabel,pThink){
+                this._super(pPointsFigure,pColor,pLabel,pThink);
+            }        
+        });
+
+        var Circle = Figure.extend({
+            init: function(pPointsFigure,pColor,pLabel,pThink,pRadio){
+                this._super(pPointsFigure,pColor,pLabel,pThink);
                 this.radio = pRadio;
-            }
-
-            function init(){
-                
-            }
-
-            return {
-                // init Components
-                init: init
-            };            
-        })();
-        LibraryData.LibraryModule.Circle.prototype = new LibraryData.LibraryModule.Figure;
-
-        var Border = (function(pPointsFigure , pTypeBorder, pThick, pColorBorder, pLabelFigure){
-            Figure.call(this,pPointsFigure);
-            this.typeBorder = pTypeBorder;
-            this.thick = pThick;
-            this.colorBorder = pColorBorder;
-            this.labelFigure = pLabelFigure;
-
-            this.getTypeBorder = function(){
-                return (this.typeBorder);
-            }
+            },
             
-            this.setTypeBorder = function(pTypeBorder){
+            setRadio: function(pRadio){
+                this.radio = pRadio;
+            },
+
+            getRadio: function(){
+                return this.radio;
+            }
+        }); 
+
+        var Border = Figure.extend({
+            init: function(pPointsFigure,pColor,pLabel,pThink,pTypeBorder){
+                this._super(pPointsFigure,pColor,pLabel,pThink);
+                this.typeBorder = pTypeBorder;
+            },
+            getTypeBorder: function(){
+                return this.typeBorder;
+            },
+            
+            setTypeBorder : function(pTypeBorder){
                 this.typeBorder = pTypeBorder;
             }
+         
+        });
 
-            this.getThick = function(){
-                return (this.thick);
-            }
-            
-            this.setThick = function(pThick){
-                this.thick = pThick;
-            }
-
-            this.getColorBorder = function(){
-                return (this.colorBorder);
-            }
-            
-            this.setColorBorder = function(pColorBorder){
-                this.radio = pColorBorder;
-            }
-
-            this.getLabelFigure = function(){
-                return (this.labelFigure);
-            }
-            
-            this.setLabelFigure = function(pLabelFigure){
-                this.labelFigure = pLabelFigure;
-            }
-
-            function init(){
-                
-            }
-
-            return {
-                // init Components
-                init: init
-            };            
-        })();
-        LibraryData.LibraryModule.Border.prototype = new LibraryData.LibraryModule.Figure;
-
-
+        
 
         function init(){
 
         }
 
         return {
-            init:init
+            init: init,
+            newFigure: function (pPointsFigure,pColor,pLabel,pThink){
+                return new Figure(pPointsFigure,pColor,pLabel,pThink);
+            }
         };
     })();
 
