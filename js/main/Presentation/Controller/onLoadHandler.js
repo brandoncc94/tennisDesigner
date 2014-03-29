@@ -38,7 +38,7 @@
     var onLoadHandler = (function(){
         function sendToData(pName){
         	//Send data to its respective namespace reference
-            DataNamespace.getParseDataAcces().uploadParseData(pName);
+            DataAccess.getParseDataAcces().uploadParseData(pName);
         }       
 
         return {

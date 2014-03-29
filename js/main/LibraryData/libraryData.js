@@ -17,7 +17,7 @@
  * Namespace declaration.
  */  
 
-var LibraryDataNamespace = window.LibraryDataNamespace || {};
+var LibraryData = window.LibraryData || {};
 
 /*
  * 
@@ -80,7 +80,7 @@ var LibraryDataNamespace = window.LibraryDataNamespace || {};
             };            
         })();
 
-        LibraryDataNamespace.LibraryModule.StraightLine.prototype = new LibraryDataNamespace.LibraryModule.Figure;
+        LibraryData.LibraryModule.StraightLine.prototype = new LibraryData.LibraryModule.Figure;
 
 
         var CurveLine = (function(pPointsFigure){
@@ -95,7 +95,7 @@ var LibraryDataNamespace = window.LibraryDataNamespace || {};
                 init: init
             };            
         })();
-        LibraryDataNamespace.LibraryModule.CurveLine.prototype = new LibraryDataNamespace.LibraryModule.Figure;
+        LibraryData.LibraryModule.CurveLine.prototype = new LibraryData.LibraryModule.Figure;
 
         var Sole = (function(pPointsFigure){
             Figure.call(this,pPointsFigure);
@@ -109,7 +109,7 @@ var LibraryDataNamespace = window.LibraryDataNamespace || {};
                 init: init
             };            
         })();
-        LibraryDataNamespace.LibraryModule.Sole.prototype = new LibraryDataNamespace.LibraryModule.Figure;
+        LibraryData.LibraryModule.Sole.prototype = new LibraryData.LibraryModule.Figure;
 
         var Circle = (function(pPointsFigure , pRadio){
             
@@ -134,7 +134,7 @@ var LibraryDataNamespace = window.LibraryDataNamespace || {};
                 init: init
             };            
         })();
-        LibraryDataNamespace.LibraryModule.Circle.prototype = new LibraryDataNamespace.LibraryModule.Figure;
+        LibraryData.LibraryModule.Circle.prototype = new LibraryData.LibraryModule.Figure;
 
         var Border = (function(pPointsFigure , pTypeBorder, pThick, pColorBorder, pLabelFigure){
             Figure.call(this,pPointsFigure);
@@ -184,7 +184,7 @@ var LibraryDataNamespace = window.LibraryDataNamespace || {};
                 init: init
             };            
         })();
-        LibraryDataNamespace.LibraryModule.Border.prototype = new LibraryDataNamespace.LibraryModule.Figure;
+        LibraryData.LibraryModule.Border.prototype = new LibraryData.LibraryModule.Figure;
 
 
 
@@ -206,5 +206,5 @@ var LibraryDataNamespace = window.LibraryDataNamespace || {};
     //Init.
     $(init);
 
-}(LibraryDataNamespace, jQuery));
+}(LibraryData, jQuery));
 
