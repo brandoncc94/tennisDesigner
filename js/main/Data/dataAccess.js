@@ -31,7 +31,7 @@ var DataAccess = window.DataAccess || {};
 
     //Namespace var
     var var1 = 'a';
-    Parse.initialize("DKofKQXu2AtXwkr5qSlWBJMxKBxnFzDhX8I0VEZH", "ojzZihBULwli0g5ZaKK3IB0lfS2Rw0WoTyYEaVW4");
+    Parse.initialize("8MeOaSAgl4qqGTAzYjUFJr2JYYng6TSEFFquHgDX", "MoAGjc9crYjb6QyyEcPMPDQtnv4e5KBbE4PIzLUA");
     /**
      * Public method to be used outside of the module.
      * 
