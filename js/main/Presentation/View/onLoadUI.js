@@ -46,14 +46,22 @@ var Presentation = window.Presentation || {};
     var onLoad = (function(){
         function init(){
             $('#nameDesign-container').hide();
+            $('#listDesign-container').hide();
             $('#showMessage').hide();
             $('#contact-container').hide();
 
             $('#imgSearchDesign').click(function(){
+                if(!$('#nameDesign-container').hidden){
+                    $('#nameDesign-container').hide();
+                }
+                $('#listDesign-container').slideDown();
                 searchDesign();
             });
 
             $('#imgAddDesign').click(function() {
+                if(!$('#listDesign-container').hidden){
+                    $('#listDesign-container').hide();
+                }
                 $('#nameDesign-container').slideDown();
             });
 
@@ -93,6 +101,12 @@ var Presentation = window.Presentation || {};
                 }
             }).css('background-color', '#ff8800');  
 
+            $('#nameDesigns-container').bind('select', function (event) {
+                    var args = event.args;
+                    var item = $('#nameDesigns-container').jqxDropDownList('getItem', args.index);
+                    alert('Selected: ' + item.label);
+            });
+
 
             $('#divBorderSole').colpick({
                 colorScheme:'dark',
@@ -107,20 +121,16 @@ var Presentation = window.Presentation || {};
         }
 
         function searchDesign(){
-            var designList = new Array();
-            designList = DataAccess.getParseDataAcces().downloadDesignsName();
-                // Create a jqxDropDownList
-                $("#nameDesigns-container").jqxDropDownList({ source: designList, selectedIndex: 0, width: '200px', height: '25px' });
-                // disable the sixth item.
-                $("#nameDesigns-container").jqxDropDownList('disableAt', 5);
-                // bind to 'select' event.
-                $('#nameDesigns-container').bind('select', function (event) {
-                    var args = event.args;
-                    var item = $('#nameDesigns-container').jqxDropDownList('getItem', args.index);
-                    alert('Selected: ' + item.label);
-                });
-                
+            DataAccess.getParseDataAcces().downloadDesignsName();
         }
+
+        function obtenerDatos(designList){
+            // Create a jqxDropDownList
+            $('#designs').empty();
+            for (var i = 0; i < designList.length; i++) {
+                   $('#designs').append("<option value='" + designList[i] + "'>");
+               }
+           }
 
         function addDesign(){                
             if($('#tbxDesignName').val().length!=0){
@@ -140,7 +150,8 @@ var Presentation = window.Presentation || {};
 
         return {
             init:init,
-            addDesign:addDesign
+            addDesign:addDesign,
+            obtenerDatos:obtenerDatos
         };  
     })();
 

@@ -94,17 +94,14 @@ var DataAccess = window.DataAccess || {};
 
             downloadDesignsName: function(){
                 var tennis_query = new Parse.Query(TennisDesign);
-                var designList = new Array();
+                var designList = [];
                 tennis_query.find({
                     success: function(results) {
                         for (var i = 0 ;i<results.length;i++){
                             var object = results[i];
-                            var name = object.get('Name');
-                            designList[i]=name;
-                            alert(designList[i]);
+                            designList.push(object.get('Name'));
                         }
-                        alert(designList);
-                        return designList;
+                        Presentation.onLoad().obtenerDatos(designList);
                     },
                     error: function(error) {
                         alert("Error: " + error.code + " " + error.message);

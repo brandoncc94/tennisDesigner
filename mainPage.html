@@ -69,8 +69,18 @@
                     <img id="imgCancelOption" src="img/delete.png"/>
                     <img id="imgSelectDesign" src="img/check.png"/>
                 </div> <!-- #nameDesign-container-->
-                <p id="showComboBox"> </p>
-                <div id="nameDesigns-container"></div>
+                
+                <div id="listDesign-container">
+                    <br>
+                    <center>
+                        <form action="demo_form.asp" method="get">
+                            <input list="designs" name="designs">
+                            <datalist id="designs">
+                            </datalist>
+                        
+                        </form>
+                    </center>
+                </div>
             </div>
             
             <div class="edit-container" id="create-container">
