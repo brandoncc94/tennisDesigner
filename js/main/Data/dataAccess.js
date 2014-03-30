@@ -30,7 +30,6 @@ var DataAccess = window.DataAccess || {};
     'use strict';
 
     //Namespace var
-    var var1 = 'a';
     Parse.initialize("8MeOaSAgl4qqGTAzYjUFJr2JYYng6TSEFFquHgDX", "MoAGjc9crYjb6QyyEcPMPDQtnv4e5KBbE4PIzLUA");
     
     /**
@@ -101,7 +100,8 @@ var DataAccess = window.DataAccess || {};
                             var object = results[i];
                             designList.push(object.get('Name'));
                         }
-                        Presentation.onLoad().obtenerDatos(designList);
+                        Presentation.getOnLoadDesignsHandler().loadDesigns(designList);
+                        
                     },
                     error: function(error) {
                         alert("Error: " + error.code + " " + error.message);

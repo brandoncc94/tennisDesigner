@@ -31,9 +31,9 @@ var Presentation = window.Presentation || {};
      * @return {onLoadModule} View declarations of the MVC.
          * @public
      */
-    pContext.onLoad = function() {
+    pContext.getOnLoad = function() {
         return onLoad;
-    };
+    };  
 
 
     /**
@@ -121,10 +121,10 @@ var Presentation = window.Presentation || {};
         }
 
         function searchDesign(){
-            DataAccess.getParseDataAcces().downloadDesignsName();
+            Presentation.getOnLoadDesignsHandler().downloadDesigns();
         }
 
-        function obtenerDatos(designList){
+        function loadDesignDataList(designList){
             // Create a jqxDropDownList
             $('#designs').empty();
             for (var i = 0; i < designList.length; i++) {
@@ -151,7 +151,7 @@ var Presentation = window.Presentation || {};
         return {
             init:init,
             addDesign:addDesign,
-            obtenerDatos:obtenerDatos
+            loadDesignDataList:loadDesignDataList
         };  
     })();
 

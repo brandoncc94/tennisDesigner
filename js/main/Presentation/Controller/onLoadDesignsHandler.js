@@ -24,8 +24,8 @@
      * @return {handlerModule} Handler declarations of the MVC.
      * @public
      */
-    pContext.getOnLoadHandler = function() {
-        return OnLoadHandler;
+    pContext.getOnLoadDesignsHandler = function() {
+        return onLoadDesignsHandler;
     };
 
     /**
@@ -35,21 +35,23 @@
      * @private
      * @namespace
      **/
-    var OnLoadHandler = (function(){
-        function sendToData(pName){
+
+
+    var onLoadDesignsHandler = (function(){
+        function downloadDesigns(){
         	//Send data to its respective namespace reference
-            DataAccess.getParseDataAcces().uploadParseData(pName);
+            DataAccess.getParseDataAcces().downloadDesignsName();
         }       
 
-        function drawGraphicalLabel(pType, pColor){
-            //Singleton instance
-            Presentation.getDesignSpace().getLabelUI().init(pType, pColor);
+        function loadDesigns(designList){
+            
+            Presentation.getOnLoad().loadDesignDataList(designList);
             
         }
 
         return {
-            sendToData:sendToData,
-            drawGraphicalLabel:drawGraphicalLabel
+            downloadDesigns:downloadDesigns,
+            loadDesigns:loadDesigns
         }; 
     })();    
 
