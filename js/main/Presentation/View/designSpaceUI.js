@@ -38,52 +38,88 @@
      * @namespace
      **/
     var designSpace = (function(){
-        var curveLayer, lineLayer, anchorLayer, backgroundLayer, straight, labelText;
+        var curveLayer, lineLayer, anchorLayer, backgroundLayer, 
+                figuresLayer, straight, labelText, canvasStage;
 
-        //We declare the stage to be working with 
-        var stage = new Kinetic.Stage({
-            container: 'canvas-container',
-            width: 600,
-            height: 350
-        });
+        drawCanvasStage();
 
-        //Layers of the stage
-        anchorLayer = new Kinetic.Layer();
-        lineLayer = new Kinetic.Layer();
-        curveLayer = new Kinetic.Layer();
-        backgroundLayer = new Kinetic.Layer();
+        function drawCanvasStage(){
+            //We declare the stage to be working with 
+            canvasStage = new Kinetic.Stage({
+                container: 'canvas-container',
+                width: 600,
+                height: 350
+            });
 
-        var straight = new Kinetic.Line({
-            strokeWidth: 2,
-            stroke: 'black',
-            lineCap: 'round',
-            id: 'straightLine',
-            points: [0, 0]
-        });
+            //Layers of the stage
+            anchorLayer = new Kinetic.Layer();
+            lineLayer = new Kinetic.Layer();
+            curveLayer = new Kinetic.Layer();
+            backgroundLayer = new Kinetic.Layer();
+            figuresLayer = new Kinetic.Layer();
 
-        //Add the line to te layer
-        lineLayer.add(straight);
+            straight = new Kinetic.Line({
+                strokeWidth: 2,
+                stroke: 'black',
+                lineCap: 'round',
+                id: 'straightLine',
+                points: [0, 0]
+            });
 
-        straight = {
-            start: buildAnchor(150, 100),
-            control1: buildAnchor(300, 100),
-            control2: buildAnchor(375, 175),
-            control3: buildAnchor(450, 250),
-            end: buildAnchor(150, 250)
-        };
+            //Add the line to te layer
+            lineLayer.add(straight);
 
-        // Before drawing lets syncronize the lines when we pick up the anchor
-        anchorLayer.on('beforeDraw', function() {
-            drawCurves();
-            updateLines();
-        });
+            straight = {
+                start: buildAnchor(150, 100),
+                control1: buildAnchor(300, 100),
+                control2: buildAnchor(375, 175),
+                control3: buildAnchor(450, 250),
+                end: buildAnchor(150, 250)
+            };
 
-        //Add all layers to the main stage
+            // Before drawing lets syncronize the lines when we pick up the anchor
+            anchorLayer.on('beforeDraw', function() {
+                drawCurves();
+                updateLines();
+            });
+
+            //Add all layers to the main stage
+                
+            canvasStage.add(backgroundLayer); 
+            canvasStage.add(curveLayer);
+            canvasStage.add(lineLayer);
+            canvasStage.add(figuresLayer); 
+            canvasStage.add(anchorLayer); 
+
+            var reference = canvasStage.getContainer();    
+            var dragSrcEl = null;
+
+            $( "#imgCircle" ).on( "dragstart", function(){
+                dragSrcEl = this;
+            });
             
-        stage.add(backgroundLayer); 
-        stage.add(curveLayer);
-        stage.add(lineLayer);
-        stage.add(anchorLayer);   
+            reference.addEventListener('dragover',function(e){
+                e.preventDefault(); //Stops the reference to do the defult event
+            });
+
+            //insert image to stage
+            reference.addEventListener('drop',function(e){
+                if(dragSrcEl.id = "imgCircle"){
+                    var circle = new Kinetic.Circle({
+                        x: 250,
+                        y: 200,
+                        radius: 50,
+                        stroke: '#666',
+                        draggable: true
+                    });
+
+                    figuresLayer.add(circle);
+                }
+
+                figuresLayer.draw();
+
+             });
+        }
 
         function updateLines() {
             var s = straight;

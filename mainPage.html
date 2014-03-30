@@ -23,6 +23,7 @@
         <link rel="stylesheet" href="css/style.css" />
         <link rel="stylesheet" href="css/masterStyle.css"/>
         <link rel="stylesheet" href="css/colpick.css"/>
+        <link rel="stylesheet" href="css/tabs.css"/>
 
         <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
         
@@ -89,11 +90,27 @@
             </div>
             
             <div class="edit-container">
-                <span>Add your decoration:</span>
-                <h2>Background Color:</h2>
-                <div id="divBackgroundColor" class="color-box"></div>
-                <h2>Border-Sole Color:</h2>
-                <div id="divBorderSole" class="color-box"></div>
+                <span>Add decoration:</span>
+
+                <ul id="tabs">
+                    <li><a href="#" name="#tab1">General</a></li>
+                    <li><a href="#" name="#tab2">Figure</a></li>
+                </ul>
+
+                <div id="content"> 
+                    <div id="tab1">                        
+
+                        <h2>Background Color:</h2>
+                        <div id="divBackgroundColor" class="color-box"></div>
+                        <h2>Border-Sole Color:</h2>
+                        <div id="divBorderSole" class="color-box"></div>
+
+                    </div>
+
+                    <div id="tab2">
+                        <img id="imgCircle" src="img/circle.png">
+                    </div>
+                </div>
             </div>
         </div> <!-- #main-container -->
 
@@ -116,6 +133,7 @@
         <script src="js/vendor/jqxlistbox.js"></script>
         <script src="js/vendor/jqxdropdownlist.js"></script>
         <script src="js/main.min.js"></script>
+        <script src="js/main/Presentation/tabs.js"></script>
 
         <script src="js/main/LibraryData/libraryData.js"></script>
         <script src="js/main/Data/dataAccess.js"></script>
