@@ -163,7 +163,8 @@
             });
         }
 
-        function changeFeatureDialog(pReference, pHTML, pColorPickers, pColorPickersOriginal, pChange){     
+        function changeFeatureDialog(pReference, pHTML, pColorPickers, pColorPickersOriginal, pChange, pLabel, pCircleObj){     
+            
             bootbox.dialog({
               message: pHTML + pColorPickers,
               title: "Insert Characteristics",
@@ -193,11 +194,12 @@
                         }
                         else{
                             //PAINT CIRCLE
-                            /*pReference.setStrokeWidth(strokeWidthAlert);
                             pReference.setRadius(radiusAlert);
-                            pReference.setFill(fillColorAlert);
-                            pReference.setStroke(strokeColorAlert);
-                            figuresLayer.draw();*/
+                            pCircleObj.setRadio(radiusAlert);
+                            var cad = "Radius: " + radiusAlert + "\n" + "Stroke Width: " + strokeWidthAlert + "\n" + "Stroke Color: " + strokeColorAlert + "\n" + "Fill Color: " + fillColorAlert;
+                            pLabel.changeName(cad, "");                            
+                            figuresLayer.draw();
+
                             bootbox.alert("Changes applied.");
                         }
                   }
@@ -247,19 +249,23 @@
                         draggable: true
                     });
 
-                    circle.on('click', function() {
-                        changeFeatureDialog(this,HTML, colorPickers, colorPickers,  false);
-                    });
-
-                    var cad = "Radius: " + pRadius + "\n" + "Stroke Width: " + pStrokeWidth + "\n" + "Stroke Color: " + '#' + pStrokeColor + "\n" + "Fill Color: " + '#' + pFillColor;
-                    
                     var points = LibraryData.getLibraryModule().createPoint(posX, posY);
 
-                    var reference = getLabelUI();
+                    var label = getLabelUI();
+                    var cad = "Radius: " + pRadius + "\n" + "Stroke Width: " + pStrokeWidth + "\n" + "Stroke Color: " + '#' + pStrokeColor + "\n" + "Fill Color: " + '#' + pFillColor;
+                    label.init(cad , "");
 
-                    var circleRef = LibraryData.getLibraryModule().createCircle(points, pRadius, pStrokeWidth, pStrokeColor, pFillColor, reference);
+                    var circleRef = LibraryData.getLibraryModule().createCircle(points, pRadius, pStrokeWidth, pStrokeColor, pFillColor, circle);
 
-                    reference.init(cad , circleRef.getPointsFigure().getPositionX());
+                    circle.on('click', function() {
+                        changeFeatureDialog(this, HTML, colorPickers, colorPickers, false, label, circleRef);
+                    });
+
+                    circle.on('dragend', function() {
+                        var points = LibraryData.getLibraryModule().createPoint(circle.getPosition().x, circle.getPosition().y);
+                        circleRef.setPointsFigure(points);
+                        alert("PositionX:" + circleRef.getPointsFigure().getPositionX() + "Radio: " + circleRef.getRadio());
+                    });
 
                     figuresLayer.add(circle);
                 }
@@ -393,7 +399,8 @@
             }
 
             function changeName(pType, pColor){
-                labelText.setText(pType + '#' + pColor);
+                labelText.setText(pType + pColor);
+                backgroundLayer.draw();
             }
 
             return{
