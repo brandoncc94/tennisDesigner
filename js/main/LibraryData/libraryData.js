@@ -32,8 +32,8 @@ var LibraryData = window.LibraryData || {};
 
     var LibraryModule = (function(){
         
-        function createCircle(pPointsFigure, pStrokeWidth, p){
-            return new Circle();
+        function createCircle(pPointsFigure, pStrokeWidth, pStrokeColor){
+            return new Circle(pPointsFigure, pStrokeWidth, pStrokeColor);
         }
 
         function createPoint(pPosX, pPosY){
@@ -77,44 +77,46 @@ var LibraryData = window.LibraryData || {};
         });
 
         var Figure = Class.extend({
-            init: function(pPointsFigure,pColor,pLabel,pThink){
-                this.colour = pColor;
-                this.labels = pLabel;
-                this.think = pThink;
+            init: function(pPointsFigure, pStrokeWidth, pStrokeColor, pReference){
                 this.pointsFigure = pPointsFigure;
+                this.strokeWidth = pStrokeWidth;
+                this.strokeColor = pStrokeColor;
+                this.reference = pReference;
             },
             
-            setColor: function(pColor){
-                this.colour = pColor;
+            setStrokeColor: function(pStrokeColor){
+                this.strokeColor = pStrokeColor;
             },
-            
-            setLabel: function(pLabel){
-                this.labels = pLabel;
-            },
-            
-            setThink: function(pThink){
-                this.think = pThink;
+
+            setStrokeWidth: function(pStrokeWidth){
+                this.strokeWidth = pStrokeWidth;
             },
             
             setPointsFigure : function(pPointsFigure){
                 this.pointsFigure = pPointsFigure;
             },
-            
-            getColor: function(){
-                return this.colour;
+
+            setReference: function(pReference){
+                this.reference = pReference;
             },
             
-            getLabel: function(){
-                return this.labels;
+            getStrokeColor: function(){
+                return this.strokeColor;
             },
             
-            getThink: function(){
-                return this.think;
+            getStrokeWidth: function(){
+                return this.strokeWidth;
             },
             
             getPointsFigure : function(){
                 return this.pointsFigure;
-            }
+            },
+
+            getReference : function(){
+                return this.reference;
+            },
+
+
         });
 
         var StraightLine = Figure.extend({
@@ -136,10 +138,10 @@ var LibraryData = window.LibraryData || {};
         });
 
         var Circle = Figure.extend({
-            init: function(pPointsFigure,pThickColor,,pThick,pRadio){
-                this._super(pPointsFigure,pColor,pLabel,pThick);
+            init: function(pPointsFigure, pRadio, pStrokeWidth, pStrokeColor, pFillColor, pReference){
+                this._super(pPointsFigure, pStrokeWidth, pStrokeColor, pReference);
                 this.radio = pRadio;
-                this.fillColor = 
+                this.fillColor = pFillColor;
             },
             
             setRadio: function(pRadio){
@@ -174,8 +176,8 @@ var LibraryData = window.LibraryData || {};
 
         return {
             init: init,
-            newFigure: function (pPointsFigure,pColor,pLabel,pThink){
-                return new Figure(pPointsFigure,pColor,pLabel,pThink);
+            newFigure: function (pPointsFigure, pStrokeWidth, pStrokeColor, pReference){
+                return new Figure(pPointsFigure, pStrokeWidth, pStrokeColor, pReference);
             },
             createCircle:createCircle,
             createPoint:createPoint

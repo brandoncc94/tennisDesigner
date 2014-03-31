@@ -104,11 +104,7 @@ h2{
 /***************************************************************
 					ADD DESIGN
 ***************************************************************/
-<<<<<<< HEAD
-#imgAddDesign, #imgSelectDesign, #imgCancelOption,#imgSearchDesign{
-=======
-#imgAddDesign,#imgLoadDesign, #imgSelectDesign, #imgCancelOption{
->>>>>>> 2ec34466fb03efa9e2856129b4d0c6f3802647ee
+#imgAddDesign,#imgLoadDesign, #imgSelectDesign, #imgCancelOption, #imgSearchDesign{
 	cursor: pointer;
 	padding: 10px 20px 0px 20px;
 }

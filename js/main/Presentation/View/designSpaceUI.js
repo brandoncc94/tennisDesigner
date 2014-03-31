@@ -235,10 +235,12 @@
             });
 
             canvasContainer.addEventListener('drop',function(e){
+                var posX = e.pageX - ($(".main-container").width() - $("#decoration-container").width() - $("#create-container").width());
+                var posY = e.pageY - ($("body").height() - $(".header-container").height() - $(".main-container").height() - $(".footer-container").height() + 200);
                 if(dragSrcEl.id = "imgCircle"){
                     var circle = new Kinetic.Circle({
-                        x: e.pageX - ($(".main-container").width() - $("#decoration-container").width() - $("#create-container").width()),
-                        y: e.pageY - ($("body").height() - $(".header-container").height() - $(".main-container").height() - $(".footer-container").height() + 200),
+                        x: posX,
+                        y: posY,
                         radius: pRadius,
                         stroke: '#000',
                         strokeWidth: 1,
@@ -250,10 +252,14 @@
                     });
 
                     var cad = "Radius: " + pRadius + "\n" + "Stroke Width: " + pStrokeWidth + "\n" + "Stroke Color: " + '#' + pStrokeColor + "\n" + "Fill Color: " + '#' + pFillColor;
+                    
+                    var points = LibraryData.getLibraryModule().createPoint(posX, posY);
+
                     var reference = getLabelUI();
-                    var points = LibraryData.getLibraryModule().createPoint(circle.x, circle.y);
-                    var circleRef = LibraryData.getLibraryModule().createCircle(circle.x, circle.y, pRadius, pStrokeWidth, pStrokeColor, pFillColor);
-                    reference.init(cad , circleRef.getRadio());
+
+                    var circleRef = LibraryData.getLibraryModule().createCircle(points, pRadius, pStrokeWidth, pStrokeColor, pFillColor, reference);
+
+                    reference.init(cad , circleRef.getPointsFigure().getPositionX());
 
                     figuresLayer.add(circle);
                 }
