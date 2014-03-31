@@ -16,7 +16,6 @@
 /**
  * Namespace declaration.
  */  
-
 var Presentation = window.Presentation || {};
 
 /*
@@ -163,4 +162,3 @@ var Presentation = window.Presentation || {};
     $(init);
 
 }(Presentation, jQuery));
-

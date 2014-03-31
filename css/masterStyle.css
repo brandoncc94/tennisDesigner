@@ -104,7 +104,7 @@ h2{
 /***************************************************************
 					ADD DESIGN
 ***************************************************************/
-#imgAddDesign, #imgSelectDesign, #imgCancelOption{
+#imgAddDesign, #imgSelectDesign, #imgCancelOption,#imgSearchDesign{
 	cursor: pointer;
 	padding: 10px 20px 0px 20px;
 }
@@ -134,6 +134,38 @@ h2{
 	height: 20px;
 }
 
+#infos{
+	width: 250px;
+	height: 150px;
+}
+
+#tmpDivBackgroundColor, #tmp2DivBackgroundColor{
+	position: absolute;
+	z-index: 100000;
+	top: 8px;
+	left: 130px;
+}
+#tmp2DivBackgroundColor{
+	top: 65px;
+}
+
+#infos span{
+	float:left;
+	width: 94px;
+	text-align: right;
+}
+
+#tbxRadius, #tbxStrokeWidth{
+	width: 30px;
+	height: 30px;
+	position: absolute;
+	top: 120px;
+	left: 135px;
+}
+
+#tbxRadius{
+	top: 170px;
+}
 
 /*Classes*/
 .header-container,.footer-container{	

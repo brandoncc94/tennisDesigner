@@ -32,8 +32,15 @@ var LibraryData = window.LibraryData || {};
 
     var LibraryModule = (function(){
         
+        function createCircle(pPointsFigure, pStrokeWidth, p){
+            return new Circle();
+        }
 
-        var design = Class.extend({
+        function createPoint(pPosX, pPosY){
+            return new Point(pPosX, pPosY);
+        }
+
+        var Design = Class.extend({
           init: function(pName){
             this.Name = pName;
           },
@@ -45,8 +52,7 @@ var LibraryData = window.LibraryData || {};
           }
         });
 
-        var Point = Class.extend({
-            
+        var Point = Class.extend({         
             init: function(pPositionX, pPositionY){
                 this.positionY = pPositionY;
                 this.positionX = pPositionX;     
@@ -130,9 +136,10 @@ var LibraryData = window.LibraryData || {};
         });
 
         var Circle = Figure.extend({
-            init: function(pPointsFigure,pColor,pLabel,pThink,pRadio){
-                this._super(pPointsFigure,pColor,pLabel,pThink);
+            init: function(pPointsFigure,pThickColor,,pThick,pRadio){
+                this._super(pPointsFigure,pColor,pLabel,pThick);
                 this.radio = pRadio;
+                this.fillColor = 
             },
             
             setRadio: function(pRadio){
@@ -169,9 +176,12 @@ var LibraryData = window.LibraryData || {};
             init: init,
             newFigure: function (pPointsFigure,pColor,pLabel,pThink){
                 return new Figure(pPointsFigure,pColor,pLabel,pThink);
-            }
+            },
+            createCircle:createCircle,
+            createPoint:createPoint
         };
     })();
+
 
         
 
