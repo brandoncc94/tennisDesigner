@@ -88,6 +88,10 @@ var Presentation = window.Presentation || {};
                 addDesign();
             });
 
+            $('#imgLoadDesign').click(function(){
+                loadDesignView();                                
+            });         
+
 
             $('#divBackgroundColor').colpick({
                 colorScheme:'dark',
@@ -99,12 +103,6 @@ var Presentation = window.Presentation || {};
                     Presentation.getOnLoadHandler().drawGraphicalLabel("Background-color: ",hex);
                 }
             }).css('background-color', '#ff8800');  
-
-            $('#nameDesigns-container').bind('select', function (event) {
-                    var args = event.args;
-                    var item = $('#nameDesigns-container').jqxDropDownList('getItem', args.index);
-                    alert('Selected: ' + item.label);
-            });
 
 
             $('#divBorderSole').colpick({
@@ -119,6 +117,14 @@ var Presentation = window.Presentation || {};
             }).css('background-color', '#ff8800');  
         }
 
+        function loadDesignView(){
+            var select_object = document.getElementById('designs');
+            var index = select_object.selectedIndex;
+            var text = select_object.options[index].text;
+            $('#selectDesignName').text("Create your design: "+text);
+
+        }
+
         function searchDesign(){
             Presentation.getOnLoadDesignsHandler().downloadDesigns();
         }
@@ -127,7 +133,7 @@ var Presentation = window.Presentation || {};
             // Create a jqxDropDownList
             $('#designs').empty();
             for (var i = 0; i < designList.length; i++) {
-                   $('#designs').append("<option value='" + designList[i] + "'>");
+                   $('#designs').append("<option value=" + designList[i] + ">"+designList[i]+"</option>");
                }
            }
 

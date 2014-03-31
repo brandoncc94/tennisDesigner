@@ -68,8 +68,8 @@ h2{
 	position: fixed;
 	top: 138px;
 	left: 24%;	
-	width: 550px;
-	height: 200px;
+	width: 450px;
+	height: 250px;
 	background: #f0ad4e;
 	border: 1px solid;
 }	
@@ -104,7 +104,11 @@ h2{
 /***************************************************************
 					ADD DESIGN
 ***************************************************************/
+<<<<<<< HEAD
 #imgAddDesign, #imgSelectDesign, #imgCancelOption,#imgSearchDesign{
+=======
+#imgAddDesign,#imgLoadDesign, #imgSelectDesign, #imgCancelOption{
+>>>>>>> 2ec34466fb03efa9e2856129b4d0c6f3802647ee
 	cursor: pointer;
 	padding: 10px 20px 0px 20px;
 }
