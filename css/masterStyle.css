@@ -68,8 +68,8 @@ h2{
 	position: fixed;
 	top: 138px;
 	left: 24%;	
-	width: 550px;
-	height: 200px;
+	width: 450px;
+	height: 250px;
 	background: #f0ad4e;
 	border: 1px solid;
 }	
@@ -104,7 +104,7 @@ h2{
 /***************************************************************
 					ADD DESIGN
 ***************************************************************/
-#imgAddDesign, #imgSelectDesign, #imgCancelOption{
+#imgAddDesign,#imgLoadDesign, #imgSelectDesign, #imgCancelOption{
 	cursor: pointer;
 	padding: 10px 20px 0px 20px;
 }
