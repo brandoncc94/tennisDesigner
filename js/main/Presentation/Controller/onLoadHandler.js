@@ -36,9 +36,9 @@
      * @namespace
      **/
     var OnLoadHandler = (function(){
-        function sendToData(pName){
+        function sendNameToData(pName){
         	//Send data to its respective namespace reference
-            DataAccess.getParseDataAcces().uploadParseData(pName);
+            BusinessLogic.getParseBusinessLogic().uploadParseDataReference(pName);
         }       
 
         function drawGraphicalLabel(pType, pColor){
@@ -48,7 +48,7 @@
         }
 
         return {
-            sendToData:sendToData,
+            sendNameToData:sendNameToData,
             drawGraphicalLabel:drawGraphicalLabel
         }; 
     })();    

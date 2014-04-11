@@ -121,26 +121,26 @@ var Presentation = window.Presentation || {};
             var select_object = document.getElementById('designs');
             var index = select_object.selectedIndex;
             var text = select_object.options[index].text;
-            $('#selectDesignName').text("Create your design: "+text);
+            $('#selectDesignName').text("Create your design: "+ text);
 
         }
 
         function searchDesign(){
+            //Send reference to OnLoadDesignHandler.js controller
             Presentation.getOnLoadDesignsHandler().downloadDesigns();
         }
 
-        function loadDesignDataList(designList){
-            // Create a jqxDropDownList
+        function loadDesignDataList(pDesignList){
             $('#designs').empty();
-            for (var i = 0; i < designList.length; i++) {
-                   $('#designs').append("<option value=" + designList[i] + ">"+designList[i]+"</option>");
-               }
-           }
+            for (var i = 0; i < pDesignList.length; i++) {
+                   $('#designs').append("<option value=" + pDesignList[i] + ">"+ pDesignList[i]+"</option>");
+            }            
+        }
 
         function addDesign(){                
             if($('#tbxDesignName').val().length!=0){
                 //Sending the name design to parse
-                Presentation.getOnLoadHandler().sendToData($('#tbxDesignName').val());
+                Presentation.getOnLoadHandler().sendNameToData($('#tbxDesignName').val());
 
                 $('#nameDesign-container').effect( "drop", 1000);
                 $('#showMessage').text("Design created successfully.");

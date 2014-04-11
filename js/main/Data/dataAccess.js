@@ -17,9 +17,6 @@
  * Namespace declaration. Use the client's name and project. 
  */  
 
-
-
-
 var DataAccess = window.DataAccess || {};
 
 /*
@@ -49,93 +46,75 @@ var DataAccess = window.DataAccess || {};
     };
 
     /**
-     * Module.
+     * Module TennisDataAcces.
      *      Module description 
      *
      * @private
      * @namespace
      **/
 
-    /**
-     * Initializes the module.
-     * @private
-     */
-
     var TennisDataAcces = (function(){
         // private property
         
 
-        // public api
-    return {
-        
-    };
+        return {
+            
+        };
     })();
 
 
     var ParseDataAcces = (function(){
-        //-------------------------------------------------
         var TennisDesign = Parse.Object.extend("TennisDesign");
         Parse.$ = jQuery;
-        //-------------------------------------------------
 
-    
-        // public api
+        function uploadParseData(pName){
+            var tempDesign = new TennisDesign();
+            tempDesign.save({
+                Name : pName
+            });  
+        }
+
+        function downloadDesignsName(){
+            var tennis_query = new Parse.Query(TennisDesign);
+            var designList = [];
+            tennis_query.find({
+                success: function(results) {
+                    for (var i = 0 ;i<results.length;i++){
+                        var object = results[i];
+                        designList.push(object.get('Name'));
+                    }
+                    BusinessLogic.getParseBusinessLogic().loadDesignsReference(designList);
+                    
+                },
+                error: function(error) {
+                    alert("Error: " + error.code + " " + error.message);
+                }
+            });
+            
+        }
+
+        function downloadParseData(pKey,value){
+            var tennis_query = new Parse.Query(TennisDesign);
+            tennis_query.equalTo(pkey,value);
+            tennis_query.find({
+                success: function(results) {
+                    for (var i = 0 ;results.length;i++){
+                        var object = results[i];
+                        alert("Name:" + object.get('Name'));
+                    }
+                },
+                error: function(error) {
+                    alert("Error: " + error.code + " " + error.message);
+                }
+            });
+        }
+
         return {
-            // OK
-            uploadParseData: function(pName){
-                var tempDesign = new TennisDesign();
-                tempDesign.save({
-                    Name : pName
-                });
-                return;   
-            },
-            // OK
-
-            downloadDesignsName: function(){
-                var tennis_query = new Parse.Query(TennisDesign);
-                var designList = [];
-                tennis_query.find({
-                    success: function(results) {
-                        for (var i = 0 ;i<results.length;i++){
-                            var object = results[i];
-                            designList.push(object.get('Name'));
-                        }
-                        Presentation.getOnLoadDesignsHandler().loadDesigns(designList);
-                        
-                    },
-                    error: function(error) {
-                        alert("Error: " + error.code + " " + error.message);
-                    }
-                });
-                
-            },
-
-            downloadParseData: function(pKey,value){
-                var tennis_query = new Parse.Query(TennisDesign);
-                tennis_query.equalTo(pkey,value);
-                tennis_query.find({
-                    success: function(results) {
-                        for (var i = 0 ;results.length;i++){
-                            var object = results[i];
-                            alert("Name:" + object.get('Name'));
-                        }
-                    },
-                    error: function(error) {
-                        alert("Error: " + error.code + " " + error.message);
-                    }
-                });
-            }
+            uploadParseData: uploadParseData,
+            downloadDesignsName: downloadDesignsName,
+            downloadParseData: downloadParseData
         };
         })();
-
-    function init() {
-
-        //Called the methods required to initialize all the modules.
-        
-    }
-
-    //Init.
-    $(init);
 
 }(DataAccess, jQuery));
 

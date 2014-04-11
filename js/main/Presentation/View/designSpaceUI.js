@@ -12,7 +12,6 @@
   * Description: Design space (canvas) to develop the graphical design
   */
 
-
 /*
  * Global Presentation Layer to be used with MVC Pattern
  * @namespace
@@ -38,11 +37,15 @@
      * @private
      * @namespace
      **/
-    var designSpace = (function(){
+    designSpace = (function(){
         var curveLayer, lineLayer, anchorLayer, backgroundLayer, 
                 figuresLayer, straight, labelText, canvasStage;
 
         drawCanvasStage();
+
+        function getBackgroundLayer(){
+            return backgroundLayer;
+        }
 
         function drawCanvasStage(){
             //We declare the stage to be working with 
@@ -94,133 +97,7 @@
 
             loadFiguresActions();
 
-        }
-
-        function loadFiguresActions(){
-            $( "#imgCircle" ).on( "click", function(){
-                HTML = "<div id='infos'>\
-                    <span>Fill Color: </span><div id='tmpDivBackgroundColor' class='color-box'></div></br></br>\
-                    <span>Stroke Color: </span><div id='tmp2DivBackgroundColor' class='color-box'></div></br></br>\
-                    <span>Stroke Width: </span><input type='text' id='tbxStrokeWidth'></input></br></br>\
-                    <span>Radius: </span> <input type='text' id='tbxRadius'>\
-                    </div>";
-
-                colorPickers = "<script>\
-                        $('#tmpDivBackgroundColor').colpick({colorScheme:'dark',layout:'rgbhex',color:'ff8800',onSubmit:function(hsb,hex,rgb,el) {$(el).css('background-color', '#'+hex); $(el).colpickHide(); }}).css('background-color', '#ff8800');\
-                        $('#tmp2DivBackgroundColor').colpick({colorScheme:'dark',layout:'rgbhex',color:'ff8800',onSubmit:function(hsb,hex,rgb,el) {$(el).css('background-color', '#'+hex);$(el).colpickHide();  }}).css('background-color', '#ff8800');\
-                        </script>";
-
-                orginalColorPickers = colorPickers;
-
-                insertFeatureDialog(HTML, colorPickers, orginalColorPickers,  false);
-            });
-        }
-
-        function insertFeatureDialog(pHTML, pColorPickers, pColorPickersOriginal, pChange){     
-            if(pChange){
-                pChange = false;
-                pColorPickers += "<script> $('#tbxStrokeWidth').val(strokeWidthAlert);\
-                                           $('#tbxRadius').val(radiusAlert);\
-                                           $('#tmpDivBackgroundColor').colpick({colorScheme:'dark',layout:'rgbhex',color:'ff8800',onSubmit:function(hsb,hex,rgb,el) {$(el).css('background-color', '#'+hex); $(el).colpickHide(); }}).css('background-color', '#' + fillColorAlert);\
-                                           $('#tmp2DivBackgroundColor').colpick({colorScheme:'dark',layout:'rgbhex',color:'ff8800',onSubmit:function(hsb,hex,rgb,el) {$(el).css('background-color', '#'+hex);$(el).colpickHide();  }}).css('background-color', '#' + strokeColorAlert);\
-                                 </script>";
-            }
-
-            bootbox.dialog({
-              message: pHTML + pColorPickers,
-              title: "Insert Characteristics",
-              buttons: {
-                main: {
-                  label: "Apply",
-                  className: "btn-primary",
-                  callback: function() {
-                        fillColorAlert = hexc($("#tmpDivBackgroundColor").css('backgroundColor'));
-                        strokeColorAlert = hexc($("#tmp2DivBackgroundColor").css('backgroundColor'));
-                        strokeWidthAlert = $("#tbxStrokeWidth").val();
-                        radiusAlert = $("#tbxRadius").val();
-
-                        if($("#tbxStrokeWidth").val().length == 0){
-                            pChange = true;
-                            pColorPickers = pColorPickersOriginal;
-                            bootbox.alert("Please select the stroke width.", function() {
-                                insertFeatureDialog(pHTML, pColorPickers, pColorPickersOriginal, pChange);                     
-                            });
-                        }
-                        else if($("#tbxRadius").val().length == 0){
-                            pChange = true;
-                            pColorPickers = pColorPickersOriginal;
-                            bootbox.alert("Please select the radius of the circle.", function() {
-                                insertFeatureDialog(pHTML, pColorPickers, pColorPickersOriginal, pChange);                     
-                            });
-                        }
-                        else{
-                            bootbox.alert("Now drag the circle.");
-                            dragCircleIntoCanvas(radiusAlert, strokeWidthAlert, strokeColorAlert, fillColorAlert);
-                        }
-                  }
-                }
-              }
-            });
-        }
-
-        function changeFeatureDialog(pReference, pHTML, pColorPickers, pColorPickersOriginal, pChange, pLabel, pCircleObj){     
-            
-            bootbox.dialog({
-              message: pHTML + pColorPickers,
-              title: "Insert Characteristics",
-              buttons: {
-                main: {
-                  label: "Apply",
-                  className: "btn-primary",
-                  callback: function() {
-                        fillColorAlert = hexc($("#tmpDivBackgroundColor").css('backgroundColor'));
-                        strokeColorAlert = hexc($("#tmp2DivBackgroundColor").css('backgroundColor'));
-                        strokeWidthAlert = $("#tbxStrokeWidth").val();
-                        radiusAlert = $("#tbxRadius").val();
-
-                        if($("#tbxStrokeWidth").val().length == 0){
-                            pChange = true;
-                            pColorPickers = pColorPickersOriginal;
-                            bootbox.alert("Please select the stroke width.", function() {
-                                insertFeatureDialog(pHTML, pColorPickers, pColorPickersOriginal, pChange);                     
-                            });
-                        }
-                        else if($("#tbxRadius").val().length == 0){
-                            pChange = true;
-                            pColorPickers = pColorPickersOriginal;
-                            bootbox.alert("Please select the radius of the circle.", function() {
-                                insertFeatureDialog(pHTML, pColorPickers, pColorPickersOriginal, pChange);                     
-                            });
-                        }
-                        else{
-                            //PAINT CIRCLE
-                            pReference.setRadius(radiusAlert);
-                            pCircleObj.setRadio(radiusAlert);
-                            var cad = "Radius: " + radiusAlert + "\n" + "Stroke Width: " + strokeWidthAlert + "\n" + "Stroke Color: " + strokeColorAlert + "\n" + "Fill Color: " + fillColorAlert;
-                            pLabel.changeName(cad, "");                            
-                            figuresLayer.draw();
-
-                            bootbox.alert("Changes applied.");
-                        }
-                  }
-                }
-              }
-            });
-        }
-
-
-        //Converts from RGB to HEX taken from http://jsfiddle.net/DCaQb/  
-        function hexc(pColor) {
-            var color = '';
-            var parts = pColor.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
-            delete(parts[0]);
-            for (var i = 1; i <= 3; ++i) {
-                parts[i] = parseInt(parts[i]).toString(16);
-                if (parts[i].length == 1) parts[i] = '0' + parts[i];
-            }
-            color = '#' + parts.join('');
-            return color;
-        }
+        }    
 
         function dragCircleIntoCanvas(pRadius, pStrokeWidth, pStrokeColor, pFillColor){
 
@@ -237,8 +114,9 @@
             });
 
             canvasContainer.addEventListener('drop',function(e){
-                var posX = e.pageX - ($(".main-container").width() - $("#decoration-container").width() - $("#create-container").width());
-                var posY = e.pageY - ($("body").height() - $(".header-container").height() - $(".main-container").height() - $(".footer-container").height() + 200);
+                var posX = Presentation.getOnLoadDesignsHandler().getXPageReference(e);
+                var posY = Presentation.getOnLoadDesignsHandler().getYPageReference(e);
+                
                 if(dragSrcEl.id = "imgCircle"){
                     var circle = new Kinetic.Circle({
                         x: posX,
@@ -248,23 +126,25 @@
                         strokeWidth: 1,
                         draggable: true
                     });
+                    
+                    //Object of points
+                    var points = LibraryData.createPoint(posX, posY);
+                    //Object of circle
+                    var circleRef = LibraryData.createCircle(points, pRadius, pStrokeWidth, pStrokeColor, pFillColor, circle);
 
-                    var points = LibraryData.getLibraryModule().createPoint(posX, posY);
+                    //Graphical label
+                    var label = Presentation.getLabelUI();
+                    var text = "Radius: " + pRadius + "\n" + "Stroke Width: " + pStrokeWidth + "\n" + "Stroke Color: " + '#' + pStrokeColor + "\n" + "Fill Color: " + '#' + pFillColor;
+                    label.init(text , "");
 
-                    var label = getLabelUI();
-                    var cad = "Radius: " + pRadius + "\n" + "Stroke Width: " + pStrokeWidth + "\n" + "Stroke Color: " + '#' + pStrokeColor + "\n" + "Fill Color: " + '#' + pFillColor;
-                    label.init(cad , "");
-
-                    var circleRef = LibraryData.getLibraryModule().createCircle(points, pRadius, pStrokeWidth, pStrokeColor, pFillColor, circle);
-
+                    //Events
                     circle.on('click', function() {
                         changeFeatureDialog(this, HTML, colorPickers, colorPickers, false, label, circleRef);
                     });
 
                     circle.on('dragend', function() {
-                        var points = LibraryData.getLibraryModule().createPoint(circle.getPosition().x, circle.getPosition().y);
+                        var points = LibraryData.createPoint(circle.getPosition().x, circle.getPosition().y);
                         circleRef.setPointsFigure(points);
-                        alert("PositionX:" + circleRef.getPointsFigure().getPositionX() + "Radio: " + circleRef.getRadio());
                     });
 
                     figuresLayer.add(circle);
@@ -346,69 +226,126 @@
             context.stroke();
         }      
 
-        function getLabelUI(){
-            return LabelUI;
+        function loadFiguresActions(){
+            $( "#imgCircle" ).on( "click", function(){
+                HTML = "<div id='infos'>\
+                    <span>Fill Color: </span><div id='tmpDivBackgroundColor' class='color-box'></div></br></br>\
+                    <span>Stroke Color: </span><div id='tmp2DivBackgroundColor' class='color-box'></div></br></br>\
+                    <span>Stroke Width: </span><input type='text' id='tbxStrokeWidth'></input></br></br>\
+                    <span>Radius: </span> <input type='text' id='tbxRadius'>\
+                    </div>";
+
+                colorPickers = "<script>\
+                        $('#tmpDivBackgroundColor').colpick({colorScheme:'dark',layout:'rgbhex',color:'ff8800',onSubmit:function(hsb,hex,rgb,el) {$(el).css('background-color', '#'+hex); $(el).colpickHide(); }}).css('background-color', '#ff8800');\
+                        $('#tmp2DivBackgroundColor').colpick({colorScheme:'dark',layout:'rgbhex',color:'ff8800',onSubmit:function(hsb,hex,rgb,el) {$(el).css('background-color', '#'+hex);$(el).colpickHide();  }}).css('background-color', '#ff8800');\
+                        </script>";
+
+                orginalColorPickers = colorPickers;
+                insertFeatureDialog(HTML, colorPickers, orginalColorPickers,  false);
+            });
         }
 
-        var LabelUI = (function () {
+        function insertFeatureDialog(pHTML, pColorPickers, pColorPickersOriginal, pChange){     
+            if(pChange){
+                pChange = false;
+                pColorPickers += "<script> $('#tbxStrokeWidth').val(strokeWidthAlert);\
+                                           $('#tbxRadius').val(radiusAlert);\
+                                           $('#tmpDivBackgroundColor').colpick({colorScheme:'dark',layout:'rgbhex',color:'ff8800',onSubmit:function(hsb,hex,rgb,el) {$(el).css('background-color', '#'+hex); $(el).colpickHide(); }}).css('background-color', '#' + fillColorAlert);\
+                                           $('#tmp2DivBackgroundColor').colpick({colorScheme:'dark',layout:'rgbhex',color:'ff8800',onSubmit:function(hsb,hex,rgb,el) {$(el).css('background-color', '#'+hex);$(el).colpickHide();  }}).css('background-color', '#' + strokeColorAlert);\
+                                 </script>";
+            }
 
-            function init(pType, pColor) {
-                // Singleton
-                load();
+            bootbox.dialog({
+              message: pHTML + pColorPickers,
+              title: "Insert Characteristics",
+              buttons: {
+                main: {
+                  label: "Apply",
+                  className: "btn-primary",
+                  callback: function() {
+                        fillColorAlert = Presentation.getOnLoadDesignsHandler().convertToHex($("#tmpDivBackgroundColor").css('backgroundColor'));
+                        strokeColorAlert = Presentation.getOnLoadDesignsHandler().convertToHex($("#tmp2DivBackgroundColor").css('backgroundColor'));
+                        strokeWidthAlert = $("#tbxStrokeWidth").val();
+                        radiusAlert = $("#tbxRadius").val();
 
-                //Load the graphical label with empty text
-                function load(){
-                    var group = new Kinetic.Group({
-                        draggable: true
-                    });
-
-                    labelText = new Kinetic.Text({
-                        x: 150,
-                        y: 200,
-                        text: pType + pColor,
-                        fontSize: 12,
-                        fontFamily: 'Calibri',
-                        fill: '#555',
-                        width: 180,
-                        padding: 5,
-                        align: 'center'
-                    });
-
-                    var labelFrame = new Kinetic.Rect({
-                        x: labelText.getPosition().x,
-                        y: labelText.getPosition().y,
-                        stroke: '#555',
-                        strokeWidth: 3,
-                        fill: '#ddd',
-                        width: labelText.width(),
-                        height: labelText.height(),
-                        shadowColor: 'black',
-                        shadowBlur: 10,
-                        shadowOffset: {x:5,y:5},
-                        shadowOpacity: 0.2,
-                        cornerRadius: 5
-                    });
-
-                    group.add(labelFrame);
-                    group.add(labelText);
-                    backgroundLayer.add(group);
-
-                    backgroundLayer.draw();
-                    
+                        if($("#tbxStrokeWidth").val().length == 0){
+                            pChange = true;
+                            pColorPickers = pColorPickersOriginal;
+                            bootbox.alert("Please select the stroke width.", function() {
+                                insertFeatureDialog(pHTML, pColorPickers, pColorPickersOriginal, pChange);                     
+                            });
+                        }
+                        else if($("#tbxRadius").val().length == 0){
+                            pChange = true;
+                            pColorPickers = pColorPickersOriginal;
+                            bootbox.alert("Please select the radius of the circle.", function() {
+                                insertFeatureDialog(pHTML, pColorPickers, pColorPickersOriginal, pChange);                     
+                            });
+                        }
+                        else{
+                            bootbox.alert("Now drag the circle.");
+                            dragCircleIntoCanvas(radiusAlert, strokeWidthAlert, strokeColorAlert, fillColorAlert);
+                        }
+                  }
                 }
-            }
+              }
+            });
+        }
 
-            function changeName(pType, pColor){
-                labelText.setText(pType + pColor);
-                backgroundLayer.draw();
-            }
+        function changeFeatureDialog(pReference, pHTML, pColorPickers, pColorPickersOriginal, pChange, pLabel, pCircleObj){ 
+            strokeWidthAlert = pCircleObj.getStrokeWidth();
+            radiusAlert = pCircleObj.getRadio();
+            fillColorAlert = pCircleObj.getFillColor();
+            strokeColorAlert = pCircleObj.getStrokeColor();
 
-            return{
-                init:init,
-                changeName:changeName
-            };        
-        })();
+            pColorPickers += "<script> $('#tbxStrokeWidth').val(strokeWidthAlert);\
+                                       $('#tbxRadius').val(radiusAlert);\
+                                       $('#tmpDivBackgroundColor').colpick({colorScheme:'dark',layout:'rgbhex',color:'ff8800',onSubmit:function(hsb,hex,rgb,el) {$(el).css('background-color', '#'+hex); $(el).colpickHide(); }}).css('background-color', fillColorAlert);\
+                                       $('#tmp2DivBackgroundColor').colpick({colorScheme:'dark',layout:'rgbhex',color:'ff8800',onSubmit:function(hsb,hex,rgb,el) {$(el).css('background-color', '#'+hex);$(el).colpickHide();  }}).css('background-color', strokeColorAlert);\
+                             </script>";
 
+            bootbox.dialog({
+              message: pHTML + pColorPickers,
+              title: "Insert Characteristics",
+              buttons: {
+                main: {
+                  label: "Apply",
+                  className: "btn-primary",
+                  callback: function() {
+                        fillColorAlert = Presentation.getOnLoadDesignsHandler().convertToHex($("#tmpDivBackgroundColor").css('backgroundColor'));
+                        strokeColorAlert = Presentation.getOnLoadDesignsHandler().convertToHex($("#tmp2DivBackgroundColor").css('backgroundColor'));
+                        strokeWidthAlert = $("#tbxStrokeWidth").val();
+                        radiusAlert = $("#tbxRadius").val();
+
+                        if($("#tbxStrokeWidth").val().length == 0){
+                            pChange = true;
+                            pColorPickers = pColorPickersOriginal;
+                            bootbox.alert("Please select the stroke width.", function() {
+                                insertFeatureDialog(pHTML, pColorPickers, pColorPickersOriginal, pChange);                     
+                            });
+                        }
+                        else if($("#tbxRadius").val().length == 0){
+                            pChange = true;
+                            pColorPickers = pColorPickersOriginal;
+                            bootbox.alert("Please select the radius of the circle.", function() {
+                                insertFeatureDialog(pHTML, pColorPickers, pColorPickersOriginal, pChange);                     
+                            });
+                        }
+                        else{
+                            //PAINT CIRCLE
+                            pReference.setRadius(radiusAlert);
+                            pCircleObj.setRadio(radiusAlert);
+                            var cad = "Radius: " + radiusAlert + "\n" + "Stroke Width: " + strokeWidthAlert + "\n" + "Stroke Color: " + strokeColorAlert + "\n" + "Fill Color: " + fillColorAlert;
+                            pLabel.changeName(cad, "");                            
+                            figuresLayer.draw();
+
+                            bootbox.alert("Changes applied.");
+                        }
+                  }
+                }
+              }
+            });
+        }
         /*function fillBackground(pColor){
             var s = straight;
 
@@ -441,7 +378,7 @@
 
         return {
             init: init,
-            getLabelUI:getLabelUI
+            getBackgroundLayer : getBackgroundLayer
         };            
     })();
 

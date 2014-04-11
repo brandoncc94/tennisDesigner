@@ -19,6 +19,7 @@
 
 var LibraryData = window.LibraryData || {};
 
+var designSpace;
 /*
  * 
  * @namespace

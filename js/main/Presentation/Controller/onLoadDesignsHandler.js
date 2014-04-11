@@ -8,7 +8,7 @@
 
  /*
   * Author:      brandonc94@gmail.com
-  * Date:        28/03/2014
+  * Date:        11/04/2014
   * Description: Main controller to connect the view with data
   */
 
@@ -36,22 +36,45 @@
      * @namespace
      **/
 
-
     var onLoadDesignsHandler = (function(){
         function downloadDesigns(){
         	//Send data to its respective namespace reference
-            DataAccess.getParseDataAcces().downloadDesignsName();
+            BusinessLogic.getParseBusinessLogic().downloadDesignsNameReference();
         }       
 
-        function loadDesigns(designList){
-            
-            Presentation.getOnLoad().loadDesignDataList(designList);
-            
+        function loadDesigns(pDesignList){    
+            //Load designs through the respective controller    
+            Presentation.getOnLoad().loadDesignDataList(pDesignList);  
+        }
+
+        //Converts from RGB to HEX taken from http://jsfiddle.net/DCaQb/  
+        function convertToHex(pColor) {
+            var color = '';
+            var parts = pColor.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+            delete(parts[0]);
+            for (var i = 1; i <= 3; ++i) {
+                parts[i] = parseInt(parts[i]).toString(16);
+                if (parts[i].length == 1) parts[i] = '0' + parts[i];
+            }
+            color = '#' + parts.join('');
+            return color;
+        }
+
+        function getXPageReference(pE){
+            return pE.pageX - ($(".main-container").width() - $("#decoration-container").width() - $("#create-container").width());
+        }
+
+        function getYPageReference(pE){
+            return pE.pageY - ($("body").height() - $(".header-container").height() - $(".main-container").height() - $(".footer-container").height() + 200);
         }
 
         return {
             downloadDesigns:downloadDesigns,
-            loadDesigns:loadDesigns
+            loadDesigns:loadDesigns,
+            convertToHex: convertToHex,
+            getXPageReference: getXPageReference,
+            getYPageReference: getYPageReference
+
         }; 
     })();    
 
