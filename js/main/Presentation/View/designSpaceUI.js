@@ -116,7 +116,6 @@
             canvasContainer.addEventListener('drop',function(e){
                 var posX = Presentation.getOnLoadDesignsHandler().getXPageReference(e);
                 var posY = Presentation.getOnLoadDesignsHandler().getYPageReference(e);
-                
                 if(dragSrcEl.id = "imgCircle"){
                     var circle = new Kinetic.Circle({
                         x: posX,
@@ -126,18 +125,15 @@
                         strokeWidth: 1,
                         draggable: true
                     });
-                    
-                    //Object of points
+
                     var points = LibraryData.createPoint(posX, posY);
-                    //Object of circle
+
+                    var label = Presentation.getLabelUI();
+                    var cad = "Radius: " + pRadius + "\n" + "Stroke Width: " + pStrokeWidth + "\n" + "Stroke Color: " + '#' + pStrokeColor + "\n" + "Fill Color: " + '#' + pFillColor;
+                    label.init(cad , "");
+
                     var circleRef = LibraryData.createCircle(points, pRadius, pStrokeWidth, pStrokeColor, pFillColor, circle);
 
-                    //Graphical label
-                    var label = Presentation.getLabelUI();
-                    var text = "Radius: " + pRadius + "\n" + "Stroke Width: " + pStrokeWidth + "\n" + "Stroke Color: " + '#' + pStrokeColor + "\n" + "Fill Color: " + '#' + pFillColor;
-                    label.init(text , "");
-
-                    //Events
                     circle.on('click', function() {
                         changeFeatureDialog(this, HTML, colorPickers, colorPickers, false, label, circleRef);
                     });
@@ -145,6 +141,7 @@
                     circle.on('dragend', function() {
                         var points = LibraryData.createPoint(circle.getPosition().x, circle.getPosition().y);
                         circleRef.setPointsFigure(points);
+                        alert("PositionX:" + circleRef.getPointsFigure().getPositionX() + "Radio: " + circleRef.getRadio());
                     });
 
                     figuresLayer.add(circle);
@@ -335,6 +332,10 @@
                             //PAINT CIRCLE
                             pReference.setRadius(radiusAlert);
                             pCircleObj.setRadio(radiusAlert);
+                            pCircleObj.setStrokeWidth(strokeWidthAlert);
+                            pCircleObj.setFillColor(fillColorAlert);
+                            pCircleObj.setStrokeColor(strokeColorAlert);
+                            
                             var cad = "Radius: " + radiusAlert + "\n" + "Stroke Width: " + strokeWidthAlert + "\n" + "Stroke Color: " + strokeColorAlert + "\n" + "Fill Color: " + fillColorAlert;
                             pLabel.changeName(cad, "");                            
                             figuresLayer.draw();
