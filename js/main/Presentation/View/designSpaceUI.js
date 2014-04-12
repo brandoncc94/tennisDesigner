@@ -114,6 +114,11 @@
             });
 
             canvasContainer.addEventListener('drop',function(e){
+                //Singleton Pattern that allow only drag one circle and just one
+                if ( arguments.callee._singletonInstance )
+                    return arguments.callee._singletonInstance;
+                arguments.callee._singletonInstance = this;
+
                 var posX = Presentation.getOnLoadDesignsHandler().getXPageReference(e);
                 var posY = Presentation.getOnLoadDesignsHandler().getYPageReference(e);
                 if(dragSrcEl.id = "imgCircle"){
@@ -126,6 +131,9 @@
                         draggable: true
                     });
 
+                    figuresLayer.add(circle);
+                    figuresLayer.draw();
+
                     var points = LibraryData.createPoint(posX, posY);
 
                     var label = Presentation.getLabelUI();
@@ -135,22 +143,18 @@
                     var circleRef = LibraryData.createCircle(points, pRadius, pStrokeWidth, pStrokeColor, pFillColor, circle);
 
                     circle.on('click', function() {
-                        changeFeatureDialog(this, HTML, colorPickers, colorPickers, false, label, circleRef);
+                        console.log(circleRef.getRadio());
+                        changeFeatureDialog(circle, HTML, colorPickers, colorPickers, false, label, circleRef);
                     });
 
                     circle.on('dragend', function() {
                         var points = LibraryData.createPoint(circle.getPosition().x, circle.getPosition().y);
                         circleRef.setPointsFigure(points);
-                        alert("PositionX:" + circleRef.getPointsFigure().getPositionX() + "Radio: " + circleRef.getRadio());
                     });
-
-                    figuresLayer.add(circle);
                 }
-
-                figuresLayer.draw();
-
              });
         }
+
 
         function updateLines() {
             var s = straight;
@@ -335,7 +339,7 @@
                             pCircleObj.setStrokeWidth(strokeWidthAlert);
                             pCircleObj.setFillColor(fillColorAlert);
                             pCircleObj.setStrokeColor(strokeColorAlert);
-                            
+
                             var cad = "Radius: " + radiusAlert + "\n" + "Stroke Width: " + strokeWidthAlert + "\n" + "Stroke Color: " + strokeColorAlert + "\n" + "Fill Color: " + fillColorAlert;
                             pLabel.changeName(cad, "");                            
                             figuresLayer.draw();
