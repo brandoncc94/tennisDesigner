@@ -167,6 +167,15 @@ h2{
 	top: 170px;
 }
 
+#tab2 {
+	margin: 0 auto;
+	width: 50%;
+}
+
+#imgLine{
+	margin: 20px 0 0 20px;
+}
+
 /*Classes*/
 .header-container,.footer-container{	
 	background: url(../img/header.png);

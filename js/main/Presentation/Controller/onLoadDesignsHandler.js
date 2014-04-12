@@ -68,12 +68,43 @@
             return pE.pageY - ($("body").height() - $(".header-container").height() - $(".main-container").height() - $(".footer-container").height() + 200);
         }
 
+        function drawLineListener(pStrokeWidth, pStrokeColor){
+          //Let's draw a line with 2 clicks
+          var clicks = 0;
+          var clicksArray = [0, 0]; 
+          var canvas = document.getElementById("canvas-container");
+          canvas.addEventListener('click', getPosition, false);
+
+          function getPosition(event){
+            var x = event.x;
+            var y = event.y;
+
+            var canvas = document.getElementById("canvas-container");
+
+            x -= canvas.offsetLeft;
+            y -= canvas.offsetTop;
+            drawLine(x, y);
+          }
+
+          function drawLine(x, y) { 
+              if (clicks != 1) {
+                  clicks++;
+              } else {                  
+                  clicks = 0;
+                  canvas.removeEventListener('click',  getPosition, false);
+                  Presentation.getDesignSpace().drawLine(clicksArray[0], clicksArray[1], x, y, pStrokeWidth, pStrokeColor);   
+              }                        
+              clicksArray = [x,y];
+          };
+        }
+
         return {
             downloadDesigns:downloadDesigns,
             loadDesigns:loadDesigns,
             convertToHex: convertToHex,
             getXPageReference: getXPageReference,
-            getYPageReference: getYPageReference
+            getYPageReference: getYPageReference,
+            drawLineListener: drawLineListener
 
         }; 
     })();    

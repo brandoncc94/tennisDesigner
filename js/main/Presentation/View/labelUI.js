@@ -33,7 +33,7 @@
     var LabelUI = (function () {
         backgroundLayer = Presentation.getDesignSpace().getBackgroundLayer();
         
-        function init(pType, pColor) {
+        function init(pType, pPosition) {
             // Singleton
             load();
 
@@ -44,9 +44,9 @@
                 });
 
                 labelText = new Kinetic.Text({
-                    x: 150,
-                    y: 200,
-                    text: pType + pColor,
+                    x: pPosition[0],
+                    y: pPosition[1],
+                    text: pType,
                     fontSize: 12,
                     fontFamily: 'Calibri',
                     fill: '#555',
@@ -74,8 +74,7 @@
                 group.add(labelText);
                 backgroundLayer.add(group);
 
-                backgroundLayer.draw();
-                
+                backgroundLayer.draw();                
             }
         }
 

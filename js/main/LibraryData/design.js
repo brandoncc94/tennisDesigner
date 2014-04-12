@@ -18,7 +18,6 @@
  */  
 
 var LibraryData = window.LibraryData || {};
-
 /*
  * 
  * @namespace
