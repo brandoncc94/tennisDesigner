@@ -143,7 +143,6 @@
                     var circleRef = LibraryData.createCircle(points, pRadius, pStrokeWidth, pStrokeColor, pFillColor, circle);
 
                     circle.on('click', function() {
-                        console.log(circleRef.getRadio());
                         changeFeatureDialog(circle, HTML, colorPickers, colorPickers, false, label, circleRef);
                     });
 
