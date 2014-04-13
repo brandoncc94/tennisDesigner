@@ -185,29 +185,21 @@
             });
 
             straight.on('dragend', function() {
-                var newPosX = straight.getPosition().x;
-                var newPosY = straight.getPosition().y;
-                alert(newPosX);
-                alert(newPosY);
-
-                var points1 = LibraryData.createPoint(lineRef.getPointsFigure().getPositionX().getPositionX() + newPosX, lineRef.getPointsFigure().getPositionX().getPositionY() + newPosY);
-                var points2 = LibraryData.createPoint(lineRef.getPointsFigure().getPositionY().getPositionX() + newPosX, lineRef.getPointsFigure().getPositionY().getPositionY() + newPosY);
-                var points3 = LibraryData.createPoint(points1, points2);
-
-                var array = [lineRef.getPointsFigure().getPositionX().getPositionX(), lineRef.getPointsFigure().getPositionX().getPositionY(), lineRef.getPointsFigure().getPositionY().getPositionX(), lineRef.getPointsFigure().getPositionY().getPositionY()]
-                straight.setPoints(array);
-                lineRef.setPointsFigure(points3);
-
-                var cad = "Stroke Width: " + strokeWidthAlert + "\n" + "Stroke Color: " + strokeColorAlert  + "\n" + 
-                          "Points: [" + lineRef.getPointsFigure().getPositionX().getPositionX() + ", " +lineRef.getPointsFigure().getPositionX().getPositionY() + "] , " + 
-                          "[" + lineRef.getPointsFigure().getPositionY().getPositionX() + "," + lineRef.getPointsFigure().getPositionY().getPositionY() + "]";
-                label.changeName(cad , "");
-                figuresLayer.draw();     
+                Presentation.getOnLoadDesignsHandler().updateLine(this, lineRef, label);    
             });
 
             figuresLayer.add(straight);
             figuresLayer.draw();     
 
+        }
+
+        function updateLinePosition(pLineRef, pLabel){
+            //Just update the label and redraw the line layer to make it visible
+            var cad = "Stroke Width: " + strokeWidthAlert + "\n" + "Stroke Color: " + strokeColorAlert  + "\n" + 
+                  "Points: [" + pLineRef.getPointsFigure().getPositionX().getPositionX() + ", " +pLineRef.getPointsFigure().getPositionX().getPositionY() + "] , " + 
+                  "[" + pLineRef.getPointsFigure().getPositionY().getPositionX() + "," + pLineRef.getPointsFigure().getPositionY().getPositionY() + "]";
+          pLabel.changeName(cad , "");
+          figuresLayer.draw(); 
         }
 
         function updateLines() {
@@ -230,7 +222,107 @@
                 stroke: '#666',
                 fill: '#ddd',
                 strokeWidth: 2,
-                draggable: true
+                draggable: true,
+                /*
+                straight = {
+                start: buildAnchor(150, 100),
+                control1: buildAnchor(300, 100),
+                control2: buildAnchor(375, 175),
+                control3: buildAnchor(450, 250),
+                end: buildAnchor(150, 250)
+                };
+                */
+                dragBoundFunc: function (pos) {
+                    //Anchor values
+                    var X = pos.x;
+                    var Y = pos.y;
+                    if(x == 150 && y == 100){
+                        if (X < 30) {
+                            X = 30;
+                        }
+                        if (X > 240) {
+                            X = 240;
+                        }
+                        if (Y < 30) {
+                            Y = 30;
+                        }
+                        if (Y > 120) {
+                            Y = 120;
+                        }
+                        return ({
+                            x: X,
+                            y: Y
+                        });
+                    }else if(x == 300 && y == 100){
+                        if (X < 290) {
+                            X = 290;
+                        }
+                        if (X > 550) {
+                            X = 550;
+                        }
+                        if (Y < 30) {
+                            Y = 30;
+                        }
+                        if (Y > 130) {
+                            Y = 130;
+                        }
+                        return ({
+                            x: X,
+                            y: Y
+                        });
+                    }else if(x == 375 && y == 175){
+                        if (X < 320) {
+                            X = 320;
+                        }
+                        if (X > 550) {
+                            X = 550;
+                        }
+                        if (Y < 150) {
+                            Y = 150;
+                        }
+                        if (Y > 200) {
+                            Y = 200;
+                        }
+                        return ({
+                            x: X,
+                            y: Y
+                        });
+                    }else if(x == 450 && y == 250){
+                        if (X < 290) {
+                            X = 290;
+                        }
+                        if (X > 550) {
+                            X = 550;
+                        }
+                        if (Y < 240) {
+                            Y = 240;
+                        }
+                        if (Y > 320) {
+                            Y = 320;
+                        }
+                        return ({
+                            x: X,
+                            y: Y
+                        });
+                    }else{
+                        if (X < 30) {
+                            X = 30;
+                        }
+                        if (X > 240) {
+                            X = 240;
+                        }
+                        if (Y < 175) {
+                            Y = 175;
+                        }
+                        if (Y > 320) {
+                            Y = 320;
+                        }
+                        return ({
+                            x: X,
+                            y: Y
+                        });
+                    }
+                }
             });
 
             // when mouseover let's increase the stroke
@@ -534,7 +626,8 @@
         return {
             init: init,
             getBackgroundLayer : getBackgroundLayer,
-            drawLine: drawLine
+            drawLine: drawLine,
+            updateLinePosition : updateLinePosition
         };            
     })();
 

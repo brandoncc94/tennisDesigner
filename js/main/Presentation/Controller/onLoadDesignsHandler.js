@@ -98,13 +98,33 @@
           };
         }
 
+        function updateLine(pThis, pLineRef, pLabel){
+          //Get posX and posY
+          var newPosX = pThis.getX();
+          var newPosY = pThis.getY();
+
+          var points = pThis.getPoints();
+
+          var points1 = LibraryData.createPoint(points[0] + newPosX, points[1] + newPosY);
+          var points2 = LibraryData.createPoint(points[2] + newPosX, points[3] + newPosY);
+          var points3 = LibraryData.createPoint(points1, points2);
+
+          //Update the respective object
+          pLineRef.setPointsFigure(points3);
+          //Update the line Points
+          pThis.setPoints(points);
+
+          Presentation.getDesignSpace().updateLinePosition(pLineRef, pLabel);
+        }
+
         return {
             downloadDesigns:downloadDesigns,
             loadDesigns:loadDesigns,
             convertToHex: convertToHex,
             getXPageReference: getXPageReference,
             getYPageReference: getYPageReference,
-            drawLineListener: drawLineListener
+            drawLineListener: drawLineListener,
+            updateLine: updateLine
 
         }; 
     })();    
