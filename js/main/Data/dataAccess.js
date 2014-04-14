@@ -36,6 +36,7 @@ var DataAccess = window.DataAccess || {};
      * @public
      */
 
+
     pContext.getTennisDataAcces = function() {
         return TennisDataAcces;
     };
@@ -67,16 +68,83 @@ var DataAccess = window.DataAccess || {};
         var TennisDesign = Parse.Object.extend("TennisDesign");
         Parse.$ = jQuery;
 
-        function uploadParseData(pName){
+
+        function uploadParseData(pName,pPoints){
             var tempDesign = new TennisDesign();
             tempDesign.save({
-                Name : pName
+                Name : pName,
+                Points : pPoints
             });  
         }
+
+
+        function downloadDesign(pName){
+            var query_Name = new Parse.Query(TennisDesign);
+            query_Name.equalTo("Name", pName);
+            query_Name.find({
+              success: function(designs) {
+                if(designs.length==1){
+                    var points = designs[0].get("Points");
+                    var name = designs[0].get("Name");
+                    BusinessLogic.getParseBusinessLogic().loadDesign(name,points); 
+                }
+                
+              },
+              error: function(error) {
+                // The request failed
+              }
+            });
+        }
+
+        function updateDesign(pName,pPoints){
+            var query_Name = new Parse.Query(TennisDesign);
+            query_Name.equalTo("Name", pName);
+            query_Name.find({
+              success: function(designs) {
+                if(designs.length==1){
+                    var design = designs[0];
+                    updateDesignAux(design,pPoints); 
+                }
+                
+              },
+              error: function(error) {
+                // The request failed
+              }
+            });
+        }
+
+        function updateDesignAux(design,pPoints){
+            design.save({
+                Points : pPoints
+            });
+        }
+
+        function saveDesign(pName,pPoints){
+            var query_Name = new Parse.Query(TennisDesign);
+            query_Name.equalTo("Name", pName);
+            query_Name.count({
+              success: function(count) {
+                if (count>0) {
+                     BusinessLogic.getParseBusinessLogic().nameDesignUsed();
+                }
+                else{
+                    uploadParseData(pName,pPoints);
+                    BusinessLogic.getParseBusinessLogic().storedDesign();
+                }
+                
+                
+              },
+              error: function(error) {
+                // The request failed
+              }
+            });
+        }
+
 
         function downloadDesignsName(){
             var tennis_query = new Parse.Query(TennisDesign);
             var designList = [];
+            tennis_query.descending("createdAt");
             tennis_query.find({
                 success: function(results) {
                     for (var i = 0 ;i<results.length;i++){
@@ -84,7 +152,6 @@ var DataAccess = window.DataAccess || {};
                         designList.push(object.get('Name'));
                     }
                     BusinessLogic.getParseBusinessLogic().loadDesignsReference(designList);
-                    
                 },
                 error: function(error) {
                     alert("Error: " + error.code + " " + error.message);
@@ -112,7 +179,10 @@ var DataAccess = window.DataAccess || {};
         return {
             uploadParseData: uploadParseData,
             downloadDesignsName: downloadDesignsName,
-            downloadParseData: downloadParseData
+            downloadParseData: downloadParseData,
+            saveDesign : saveDesign,
+            updateDesign : updateDesign,
+            downloadDesign : downloadDesign
         };
         })();
 

@@ -47,25 +47,52 @@ var BusinessLogic = window.BusinessLogic || {};
 
         //Bridge functions, intermediation between layers
         //Download the names, send reference to dataAcess.js
+        
+        function nameDesignUsed(){
+            Presentation.getOnLoadHandler().nameDesignUsed();
+        }
+
+        function storedDesign(){
+            Presentation.getOnLoadHandler().storedDesign();
+        }
+
+        function loadDesign(pName,pPoints){
+            Presentation.getOnLoadDesignsHandler().loadDesign(pName,pPoints);
+        }
+
+        function downloadDesign(pName){
+            DataAccess.getParseDataAcces().downloadDesign(pName);
+        }
+        
+        function saveDesignParseData(pName,pPoints){
+            DataAccess.getParseDataAcces().saveDesign(pName,pPoints);
+        }
+        
+
         function downloadDesignsNameReference(){
             DataAccess.getParseDataAcces().downloadDesignsName();
         }
 
-        //Upload an input name, send reference to dataAcess.js
-        function uploadParseDataReference(pName){
-            DataAccess.getParseDataAcces().uploadParseData(pName);
+        function updateDesign(pName,pPoints){
+            DataAccess.getParseDataAcces().updateDesign(pName,pPoints);
         }
+
 
         //Load the drop down list, send reference to controller onLoadHandler.js
         function loadDesignsReference(pDesignList){
-            Presentation.getOnLoadDesignsHandler().loadDesigns(pDesignList);
+            Presentation.getOnLoadDesignsHandler().loadDesignsList(pDesignList);
         }
 
         //Let's make it public
         return {
             downloadDesignsNameReference: downloadDesignsNameReference,
-            uploadParseDataReference    : uploadParseDataReference,
-            loadDesignsReference : loadDesignsReference
+            downloadDesign : downloadDesign,
+            loadDesignsReference : loadDesignsReference,
+            saveDesignParseData : saveDesignParseData,
+            updateDesign : updateDesign,
+            nameDesignUsed : nameDesignUsed,
+            storedDesign : storedDesign,
+            loadDesign : loadDesign
         };  
     })();
 

@@ -41,10 +41,20 @@
         var curveLayer, lineLayer, anchorLayer, backgroundLayer, 
                 figuresLayer, straight, labelText, canvasStage;
 
+
         drawCanvasStage();
 
         function getBackgroundLayer(){
             return backgroundLayer;
+        }
+
+        function getStraight(){
+            return straight;
+        }
+
+
+        function getAnchorLayer(){
+            return anchorLayer;
         }
 
         function drawCanvasStage(){
@@ -81,10 +91,11 @@
                 end: buildAnchor(150, 250)
             };
 
+
             // Before drawing lets syncronize the lines when we pick up the anchor
             anchorLayer.on('beforeDraw', function() {
                 drawCurves();
-                updateLines();
+               updateLines();
             });
 
             //Add all layers to the main stage
@@ -382,7 +393,12 @@
 
         return {
             init: init,
-            getBackgroundLayer : getBackgroundLayer
+            getBackgroundLayer : getBackgroundLayer,
+            getStraight: getStraight,
+            buildAnchor: buildAnchor,
+            drawCurves : drawCurves,
+            updateLines : updateLines,
+            getAnchorLayer :getAnchorLayer
         };            
     })();
 

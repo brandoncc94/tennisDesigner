@@ -36,10 +36,11 @@
      * @namespace
      **/
     var OnLoadHandler = (function(){
-        function sendNameToData(pName){
-        	//Send data to its respective namespace reference
-            BusinessLogic.getParseBusinessLogic().uploadParseDataReference(pName);
-        }       
+        
+        function saveDesignToData(pName,pPoints){
+            //Send data to its respective namespace reference
+            return BusinessLogic.getParseBusinessLogic().saveDesignParseData(pName,pPoints);
+        }
 
         function drawGraphicalLabel(pType, pColor){
             //Singleton instance
@@ -47,9 +48,19 @@
             
         }
 
+        function nameDesignUsed(){
+            Presentation.getOnLoad().nameDesignUsed();
+        }
+
+        function storedDesign(){
+            Presentation.getOnLoad().storedDesign();
+        }
+
         return {
-            sendNameToData:sendNameToData,
-            drawGraphicalLabel:drawGraphicalLabel
+            drawGraphicalLabel:drawGraphicalLabel,
+            saveDesignToData:saveDesignToData,
+            nameDesignUsed : nameDesignUsed,
+            storedDesign : storedDesign
         }; 
     })();    
 

@@ -37,14 +37,27 @@
      **/
 
     var onLoadDesignsHandler = (function(){
-        function downloadDesigns(){
+        
+        function downloadDesignsList(){
         	//Send data to its respective namespace reference
             BusinessLogic.getParseBusinessLogic().downloadDesignsNameReference();
         }       
 
-        function loadDesigns(pDesignList){    
+        function loadDesignsList(pDesignList){    
             //Load designs through the respective controller    
             Presentation.getOnLoad().loadDesignDataList(pDesignList);  
+        }
+
+        function loadDesign(pName,pPoints){
+            Presentation.getOnLoad().loadDesignView(pName,pPoints);
+        }
+
+        function downloadDesign(pName){
+            BusinessLogic.getParseBusinessLogic().downloadDesign(pName);
+        }
+
+        function updateDesign(pName,pPoints){
+            BusinessLogic.getParseBusinessLogic().updateDesign(pName,pPoints);
         }
 
         //Converts from RGB to HEX taken from http://jsfiddle.net/DCaQb/  
@@ -69,11 +82,14 @@
         }
 
         return {
-            downloadDesigns:downloadDesigns,
-            loadDesigns:loadDesigns,
-            convertToHex: convertToHex,
-            getXPageReference: getXPageReference,
-            getYPageReference: getYPageReference
+            downloadDesignsList : downloadDesignsList,
+            downloadDesign : downloadDesign,
+            loadDesignsList : loadDesignsList,
+            loadDesign : loadDesign,
+            updateDesign : updateDesign,
+            convertToHex : convertToHex,
+            getXPageReference : getXPageReference,
+            getYPageReference : getYPageReference
 
         }; 
     })();    

@@ -104,7 +104,7 @@ h2{
 /***************************************************************
 					ADD DESIGN
 ***************************************************************/
-#imgAddDesign,#imgLoadDesign, #imgSelectDesign, #imgCancelOption, #imgSearchDesign{
+#imgAddDesign,#imgLoadDesign,#imgSaveDesign, #imgSelectDesign, #imgCancelOption, #imgSearchDesign{
 	cursor: pointer;
 	padding: 10px 20px 0px 20px;
 }

@@ -42,5 +42,8 @@ var LibraryData = window.LibraryData || {};
         
     };
 
+    var design = new Design("hola");
+    
+
 }(LibraryData, jQuery));
 
