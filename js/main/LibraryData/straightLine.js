@@ -23,10 +23,13 @@
  */
 (function (pContext, $) {
     'use strict';
-    
+        pContext.createStraightLine = function(pPointsFigure, pStrokeWidth, pStrokeColor, pReference){
+          return new StraightLine(pPointsFigure, pStrokeWidth, pStrokeColor, pReference);
+        };
+
         var StraightLine = Figure.extend({
-            init: function(pPointsFigure, pStrokeWidth, pStrokeColor){
-                this._super(pPointsFigure, pStrokeWidth, pStrokeColor);
+            init: function(pPointsFigure, pStrokeWidth, pStrokeColor, pReference){
+                this._super(pPointsFigure, pStrokeWidth, pStrokeColor, pReference);
             }        
         });
 

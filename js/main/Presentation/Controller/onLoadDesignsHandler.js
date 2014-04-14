@@ -81,7 +81,55 @@
             return pE.pageY - ($("body").height() - $(".header-container").height() - $(".main-container").height() - $(".footer-container").height() + 200);
         }
 
+        function drawLineListener(pStrokeWidth, pStrokeColor){
+          //Let's draw a line with 2 clicks
+          var clicks = 0;
+          var clicksArray = [0, 0]; 
+          var canvas = document.getElementById("canvas-container");
+          canvas.addEventListener('click', getPosition, false);
+
+          function getPosition(event){
+            var x = event.x;
+            var y = event.y;
+
+            var canvas = document.getElementById("canvas-container");
+
+            x -= canvas.offsetLeft;
+            y -= canvas.offsetTop;
+            drawLine(x, y);
+          }
+
+          function drawLine(x, y) { 
+              if (clicks != 1) {
+                  clicks++;
+              } else {                  
+                  clicks = 0;
+                  canvas.removeEventListener('click',  getPosition, false);
+                  Presentation.getDesignSpace().drawLine(clicksArray[0], clicksArray[1], x, y, pStrokeWidth, pStrokeColor);   
+              }                        
+              clicksArray = [x,y];
+          };
+        }
+
+        function updateLine(pThis, pLineRef){
+          //Get posX and posY
+          var newPosX = pThis.getX();
+          var newPosY = pThis.getY();
+          
+          var points = pThis.getPoints();
+
+          var points1 = LibraryData.createPoint(points[0] + newPosX, points[1] + newPosY);
+          var points2 = LibraryData.createPoint(points[2] + newPosX, points[3] + newPosY);
+          var points3 = LibraryData.createPoint(points1, points2);
+
+          //Update the respective object
+          pLineRef.setPointsFigure(points3);
+
+          return pLineRef;
+        }
+
         return {
+
             downloadDesignsList : downloadDesignsList,
             downloadDesign : downloadDesign,
             loadDesignsList : loadDesignsList,
@@ -89,8 +137,9 @@
             updateDesign : updateDesign,
             convertToHex : convertToHex,
             getXPageReference : getXPageReference,
-            getYPageReference : getYPageReference
-
+            getYPageReference : getYPageReference,
+            drawLineListener: drawLineListener,
+            updateLine: updateLine
         }; 
     })();    
 

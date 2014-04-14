@@ -110,13 +110,17 @@
 
         }    
 
-        function dragCircleIntoCanvas(pRadius, pStrokeWidth, pStrokeColor, pFillColor){
+        function dragElementsIntoCanvas(pRadius, pStrokeWidth, pStrokeColor, pFillColor){
 
             var canvasContainer = canvasStage.getContainer();    
             var dragSrcEl = null;
 
             //Safe reference of the image moved
             $( "#imgCircle" ).on( "dragstart", function(){
+                dragSrcEl = this;
+            });
+
+            $( "#imgLine" ).on( "dragstart", function(){
                 dragSrcEl = this;
             });
             
@@ -132,7 +136,8 @@
 
                 var posX = Presentation.getOnLoadDesignsHandler().getXPageReference(e);
                 var posY = Presentation.getOnLoadDesignsHandler().getYPageReference(e);
-                if(dragSrcEl.id = "imgCircle"){
+
+                if(dragSrcEl.id == "imgCircle"){
                     var circle = new Kinetic.Circle({
                         x: posX,
                         y: posY,
@@ -148,7 +153,7 @@
                     var points = LibraryData.createPoint(posX, posY);
 
                     var label = Presentation.getLabelUI();
-                    var cad = "Radius: " + pRadius + "\n" + "Stroke Width: " + pStrokeWidth + "\n" + "Stroke Color: " + '#' + pStrokeColor + "\n" + "Fill Color: " + '#' + pFillColor;
+                    var cad = "Radius: " + pRadius + "\n" + "Stroke Width: " + pStrokeWidth + "\n" + "Stroke Color: " + pStrokeColor + "\n" + "Fill Color: " + pFillColor;
                     label.init(cad , "");
 
                     var circleRef = LibraryData.createCircle(points, pRadius, pStrokeWidth, pStrokeColor, pFillColor, circle);
@@ -162,9 +167,113 @@
                         circleRef.setPointsFigure(points);
                     });
                 }
+                else if(dragSrcEl.id == "imgLine"){
+                    Presentation.getOnLoadDesignsHandler().drawLineListener(pStrokeWidth, pStrokeColor);
+                }
              });
         }
 
+        function drawLine(pPosX1, pPosY1, pPosX2, pPosY2, pStrokeWidth, pStrokeColor){
+            var straight = new Kinetic.Line({
+                strokeWidth: 3,
+                stroke: 'black',
+                points: [pPosX1, pPosY1, pPosX2, pPosY2],
+                draggable: true
+            });
+
+            var points = LibraryData.createPoint(pPosX1, pPosY1);
+            var points2 = LibraryData.createPoint(pPosX2, pPosY2);
+            var points3 = LibraryData.createPoint(points, points2);
+
+            var lineRef = LibraryData.createStraightLine(points3, pStrokeWidth, pStrokeColor, straight);
+            var positionsArray = [lineRef.getPointsFigure().getPositionX().getPositionX(), lineRef.getPointsFigure().getPositionX().getPositionY(),
+                                       lineRef.getPointsFigure().getPositionY().getPositionX(), lineRef.getPointsFigure().getPositionY().getPositionY()];
+
+
+            var label = Presentation.getLabelUI();
+            var cad = "Stroke Width: " + pStrokeWidth + "\n" + "Stroke Color: " + pStrokeColor + "\n" + "Points: [" + pPosX1 + ", " + pPosY1 + "] , " + "[" + pPosX2 + "," + pPosY2 + "]";
+            label.init(cad , [pPosX2, pPosY2]);
+
+            straight.on('click', function() {
+                changeLineFeatureDialog(straight, HTML, colorPickers, colorPickers, false, label, lineRef);
+            });
+
+            straight.on('dragend', function() {
+                var lineObj = Presentation.getOnLoadDesignsHandler().updateLine(this, lineRef);    
+                //Just update the label and redraw the line layer to make it visible
+                positionsArray = [lineObj.getPointsFigure().getPositionX().getPositionX(), lineObj.getPointsFigure().getPositionX().getPositionY(),
+                                       lineObj.getPointsFigure().getPositionY().getPositionX(), lineObj.getPointsFigure().getPositionY().getPositionY()];
+
+                //this.setPoints(positionsArray);
+                //alert(this.getPoints());
+                var cad = "Stroke Width: " + strokeWidthAlert + "\n" + "Stroke Color: " + strokeColorAlert  + "\n" + 
+                          "Points: [" + positionsArray[0] + ", " + positionsArray[1] + "] , " + 
+                          "[" + positionsArray[2] + "," + positionsArray[3] + "]";
+                label.changeName(cad , "");
+                figuresLayer.draw(); 
+
+                checkIntersection(positionsArray);
+            });
+
+            figuresLayer.add(straight);
+            figuresLayer.draw();   
+            checkIntersection(positionsArray);
+        }
+
+        function checkIntersection(pLineObject){
+            //var straightLineLen = straightLine.getPoints().length / 2 - 1;
+            var lineChildren = lineLayer.getChildren();
+            var straightLine = lineLayer.get('#straightLine')[0];
+            var staticLines = lineChildren[0].getPoints();
+            
+            for( var i=0; i<6; i++){  // for each single shape
+
+               var results = checkLineIntersection(pLineObject[0], pLineObject[1], pLineObject[2], pLineObject[3], 
+                           staticLines[i], staticLines[i + 1], staticLines[i + 2], staticLines[i + 3]);
+               if(results.onLine1 == true && results.onLine2 == true){
+                    alert("Collide!");
+               }
+               i+=1;
+            }
+        }
+
+        //Taken from http://jsfiddle.net/justin_c_rounds/Gd2S2/light/
+        function checkLineIntersection(pLine1StartX, pLine1StartY, pLine1EndX, pLine1EndY, pLine2StartX, pLine2StartY, pLine2EndX, pLine2EndY) {
+            
+            //alert(pLine2StartX + " " + pLine2StartY + " " + pLine2EndX + " " + pLine2EndY);
+            var denominator, a, b, numerator1, numerator2, result = {
+                x: null,        //  Position X of the intersection
+                y: null,        //  Position Y of the intersection
+                onLine1: false, 
+                onLine2: false
+            };
+            
+            denominator = ((pLine2EndY - pLine2StartY) * (pLine1EndX - pLine1StartX)) - ((pLine2EndX - pLine2StartX) * (pLine1EndY - pLine1StartY));
+            if (denominator == 0) {
+                return result;
+            }
+            a = pLine1StartY - pLine2StartY;
+            b = pLine1StartX - pLine2StartX;
+            numerator1 = ((pLine2EndX - pLine2StartX) * a) - ((pLine2EndY - pLine2StartY) * b);
+            numerator2 = ((pLine1EndX - pLine1StartX) * a) - ((pLine1EndY - pLine1StartY) * b);
+            a = numerator1 / denominator;
+            b = numerator2 / denominator;
+
+            // if we cast these lines infinitely in both directions, they intersect here:
+            result.x = pLine1StartX + (a * (pLine1EndX - pLine1StartX));
+            result.y = pLine1StartY + (a * (pLine1EndY - pLine1StartY));
+        
+            // if line1 is a segment and line2 is infinite, they intersect if:
+            if (a > 0 && a < 1) {
+                result.onLine1 = true;
+            }
+            // if line2 is a segment and line1 is infinite, they intersect if:
+            if (b > 0 && b < 1) {
+                result.onLine2 = true;
+            }            
+            //If both are true, they intersect each other
+            return result;
+        }
 
         function updateLines() {
             var s = straight;
@@ -186,7 +295,98 @@
                 stroke: '#666',
                 fill: '#ddd',
                 strokeWidth: 2,
-                draggable: true
+                draggable: true,
+                dragBoundFunc: function (pos) {
+                    //Anchor values
+                    var X = pos.x;
+                    var Y = pos.y;
+                    if(x == 150 && y == 100){
+                        if (X < 30) {
+                            X = 30;
+                        }
+                        if (X > 240) {
+                            X = 240;
+                        }
+                        if (Y < 30) {
+                            Y = 30;
+                        }
+                        if (Y > 120) {
+                            Y = 120;
+                        }
+                        return ({
+                            x: X,
+                            y: Y
+                        });
+                    }else if(x == 300 && y == 100){
+                        if (X < 290) {
+                            X = 290;
+                        }
+                        if (X > 550) {
+                            X = 550;
+                        }
+                        if (Y < 30) {
+                            Y = 30;
+                        }
+                        if (Y > 130) {
+                            Y = 130;
+                        }
+                        return ({
+                            x: X,
+                            y: Y
+                        });
+                    }else if(x == 375 && y == 175){
+                        if (X < 320) {
+                            X = 320;
+                        }
+                        if (X > 550) {
+                            X = 550;
+                        }
+                        if (Y < 150) {
+                            Y = 150;
+                        }
+                        if (Y > 200) {
+                            Y = 200;
+                        }
+                        return ({
+                            x: X,
+                            y: Y
+                        });
+                    }else if(x == 450 && y == 250){
+                        if (X < 290) {
+                            X = 290;
+                        }
+                        if (X > 550) {
+                            X = 550;
+                        }
+                        if (Y < 240) {
+                            Y = 240;
+                        }
+                        if (Y > 320) {
+                            Y = 320;
+                        }
+                        return ({
+                            x: X,
+                            y: Y
+                        });
+                    }else{
+                        if (X < 30) {
+                            X = 30;
+                        }
+                        if (X > 240) {
+                            X = 240;
+                        }
+                        if (Y < 175) {
+                            Y = 175;
+                        }
+                        if (Y > 320) {
+                            Y = 320;
+                        }
+                        return ({
+                            x: X,
+                            y: Y
+                        });
+                    }
+                }
             });
 
             // when mouseover let's increase the stroke
@@ -254,16 +454,28 @@
                 orginalColorPickers = colorPickers;
                 insertFeatureDialog(HTML, colorPickers, orginalColorPickers,  false);
             });
-        }
 
-        function insertFeatureDialog(pHTML, pColorPickers, pColorPickersOriginal, pChange){     
+            $( "#imgLine" ).on( "click", function(){
+                HTML = "<div id='infos'>\
+                    <span>Stroke Color: </span><div style ='margin-top: -55px' id='tmp2DivBackgroundColor' class='color-box'></div></br></br>\
+                    <span>Stroke Width: </span><input style='margin-top: -55px' type='text' id='tbxStrokeWidth'></input></br></br>\
+                    </div>";
+
+                colorPickers = "<script>\
+                        $('#tmp2DivBackgroundColor').colpick({colorScheme:'dark',layout:'rgbhex',color:'ff8800',onSubmit:function(hsb,hex,rgb,el) {$(el).css('background-color', '#'+hex);$(el).colpickHide();  }}).css('background-color', '#ff8800');\
+                        </script>";
+
+                orginalColorPickers = colorPickers;
+                insertLineFeatureDialog(HTML, colorPickers, orginalColorPickers,  false);
+            });
+        }
+    
+        function insertLineFeatureDialog(pHTML, pColorPickers, pColorPickersOriginal, pChange){     
             if(pChange){
                 pChange = false;
                 pColorPickers += "<script> $('#tbxStrokeWidth').val(strokeWidthAlert);\
-                                           $('#tbxRadius').val(radiusAlert);\
-                                           $('#tmpDivBackgroundColor').colpick({colorScheme:'dark',layout:'rgbhex',color:'ff8800',onSubmit:function(hsb,hex,rgb,el) {$(el).css('background-color', '#'+hex); $(el).colpickHide(); }}).css('background-color', '#' + fillColorAlert);\
-                                           $('#tmp2DivBackgroundColor').colpick({colorScheme:'dark',layout:'rgbhex',color:'ff8800',onSubmit:function(hsb,hex,rgb,el) {$(el).css('background-color', '#'+hex);$(el).colpickHide();  }}).css('background-color', '#' + strokeColorAlert);\
-                                 </script>";
+                                               $('#tmpDivBackgroundColor').colpick({colorScheme:'dark',layout:'rgbhex',color:'ff8800',onSubmit:function(hsb,hex,rgb,el) {$(el).css('background-color', '#'+hex); $(el).colpickHide(); }}).css('background-color', '#' + strokeColorAlert);\
+                                  </script>";                
             }
 
             bootbox.dialog({
@@ -274,10 +486,43 @@
                   label: "Apply",
                   className: "btn-primary",
                   callback: function() {
-                        fillColorAlert = Presentation.getOnLoadDesignsHandler().convertToHex($("#tmpDivBackgroundColor").css('backgroundColor'));
                         strokeColorAlert = Presentation.getOnLoadDesignsHandler().convertToHex($("#tmp2DivBackgroundColor").css('backgroundColor'));
                         strokeWidthAlert = $("#tbxStrokeWidth").val();
-                        radiusAlert = $("#tbxRadius").val();
+                        
+                        if($("#tbxStrokeWidth").val().length == 0){
+                            pChange = true;
+                            pColorPickers = pColorPickersOriginal;
+                            bootbox.alert("Please select the stroke width.", function() {
+                                insertFeatureDialog(pHTML, pColorPickers, pColorPickersOriginal, pChange);                     
+                            });
+                        }else{
+                            bootbox.alert("Now drag the line.");
+                            dragElementsIntoCanvas(null, strokeWidthAlert, strokeColorAlert,null);
+                        }
+                  }
+                }
+              }
+            });
+        }
+
+        function changeLineFeatureDialog(pReference, pHTML, pColorPickers, pColorPickersOriginal, pChange, pLabel, pLineObj, pType){ 
+            strokeWidthAlert = pLineObj.getStrokeWidth();
+            strokeColorAlert = pLineObj.getStrokeColor();
+
+            pColorPickers += "<script> $('#tbxStrokeWidth').val(strokeWidthAlert);\
+                                       $('#tmp2DivBackgroundColor').colpick({colorScheme:'dark',layout:'rgbhex',color:'ff8800',onSubmit:function(hsb,hex,rgb,el) {$(el).css('background-color', '#'+hex);$(el).colpickHide();  }}).css('background-color', strokeColorAlert);\
+                             </script>";
+
+            bootbox.dialog({
+              message: pHTML + pColorPickers,
+              title: "Change Characteristics",
+              buttons: {
+                main: {
+                  label: "Apply",
+                  className: "btn-primary",
+                  callback: function() {
+                        strokeColorAlert = Presentation.getOnLoadDesignsHandler().convertToHex($("#tmp2DivBackgroundColor").css('backgroundColor'));
+                        strokeWidthAlert = $("#tbxStrokeWidth").val();
 
                         if($("#tbxStrokeWidth").val().length == 0){
                             pChange = true;
@@ -286,16 +531,20 @@
                                 insertFeatureDialog(pHTML, pColorPickers, pColorPickersOriginal, pChange);                     
                             });
                         }
-                        else if($("#tbxRadius").val().length == 0){
-                            pChange = true;
-                            pColorPickers = pColorPickersOriginal;
-                            bootbox.alert("Please select the radius of the circle.", function() {
-                                insertFeatureDialog(pHTML, pColorPickers, pColorPickersOriginal, pChange);                     
-                            });
-                        }
                         else{
-                            bootbox.alert("Now drag the circle.");
-                            dragCircleIntoCanvas(radiusAlert, strokeWidthAlert, strokeColorAlert, fillColorAlert);
+                            //PAINT LINE
+                            //pReference.setRadius(radiusAlert);
+                            
+                            pLineObj.setStrokeWidth(strokeWidthAlert);
+                            pLineObj.setStrokeColor(strokeColorAlert);
+
+                            var cad = "Stroke Width: " + strokeWidthAlert + "\n" + "Stroke Color: " + strokeColorAlert  + "\n" + 
+                                      "Points: [" + pLineObj.getPointsFigure().getPositionX().getPositionX() + ", " +pLineObj.getPointsFigure().getPositionX().getPositionY() + "] , " + 
+                                      "[" + pLineObj.getPointsFigure().getPositionY().getPositionX() + "," + pLineObj.getPointsFigure().getPositionY().getPositionY() + "]";
+                            pLabel.changeName(cad, "");                            
+                            figuresLayer.draw();
+
+                            bootbox.alert("Changes applied.");
                         }
                   }
                 }
@@ -303,7 +552,52 @@
             });
         }
 
-        function changeFeatureDialog(pReference, pHTML, pColorPickers, pColorPickersOriginal, pChange, pLabel, pCircleObj){ 
+        function insertFeatureDialog(pHTML, pColorPickers, pColorPickersOriginal, pChange){     
+            if(pChange){
+                pChange = false;
+                pColorPickers += "<script> $('#tbxStrokeWidth').val(strokeWidthAlert);\
+                                       $('#tbxRadius').val(radiusAlert);\
+                                       $('#tmpDivBackgroundColor').colpick({colorScheme:'dark',layout:'rgbhex',color:'ff8800',onSubmit:function(hsb,hex,rgb,el) {$(el).css('background-color', '#'+hex); $(el).colpickHide(); }}).css('background-color', '#' + fillColorAlert);\
+                                       $('#tmp2DivBackgroundColor').colpick({colorScheme:'dark',layout:'rgbhex',color:'ff8800',onSubmit:function(hsb,hex,rgb,el) {$(el).css('background-color', '#'+hex);$(el).colpickHide();  }}).css('background-color', '#' + strokeColorAlert);\
+                             </script>";                
+            }
+
+            bootbox.dialog({
+              message: pHTML + pColorPickers,
+              title: "Insert Characteristics",
+              buttons: {
+                main: {
+                  label: "Apply",
+                  className: "btn-primary",
+                  callback: function() {
+                        fillColorAlert = Presentation.getOnLoadDesignsHandler().convertToHex($("#tmpDivBackgroundColor").css('backgroundColor'));    
+                        radiusAlert = $("#tbxRadius").val();             
+                        strokeColorAlert = Presentation.getOnLoadDesignsHandler().convertToHex($("#tmp2DivBackgroundColor").css('backgroundColor'));
+                        strokeWidthAlert = $("#tbxStrokeWidth").val();
+                        
+                        if($("#tbxStrokeWidth").val().length == 0){
+                            pChange = true;
+                            pColorPickers = pColorPickersOriginal;
+                            bootbox.alert("Please select the stroke width.", function() {
+                                insertFeatureDialog(pHTML, pColorPickers, pColorPickersOriginal, pChange);                     
+                            });
+                        }else if($("#tbxRadius").val().length == 0){
+                            pChange = true;
+                            pColorPickers = pColorPickersOriginal;
+                            bootbox.alert("Please select the radius of the circle.", function() {
+                                insertFeatureDialog(pHTML, pColorPickers, pColorPickersOriginal, pChange);                     
+                            });
+                        }else{
+                            bootbox.alert("Now drag the circle.");
+                            dragElementsIntoCanvas(radiusAlert, strokeWidthAlert, strokeColorAlert, fillColorAlert);
+                        }
+                  }
+                }
+              }
+            });
+        }
+
+        function changeFeatureDialog(pReference, pHTML, pColorPickers, pColorPickersOriginal, pChange, pLabel, pCircleObj, pType){ 
             strokeWidthAlert = pCircleObj.getStrokeWidth();
             radiusAlert = pCircleObj.getRadio();
             fillColorAlert = pCircleObj.getFillColor();
@@ -317,7 +611,7 @@
 
             bootbox.dialog({
               message: pHTML + pColorPickers,
-              title: "Insert Characteristics",
+              title: "Change Characteristics",
               buttons: {
                 main: {
                   label: "Apply",
@@ -398,7 +692,8 @@
             buildAnchor: buildAnchor,
             drawCurves : drawCurves,
             updateLines : updateLines,
-            getAnchorLayer :getAnchorLayer
+            getAnchorLayer :getAnchorLayer,
+            drawLine: drawLine
         };            
     })();
 
