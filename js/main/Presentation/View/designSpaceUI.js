@@ -164,7 +164,7 @@
 
         function drawLine(pPosX1, pPosY1, pPosX2, pPosY2, pStrokeWidth, pStrokeColor){
             var straight = new Kinetic.Line({
-                strokeWidth: 2,
+                strokeWidth: 3,
                 stroke: 'black',
                 points: [pPosX1, pPosY1, pPosX2, pPosY2],
                 draggable: true
@@ -175,6 +175,9 @@
             var points3 = LibraryData.createPoint(points, points2);
 
             var lineRef = LibraryData.createStraightLine(points3, pStrokeWidth, pStrokeColor, straight);
+            var positionsArray = [lineRef.getPointsFigure().getPositionX().getPositionX(), lineRef.getPointsFigure().getPositionX().getPositionY(),
+                                       lineRef.getPointsFigure().getPositionY().getPositionX(), lineRef.getPointsFigure().getPositionY().getPositionY()];
+
 
             var label = Presentation.getLabelUI();
             var cad = "Stroke Width: " + pStrokeWidth + "\n" + "Stroke Color: " + pStrokeColor + "\n" + "Points: [" + pPosX1 + ", " + pPosY1 + "] , " + "[" + pPosX2 + "," + pPosY2 + "]";
@@ -185,21 +188,80 @@
             });
 
             straight.on('dragend', function() {
-                Presentation.getOnLoadDesignsHandler().updateLine(this, lineRef, label);    
+                var lineObj = Presentation.getOnLoadDesignsHandler().updateLine(this, lineRef);    
+                //Just update the label and redraw the line layer to make it visible
+                positionsArray = [lineObj.getPointsFigure().getPositionX().getPositionX(), lineObj.getPointsFigure().getPositionX().getPositionY(),
+                                       lineObj.getPointsFigure().getPositionY().getPositionX(), lineObj.getPointsFigure().getPositionY().getPositionY()];
+
+                //this.setPoints(positionsArray);
+                //alert(this.getPoints());
+                var cad = "Stroke Width: " + strokeWidthAlert + "\n" + "Stroke Color: " + strokeColorAlert  + "\n" + 
+                          "Points: [" + positionsArray[0] + ", " + positionsArray[1] + "] , " + 
+                          "[" + positionsArray[2] + "," + positionsArray[3] + "]";
+                label.changeName(cad , "");
+                figuresLayer.draw(); 
+
+                checkIntersection(positionsArray);
             });
 
             figuresLayer.add(straight);
-            figuresLayer.draw();     
-
+            figuresLayer.draw();   
+            checkIntersection(positionsArray);
         }
 
-        function updateLinePosition(pLineRef, pLabel){
-            //Just update the label and redraw the line layer to make it visible
-            var cad = "Stroke Width: " + strokeWidthAlert + "\n" + "Stroke Color: " + strokeColorAlert  + "\n" + 
-                  "Points: [" + pLineRef.getPointsFigure().getPositionX().getPositionX() + ", " +pLineRef.getPointsFigure().getPositionX().getPositionY() + "] , " + 
-                  "[" + pLineRef.getPointsFigure().getPositionY().getPositionX() + "," + pLineRef.getPointsFigure().getPositionY().getPositionY() + "]";
-          pLabel.changeName(cad , "");
-          figuresLayer.draw(); 
+        function checkIntersection(pLineObject){
+            //var straightLineLen = straightLine.getPoints().length / 2 - 1;
+            var lineChildren = lineLayer.getChildren();
+            var straightLine = lineLayer.get('#straightLine')[0];
+            var staticLines = lineChildren[0].getPoints();
+            
+            for( var i=0; i<6; i++){  // for each single shape
+
+               var results = checkLineIntersection(pLineObject[0], pLineObject[1], pLineObject[2], pLineObject[3], 
+                           staticLines[i], staticLines[i + 1], staticLines[i + 2], staticLines[i + 3]);
+               if(results.onLine1 == true && results.onLine2 == true){
+                    alert("Collide!");
+               }
+               i+=1;
+            }
+        }
+
+        //Taken from http://jsfiddle.net/justin_c_rounds/Gd2S2/light/
+        function checkLineIntersection(pLine1StartX, pLine1StartY, pLine1EndX, pLine1EndY, pLine2StartX, pLine2StartY, pLine2EndX, pLine2EndY) {
+            
+            //alert(pLine2StartX + " " + pLine2StartY + " " + pLine2EndX + " " + pLine2EndY);
+            var denominator, a, b, numerator1, numerator2, result = {
+                x: null,        //  Position X of the intersection
+                y: null,        //  Position Y of the intersection
+                onLine1: false, 
+                onLine2: false
+            };
+            
+            denominator = ((pLine2EndY - pLine2StartY) * (pLine1EndX - pLine1StartX)) - ((pLine2EndX - pLine2StartX) * (pLine1EndY - pLine1StartY));
+            if (denominator == 0) {
+                return result;
+            }
+            a = pLine1StartY - pLine2StartY;
+            b = pLine1StartX - pLine2StartX;
+            numerator1 = ((pLine2EndX - pLine2StartX) * a) - ((pLine2EndY - pLine2StartY) * b);
+            numerator2 = ((pLine1EndX - pLine1StartX) * a) - ((pLine1EndY - pLine1StartY) * b);
+            a = numerator1 / denominator;
+            b = numerator2 / denominator;
+
+            // if we cast these lines infinitely in both directions, they intersect here:
+            result.x = pLine1StartX + (a * (pLine1EndX - pLine1StartX));
+            result.y = pLine1StartY + (a * (pLine1EndY - pLine1StartY));
+        
+            // if line1 is a segment and line2 is infinite, they intersect if:
+            if (a > 0 && a < 1) {
+                result.onLine1 = true;
+            }
+            // if line2 is a segment and line1 is infinite, they intersect if:
+            if (b > 0 && b < 1) {
+                result.onLine2 = true;
+            }            
+            //If both are true, they intersect each other
+            return result;
         }
 
         function updateLines() {
@@ -223,15 +285,6 @@
                 fill: '#ddd',
                 strokeWidth: 2,
                 draggable: true,
-                /*
-                straight = {
-                start: buildAnchor(150, 100),
-                control1: buildAnchor(300, 100),
-                control2: buildAnchor(375, 175),
-                control3: buildAnchor(450, 250),
-                end: buildAnchor(150, 250)
-                };
-                */
                 dragBoundFunc: function (pos) {
                     //Anchor values
                     var X = pos.x;
@@ -533,8 +586,6 @@
             });
         }
 
-
-
         function changeFeatureDialog(pReference, pHTML, pColorPickers, pColorPickersOriginal, pChange, pLabel, pCircleObj, pType){ 
             strokeWidthAlert = pCircleObj.getStrokeWidth();
             radiusAlert = pCircleObj.getRadio();
@@ -626,8 +677,7 @@
         return {
             init: init,
             getBackgroundLayer : getBackgroundLayer,
-            drawLine: drawLine,
-            updateLinePosition : updateLinePosition
+            drawLine: drawLine
         };            
     })();
 

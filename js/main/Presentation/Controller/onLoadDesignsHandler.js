@@ -98,11 +98,11 @@
           };
         }
 
-        function updateLine(pThis, pLineRef, pLabel){
+        function updateLine(pThis, pLineRef){
           //Get posX and posY
           var newPosX = pThis.getX();
           var newPosY = pThis.getY();
-
+          
           var points = pThis.getPoints();
 
           var points1 = LibraryData.createPoint(points[0] + newPosX, points[1] + newPosY);
@@ -111,10 +111,8 @@
 
           //Update the respective object
           pLineRef.setPointsFigure(points3);
-          //Update the line Points
-          pThis.setPoints(points);
 
-          Presentation.getDesignSpace().updateLinePosition(pLineRef, pLabel);
+          return pLineRef;
         }
 
         return {
