@@ -459,6 +459,17 @@
             return anchor;
         }
 
+        // function prueba ( a , b , callback){
+        //     c=a+b;
+        //     callback(c);
+        // }
+
+        // function result ( c){
+        //     alert(c);
+        // }
+
+        // prueba(1,2,result);
+
         function drawCurves() {
             var context = curveLayer.getContext();
 
@@ -492,7 +503,7 @@
         }
     
         
-        /*function fillBackground(pColor){
+        function fillBackground(pColor){
             var s = straight;
 
             var figureBackground = new Kinetic.Shape({
@@ -515,11 +526,12 @@
             backgroundLayer.add(figureBackground);
 
             backgroundLayer.draw();
-        }*/
+        }
 
         function init(){
             drawCurves();
             updateLines();
+            fillBackground("red");
         }
 
         return {

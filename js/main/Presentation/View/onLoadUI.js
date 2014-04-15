@@ -198,6 +198,47 @@ var Presentation = window.Presentation || {};
         }
 
 
+        // var arrayList = new Array();
+        // arrayList.push(2);
+        // arrayList.push("casa");
+        // arrayList.push(true);
+        
+        // if(arrayList[2]){
+        //     alert(arrayList);
+        // }
+
+        // var objecJson = {
+        //     Name: "juan",
+        //     Numero: 2
+        // }
+
+        // alert(objecJson["Numero"]);
+
+        // var typeObjects = {
+        //     LINE  : 1,
+        //     CIRCLE : 2
+        // };
+
+        // var c1 = 9;
+
+        // function guardar ( figura){
+        //     switch (tipo){
+        //         case typeObjects.CIRCLE:
+        //             guardarCircle(figura);
+        //             break;
+        //         case typeObjects.LINE:
+        //             alert("I'm a line");
+        //             break;
+        //         default:
+        //             alert("I don't know");
+        //     }
+        // }
+
+        // PerformAction(c1);
+
+            
+
+
         function nameDesignUsed(){
             alert("Name not available.");
             $('#tbxDesignName').effect("shake",1000);
@@ -209,12 +250,8 @@ var Presentation = window.Presentation || {};
             $('#showMessage').text("Design created successfully.");
             $('#showMessage').fadeIn(1000);
             $('#showMessage').fadeOut(1000);
-            
-            
-            if(!$('#nameDesign-container').hidden){
-                $('#nameDesign-container').hide();
-            }
-            $('#listDesign-container').slideDown();
+            setTimeout(function(){$('#listDesign-container').slideDown(3000)},1000);
+
             searchDesign();
             $('#tbxDesignName').val("");
         }
