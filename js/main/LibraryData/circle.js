@@ -24,14 +24,14 @@
 (function (pContext, $) {
     'use strict';
 
-    pContext.createCircle = function(pPointsFigure, pRadius, pStrokeWidth, pStrokeColor, pFillColor, pReference) {
-        return new Circle(pPointsFigure, pRadius, pStrokeWidth, pStrokeColor, pFillColor, pReference);       
+    pContext.createCircle = function(pPointsFigure, pRadius, pStrokeWidth, pStrokeColor, pFillColor) {
+        return new Circle(pPointsFigure, pRadius, pStrokeWidth, pStrokeColor, pFillColor);       
     };
     
     var Circle = Figure.extend({
 
-        init: function(pPointsFigure, pRadio, pStrokeWidth, pStrokeColor, pFillColor, pReference){
-            this._super(pPointsFigure, pStrokeWidth, pStrokeColor, pReference);
+        init: function(pPointsFigure, pRadio, pStrokeWidth, pStrokeColor, pFillColor){
+            this._super(pPointsFigure, pStrokeWidth, pStrokeColor);
             this.radio = pRadio;
             this.fillColor = pFillColor;
         },

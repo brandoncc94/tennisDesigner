@@ -33,8 +33,7 @@
     var LabelUI = (function () {
         backgroundLayer = Presentation.getDesignSpace().getBackgroundLayer();
         
-        function init(pType, pPosition) {
-            // Singleton
+        function init(pText, pPosition) {
             load();
 
             //Load the graphical label with empty text
@@ -46,14 +45,17 @@
                 labelText = new Kinetic.Text({
                     x: pPosition[0],
                     y: pPosition[1],
-                    text: pType,
+                    text: pText,
                     fontSize: 12,
                     fontFamily: 'Calibri',
                     fill: '#555',
                     width: 180,
                     padding: 5,
-                    align: 'center'
+                    align: 'center',
+                    id: labelId
                 });
+
+                labelsTextArray.push(labelText);
 
                 var labelFrame = new Kinetic.Rect({
                     x: labelText.getPosition().x,
@@ -76,10 +78,11 @@
 
                 backgroundLayer.draw();                
             }
+            labelId+=1;
         }
 
-        function changeName(pType, pColor){
-            labelText.setText(pType + pColor);
+        function changeName(pText, pPosition, pId){
+            labelsTextArray[pId].setText(pText + pPosition);
             backgroundLayer.draw();
         }
 
@@ -90,3 +93,5 @@
     })();
 
 }(Presentation, jQuery));
+
+var labelId = 0, labelsTextArray = [];

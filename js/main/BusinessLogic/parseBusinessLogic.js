@@ -67,7 +67,6 @@ var BusinessLogic = window.BusinessLogic || {};
         function saveDesignParseData(pName,pPoints){
             DataAccess.getParseDataAcces().saveDesign(pName,pPoints);
         }
-        
 
         function downloadDesignsNameReference(){
             DataAccess.getParseDataAcces().downloadDesignsName();

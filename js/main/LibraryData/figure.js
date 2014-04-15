@@ -26,11 +26,10 @@ var Figure;
     
     Figure = Class.extend({
 
-        init: function(pPointsFigure, pStrokeWidth, pStrokeColor, pReference){
+        init: function(pPointsFigure, pStrokeWidth, pStrokeColor){
             this.pointsFigure = pPointsFigure;
             this.strokeWidth = pStrokeWidth;
             this.strokeColor = pStrokeColor;
-            this.reference = pReference;
         },
 
         setStrokeColor: function(pStrokeColor){
@@ -44,10 +43,6 @@ var Figure;
         setPointsFigure : function(pPointsFigure){
             this.pointsFigure = pPointsFigure;
         },
-
-        setReference : function(pReference){
-            this.reference = pReference;
-        },
         
         getStrokeColor: function(){
             return this.strokeColor;
@@ -59,10 +54,6 @@ var Figure;
         
         getPointsFigure : function(){
             return this.pointsFigure;
-        },
-
-        getReference: function(){
-            return this.reference;
         }
     });
 
