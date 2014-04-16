@@ -109,7 +109,6 @@
             canvasStage.add(anchorLayer); 
 
             loadFiguresActions();
-
         }    
 
         function dragElementsIntoCanvas(pRadius, pStrokeWidth, pStrokeColor, pFillColor){
@@ -137,76 +136,79 @@
                     return arguments.callee._singletonInstance;
                 arguments.callee._singletonInstance = this;
 
-                drawFigure(pRadius, pStrokeWidth, pStrokeColor, pFillColor, e, dragSrcEl, "edit");
+                var posX = Presentation.getOnLoadDesignsHandler().getXPageReference(e);
+                var posY = Presentation.getOnLoadDesignsHandler().getYPageReference(e);
+                drawFigure(posX, posY, pRadius, pFillColor, pStrokeWidth, pStrokeColor, dragSrcEl, "edit");
             });
         }
 
-        function drawFigure(pRadius, pStrokeWidth, pStrokeColor, pFillColor, e, dragSrcEl, pType){
+        function drawFigure(pPosX, pPosY, pRadius, pFillColor, pStrokeWidth, pStrokeColor, dragSrcEl, pType){
             
-
-            var posX = Presentation.getOnLoadDesignsHandler().getXPageReference(e);
-            var posY = Presentation.getOnLoadDesignsHandler().getYPageReference(e);
-
             if(dragSrcEl.id == "imgCircle"){
-                var circle = new Kinetic.Circle({
-                    x: posX,
-                    y: posY,
-                    radius: pRadius,
-                    stroke: "#000",
-                    strokeWidth: 1,
-                    draggable: true,
-                    id: idLabel
-                });
-                if(pType == "fire"){
-                    circle.fill(pFillColor);
-                    circle.stroke(pStrokeColor);
-                    circle.strokeWidth(pStrokeWidth);
-                }
-
-                figuresLayer.add(circle);
-                figuresLayer.draw();
-
-                idLabel+=1;
-
-                var points = LibraryData.createPoint(posX, posY);
-                var label = Presentation.getLabelUI();
-                var cad = "Radius: " + pRadius + "\n" + "Stroke Width: " + pStrokeWidth + "\n" + "Stroke Color: " + pStrokeColor + "\n" + "Fill Color: " + pFillColor;
-                label.init(cad , [posX, posY]);                    
-
-                //Create the object and send it to the paint manager
-                var circleRef = LibraryData.createCircle(points, pRadius, pStrokeWidth, pStrokeColor, pFillColor);
-                Presentation.getPaintManagerHandler().sendCircleToPaintManager(circleRef);
-
-                circle.on('click', function() {
-                    /*//Datos del objeto
-                    alert("Position X: " + circleRef.getPointsFigure().getPositionX() + "\n" +
-                          "Position Y: " + circleRef.getPointsFigure().getPositionY() + "\n" + 
-                          "Radio:      " + circleRef.getRadio()     + "\n" + 
-                          "StrokeWidth:" + circleRef.getStrokeWidth() + "\n" + 
-                          "StrokeColor:" + circleRef.getStrokeColor() + "\n" +
-                          "FillColor  :" + circleRef.getFillColor() + "\n"); */
-
-                    Presentation.getAlertsUI().changeFeatureDialog(circle, label, false, circleRef);
-                });
-
-                circle.on('dragend', function() {
-                    /****************************************************************************************************/
-                    /****************************************************************************************************/
-                    /****************************************************************************************************/
-                    /****************************************************************************************************/
-
-                    circleRef.setPointsFigure(LibraryData.createPoint(circle.getPosition().x, circle.getPosition().y));
-
-                    /****************************************************************************************************/
-                    /****************************************************************************************************/
-                    /****************************************************************************************************/
-                    /****************************************************************************************************/
-                });
+                drawCircle(pPosX, pPosY, pRadius, pFillColor, pStrokeWidth, pStrokeColor, pType);
             }
             else if(dragSrcEl.id == "imgLine")
                 Presentation.getOnLoadDesignsHandler().drawLineListener(pStrokeWidth, pStrokeColor);
         }
 
+        function drawCircle(pPosX, pPosY, pRadius, pFillColor, pStrokeWidth, pStrokeColor, pType){
+            var circle = new Kinetic.Circle({
+                x: pPosX,
+                y: pPosY,
+                radius: pRadius,
+                stroke: "#000",
+                strokeWidth: 1,
+                draggable: true,
+                id: idLabel
+            });
+
+            if(pType == "fire"){
+                circle.fill(pFillColor);
+                circle.stroke(pStrokeColor);
+                circle.strokeWidth(pStrokeWidth);
+            }
+
+            figuresLayer.add(circle);
+            figuresLayer.draw();
+
+            idLabel+=1;
+
+            var points = LibraryData.createPoint(pPosX, pPosY);
+            var label = Presentation.getLabelUI();
+            var cad = "Radius: " + pRadius + "\n" + "Stroke Width: " + pStrokeWidth + "\n" + "Stroke Color: " + pStrokeColor + "\n" + "Fill Color: " + pFillColor;
+            label.init(cad , [pPosX, pPosY]);                    
+
+            //Create the object and send it to the paint manager
+            var circleRef = LibraryData.createCircle(points, pRadius, pStrokeWidth, pStrokeColor, pFillColor);
+            Presentation.getPaintManagerHandler().sendCircleToPaintManager(circleRef);
+
+            circle.on('click', function() {
+
+                /*//Datos del objeto
+                alert("Position X: " + circleRef.getPointsFigure().getPositionX() + "\n" +
+                      "Position Y: " + circleRef.getPointsFigure().getPositionY() + "\n" + 
+                      "Radio:      " + circleRef.getRadio()     + "\n" + 
+                      "StrokeWidth:" + circleRef.getStrokeWidth() + "\n" + 
+                      "StrokeColor:" + circleRef.getStrokeColor() + "\n" +
+                      "FillColor  :" + circleRef.getFillColor() + "\n"); */
+
+                Presentation.getAlertsUI().changeFeatureDialog(circle, label, false, circleRef);
+            });
+
+            circle.on('dragend', function() {
+                /****************************************************************************************************/
+                /****************************************************************************************************/
+                /****************************************************************************************************/
+                /****************************************************************************************************/
+
+                circleRef.setPointsFigure(LibraryData.createPoint(circle.getPosition().x, circle.getPosition().y));
+
+                /****************************************************************************************************/
+                /****************************************************************************************************/
+                /****************************************************************************************************/
+                /****************************************************************************************************/
+            });
+        }
         function drawLine(pPosX1, pPosY1, pPosX2, pPosY2, pStrokeWidth, pStrokeColor, pType){
             var straight = new Kinetic.Line({
                 strokeWidth: 3,
@@ -220,6 +222,9 @@
                 straight.strokeWidth(pStrokeWidth);
                 straight.stroke(pStrokeColor);
             }
+
+            figuresLayer.add(straight);
+            figuresLayer.draw();
 
             idLabel+=1;
 
@@ -267,9 +272,6 @@
 
                 checkIntersection(positionsArray);
             });
-
-            figuresLayer.add(straight);
-            figuresLayer.draw();
 
             checkIntersection(positionsArray);
         }
@@ -537,10 +539,20 @@
             backgroundLayer.draw();
         }
 
+        function cleanFigures(){
+            //Destroy all the children of the figures and labels
+            figuresLayer.destroyChildren();
+            backgroundLayer.destroyChildren();
+            //Redraw them
+            figuresLayer.draw();
+            backgroundLayer.draw();
+            //Now let's update the paint manager
+            Presentation.getPaintManagerHandler().deleteAllElements();
+        }
+
         function init(){
             drawCurves();
             updateLines();
-            fillBackground("red");
         }
 
         return {
@@ -553,7 +565,8 @@
             updateLines : updateLines,
             getAnchorLayer :getAnchorLayer,
             drawLine: drawLine,
-            dragElementsIntoCanvas: dragElementsIntoCanvas
+            dragElementsIntoCanvas: dragElementsIntoCanvas,
+            cleanFigures : cleanFigures
         };            
     })();
 

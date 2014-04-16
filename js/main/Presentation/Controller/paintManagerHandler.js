@@ -40,12 +40,12 @@
         
         function sendLineToPaintManager(pLineObject){
             BusinessLogic.getPaintManagerBL().insertLine(pLineObject);
-            BusinessLogic.getPaintManagerBL().printArray();
+            //BusinessLogic.getPaintManagerBL().printArray();
         }
 
         function sendCircleToPaintManager(pCircleObject){
             BusinessLogic.getPaintManagerBL().insertCircle(pCircleObject);
-            BusinessLogic.getPaintManagerBL().printArray2();
+            //BusinessLogic.getPaintManagerBL().printArray2();
         }
 
         function deleteLine(pId){
@@ -56,11 +56,16 @@
             BusinessLogic.getPaintManagerBL().deleteCircleObject(pId);
         }
 
+        function deleteAllElements(){
+            BusinessLogic.getPaintManagerBL().deleteAllElements();  
+        }
+
         return {
             sendLineToPaintManager : sendLineToPaintManager,
             sendCircleToPaintManager : sendCircleToPaintManager,
             deleteLine : deleteLine,
-            deleteCircle : deleteCircle
+            deleteCircle : deleteCircle,
+            deleteAllElements: deleteAllElements
         }; 
     })();    
 

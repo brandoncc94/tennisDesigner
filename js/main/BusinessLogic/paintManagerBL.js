@@ -58,6 +58,11 @@
             circlesCollection[pId] = "empty";            
         }
 
+        function deleteAllElements(){
+            linesCollection = [];
+            circlesCollection = [];
+        }
+
         function printArray(){
             for(var i = 0; i < linesCollection.length; i++){
                 if(linesCollection[i] != "empty")
@@ -78,7 +83,8 @@
             deleteLineObject : deleteLineObject,
             deleteCircleObject : deleteCircleObject,
             printArray : printArray,
-            printArray2 : printArray2
+            printArray2 : printArray2,
+            deleteAllElements : deleteAllElements
         };  
     })();
 

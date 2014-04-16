@@ -132,6 +132,7 @@ var Presentation = window.Presentation || {};
             var name = getDesignListSelected();
             $('#selectDesignName').text("Create your design: "+ name);
             loadPointsDesignView(pPoints);
+            Presentation.getDesignSpace().cleanFigures();
 
         }
 
@@ -240,7 +241,7 @@ var Presentation = window.Presentation || {};
 
 
         function nameDesignUsed(){
-            alert("Name not available.");
+            bootbox.alert("Name is not available!");
             $('#tbxDesignName').effect("shake",1000);
             $('#tbxDesignName').val("");
         }
@@ -251,7 +252,6 @@ var Presentation = window.Presentation || {};
             $('#showMessage').fadeIn(1000);
             $('#showMessage').fadeOut(1000);
             setTimeout(function(){$('#listDesign-container').slideDown(3000)},1000);
-
             searchDesign();
             $('#tbxDesignName').val("");
         }
