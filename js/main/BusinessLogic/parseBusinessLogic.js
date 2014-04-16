@@ -9,7 +9,7 @@
  /*
   * Author:      brandonc94@gmail.com
   * Date:        25/03/2014
-  * Description: Presentation layer to be develop with MVC
+  * Description: Business layer
   */
 
 

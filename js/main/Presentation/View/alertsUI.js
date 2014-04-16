@@ -98,6 +98,17 @@
               message: HTML + colorPickers,
               title: "Change Characteristics",
               buttons: {
+                erase: {
+                  label: "Delete",
+                  className: "btn-danger",
+                  callback: function(){
+                      pReference.remove();
+                      pLabel.destroy(pReference.id());
+                      Presentation.getPaintManagerHandler().deleteLine(pReference.id());
+                      Presentation.getDesignSpace().getFiguresLayer().draw();
+                  }
+                },
+
                 main: {
                   label: "Apply",
                   className: "btn-primary",
@@ -229,6 +240,16 @@
               message: HTML + colorPickers,
               title: "Change Characteristics",
               buttons: {
+                erase: {
+                  label: "Delete",
+                  className: "btn-danger",
+                  callback: function(){
+                      pReference.remove();
+                      pLabel.destroy(pReference.id());
+                      Presentation.getPaintManagerHandler().deleteCircle(pReference.id());
+                      Presentation.getDesignSpace().getFiguresLayer().draw();
+                  }
+                },
                 main: {
                   label: "Apply",
                   className: "btn-primary",

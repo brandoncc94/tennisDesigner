@@ -131,82 +131,83 @@
             });
 
             canvasContainer.addEventListener('drop',function(e){
+                e.preventDefault(); //Stops the reference to do the defult event
                 //Singleton Pattern that allow only drag one figure and just one
                 if ( arguments.callee._singletonInstance )
                     return arguments.callee._singletonInstance;
                 arguments.callee._singletonInstance = this;
 
-                var posX = Presentation.getOnLoadDesignsHandler().getXPageReference(e);
-                var posY = Presentation.getOnLoadDesignsHandler().getYPageReference(e);
-
-                if(dragSrcEl.id == "imgCircle"){
-                    var circle = new Kinetic.Circle({
-                        x: posX,
-                        y: posY,
-                        radius: pRadius,
-                        stroke: '#000',
-                        strokeWidth: 1,
-                        draggable: true,
-                        id: idLabel
-                    });
-
-                    figuresLayer.add(circle);
-                    figuresLayer.draw();
-
-                    //Increment id of the label
-                    idLabel+=1;
-
-                    var points = LibraryData.createPoint(posX, posY);
-                    var label = Presentation.getLabelUI();
-                    var cad = "Radius: " + pRadius + "\n" + "Stroke Width: " + pStrokeWidth + "\n" + "Stroke Color: " + pStrokeColor + "\n" + "Fill Color: " + pFillColor;
-                    label.init(cad , [posX, posY]);                    
-
-                    /****************************************************************************************************/
-                    /****************************************************************************************************/
-                    /****************************************************************************************************/
-                    /****************************************************************************************************/
-
-                    //Create the circle object
-                    var circleRef = LibraryData.createCircle(points, pRadius, pStrokeWidth, pStrokeColor, pFillColor);
-                    
-                    /****************************************************************************************************/
-                    /****************************************************************************************************/
-                    /****************************************************************************************************/
-                    /****************************************************************************************************/
-
-
-                    circle.on('click', function() {
-                        //Datos del objeto
-                        alert("Position X: " + circleRef.getPointsFigure().getPositionX() + "\n" +
-                              "Position Y: " + circleRef.getPointsFigure().getPositionY() + "\n" + 
-                              "Radio:      " + circleRef.getRadio()     + "\n" + 
-                              "StrokeWidth:" + circleRef.getStrokeWidth() + "\n" + 
-                              "StrokeColor:" + circleRef.getStrokeColor() + "\n" +
-                              "FillColor  :" + circleRef.getFillColor() + "\n"); 
-
-                        Presentation.getAlertsUI().changeFeatureDialog(circle, label, false, circleRef);
-                    });
-
-                    circle.on('dragend', function() {
-                        /****************************************************************************************************/
-                        /****************************************************************************************************/
-                        /****************************************************************************************************/
-                        /****************************************************************************************************/
-
-                        circleRef.setPointsFigure(LibraryData.createPoint(circle.getPosition().x, circle.getPosition().y));
-
-                        /****************************************************************************************************/
-                        /****************************************************************************************************/
-                        /****************************************************************************************************/
-                        /****************************************************************************************************/
-                    });
-                }
-                else if(dragSrcEl.id == "imgLine")
-                    Presentation.getOnLoadDesignsHandler().drawLineListener(pStrokeWidth, pStrokeColor);
-             });
+                drawFigure(pRadius, pStrokeWidth, pStrokeColor, pFillColor, e, dragSrcEl, "edit");
+            });
         }
 
-        function drawLine(pPosX1, pPosY1, pPosX2, pPosY2, pStrokeWidth, pStrokeColor){
+        function drawFigure(pRadius, pStrokeWidth, pStrokeColor, pFillColor, e, dragSrcEl, pType){
+            
+
+            var posX = Presentation.getOnLoadDesignsHandler().getXPageReference(e);
+            var posY = Presentation.getOnLoadDesignsHandler().getYPageReference(e);
+
+            if(dragSrcEl.id == "imgCircle"){
+                var circle = new Kinetic.Circle({
+                    x: posX,
+                    y: posY,
+                    radius: pRadius,
+                    stroke: "#000",
+                    strokeWidth: 1,
+                    draggable: true,
+                    id: idLabel
+                });
+                if(pType == "fire"){
+                    circle.fill(pFillColor);
+                    circle.stroke(pStrokeColor);
+                    circle.strokeWidth(pStrokeWidth);
+                }
+
+                figuresLayer.add(circle);
+                figuresLayer.draw();
+
+                idLabel+=1;
+
+                var points = LibraryData.createPoint(posX, posY);
+                var label = Presentation.getLabelUI();
+                var cad = "Radius: " + pRadius + "\n" + "Stroke Width: " + pStrokeWidth + "\n" + "Stroke Color: " + pStrokeColor + "\n" + "Fill Color: " + pFillColor;
+                label.init(cad , [posX, posY]);                    
+
+                //Create the object and send it to the paint manager
+                var circleRef = LibraryData.createCircle(points, pRadius, pStrokeWidth, pStrokeColor, pFillColor);
+                Presentation.getPaintManagerHandler().sendCircleToPaintManager(circleRef);
+
+                circle.on('click', function() {
+                    /*//Datos del objeto
+                    alert("Position X: " + circleRef.getPointsFigure().getPositionX() + "\n" +
+                          "Position Y: " + circleRef.getPointsFigure().getPositionY() + "\n" + 
+                          "Radio:      " + circleRef.getRadio()     + "\n" + 
+                          "StrokeWidth:" + circleRef.getStrokeWidth() + "\n" + 
+                          "StrokeColor:" + circleRef.getStrokeColor() + "\n" +
+                          "FillColor  :" + circleRef.getFillColor() + "\n"); */
+
+                    Presentation.getAlertsUI().changeFeatureDialog(circle, label, false, circleRef);
+                });
+
+                circle.on('dragend', function() {
+                    /****************************************************************************************************/
+                    /****************************************************************************************************/
+                    /****************************************************************************************************/
+                    /****************************************************************************************************/
+
+                    circleRef.setPointsFigure(LibraryData.createPoint(circle.getPosition().x, circle.getPosition().y));
+
+                    /****************************************************************************************************/
+                    /****************************************************************************************************/
+                    /****************************************************************************************************/
+                    /****************************************************************************************************/
+                });
+            }
+            else if(dragSrcEl.id == "imgLine")
+                Presentation.getOnLoadDesignsHandler().drawLineListener(pStrokeWidth, pStrokeColor);
+        }
+
+        function drawLine(pPosX1, pPosY1, pPosX2, pPosY2, pStrokeWidth, pStrokeColor, pType){
             var straight = new Kinetic.Line({
                 strokeWidth: 3,
                 stroke: 'black',
@@ -214,6 +215,11 @@
                 draggable: true,
                 id: idLabel
             });
+
+            if(pType == "fire"){
+                straight.strokeWidth(pStrokeWidth);
+                straight.stroke(pStrokeColor);
+            }
 
             idLabel+=1;
 
@@ -226,19 +232,22 @@
             var cad = "Stroke Width: " + pStrokeWidth + "\n" + "Stroke Color: " + pStrokeColor + "\n" + "Points: [" + pPosX1 + ", " + pPosY1 + "] , " + "[" + pPosX2 + "," + pPosY2 + "]";
             
             var lineRef = LibraryData.createStraightLine(points3, pStrokeWidth, pStrokeColor);
+
+            Presentation.getPaintManagerHandler().sendLineToPaintManager(lineRef);
+
             var positionsArray = [lineRef.getPointsFigure().getPositionX().getPositionX(), lineRef.getPointsFigure().getPositionX().getPositionY(),
                                        lineRef.getPointsFigure().getPositionY().getPositionX(), lineRef.getPointsFigure().getPositionY().getPositionY()];
 
             label.init(cad , [pPosX2, pPosY2]);
 
             straight.on('click', function() {
-                //Datos del objeto
+                /*//Datos del objeto
                         alert("Position X: [" + lineRef.getPointsFigure().getPositionX().getPositionX() + ", " +
                                                 lineRef.getPointsFigure().getPositionX().getPositionY() + "] " + "\n" +
                               "Position Y: [" + lineRef.getPointsFigure().getPositionY().getPositionX() + ", " +
                                                lineRef.getPointsFigure().getPositionY().getPositionY() + "] " + "\n" +
                               "StrokeWidth:" + lineRef.getStrokeWidth() + "\n" + 
-                              "StrokeColor:" + lineRef.getStrokeColor() + "\n"); 
+                              "StrokeColor:" + lineRef.getStrokeColor() + "\n"); */
 
                 Presentation.getAlertsUI().changeLineFeatureDialog(straight, label, false, lineRef);
             });
@@ -260,7 +269,7 @@
             });
 
             figuresLayer.add(straight);
-            figuresLayer.draw();   
+            figuresLayer.draw();
 
             checkIntersection(positionsArray);
         }

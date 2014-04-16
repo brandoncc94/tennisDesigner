@@ -72,6 +72,8 @@
                     cornerRadius: 5
                 });
 
+                labelsFrameArray.push(labelFrame);
+
                 group.add(labelFrame);
                 group.add(labelText);
                 backgroundLayer.add(group);
@@ -86,12 +88,19 @@
             backgroundLayer.draw();
         }
 
+        function destroy(pId){
+            labelsTextArray[pId].remove();
+            labelsFrameArray[pId].remove();
+            backgroundLayer.draw();
+        }
+
         return{
-            init:init,
-            changeName:changeName
+            init : init,
+            changeName : changeName,
+            destroy: destroy
         };        
     })();
 
 }(Presentation, jQuery));
 
-var labelId = 0, labelsTextArray = [];
+var labelId = 0, labelsTextArray = [], labelsFrameArray = [];

@@ -105,7 +105,7 @@
               } else {                  
                   clicks = 0;
                   canvas.removeEventListener('click',  getPosition, false);
-                  Presentation.getDesignSpace().drawLine(clicksArray[0], clicksArray[1], x, y, pStrokeWidth, pStrokeColor);   
+                  Presentation.getDesignSpace().drawLine(clicksArray[0], clicksArray[1], x, y, pStrokeWidth, pStrokeColor, "edit");   
               }                        
               clicksArray = [x,y];
           };
