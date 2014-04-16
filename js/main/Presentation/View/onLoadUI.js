@@ -160,7 +160,9 @@ var Presentation = window.Presentation || {};
         function updateDesign(){
             var name =  getDesignListSelected();
             var points = getPoints();
-            Presentation.getOnLoadDesignsHandler().updateDesign(name,points);
+            var arrayCircles = Presentation.getPaintManagerHandler().getCirclesFromPaintManager();
+            var arrayLines = Presentation.getPaintManagerHandler().getLinesFromPaintManager();
+            Presentation.getOnLoadDesignsHandler().updateDesign(name,points,arrayCircles,arrayLines);
         }
 
 

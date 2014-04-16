@@ -60,12 +60,22 @@
             BusinessLogic.getPaintManagerBL().deleteAllElements();  
         }
 
+        function getCirclesFromPaintManager(){
+            return BusinessLogic.getPaintManagerBL().getArrayCircleJson();
+        }
+
+        function getLinesFromPaintManager(){
+            return BusinessLogic.getPaintManagerBL().getArrayLineJson();
+        }
+
         return {
             sendLineToPaintManager : sendLineToPaintManager,
             sendCircleToPaintManager : sendCircleToPaintManager,
             deleteLine : deleteLine,
             deleteCircle : deleteCircle,
-            deleteAllElements: deleteAllElements
+            deleteAllElements: deleteAllElements,
+            getCirclesFromPaintManager : getCirclesFromPaintManager,
+            getLinesFromPaintManager : getLinesFromPaintManager
         }; 
     })();    
 

@@ -50,7 +50,20 @@
 
         getFillColor: function(){
             return this.fillColor;
+        },
+
+        convertToJson : function() {
+            var points = this.pointsFigure.convertToArray();
+            var circleJson = {
+                points : points,
+                radius: this.radio,
+                strokeWidth : this.strokeWidth,
+                strokeColor : this.strokeColor,
+                fillColor : this.fillColor
+            };
+            return circleJson;
         }
+
     }); 
 
 }(LibraryData, jQuery));

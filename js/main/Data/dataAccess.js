@@ -86,6 +86,8 @@ var DataAccess = window.DataAccess || {};
                 if(designs.length==1){
                     var points = designs[0].get("Points");
                     var name = designs[0].get("Name");
+                    var arrayCircles = designs[0].get("Circles");
+                    var arrayLines = designs[0].get("Lines");
                     BusinessLogic.getParseBusinessLogic().loadDesign(name,points); 
                 }
                 
@@ -96,14 +98,14 @@ var DataAccess = window.DataAccess || {};
             });
         }
 
-        function updateDesign(pName,pPoints){
+        function updateDesign(pName,pPoints,pArrayCircles,pArrayLines){
             var query_Name = new Parse.Query(TennisDesign);
             query_Name.equalTo("Name", pName);
             query_Name.find({
               success: function(designs) {
                 if(designs.length==1){
                     var design = designs[0];
-                    updateDesignAux(design,pPoints); 
+                    updateDesignAux(design,pPoints,pArrayCircles,pArrayLines); 
                 }
                 
               },
@@ -113,9 +115,11 @@ var DataAccess = window.DataAccess || {};
             });
         }
 
-        function updateDesignAux(design,pPoints){
+        function updateDesignAux(design,pPoints,pArrayCircles,pArrayLines){
             design.save({
-                Points : pPoints
+                Points : pPoints,
+                Circles : pArrayCircles,
+                Lines : pArrayLines
             });
         }
 

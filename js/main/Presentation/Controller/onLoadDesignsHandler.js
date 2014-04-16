@@ -56,8 +56,8 @@
             BusinessLogic.getParseBusinessLogic().downloadDesign(pName);
         }
 
-        function updateDesign(pName,pPoints){
-            BusinessLogic.getParseBusinessLogic().updateDesign(pName,pPoints);
+        function updateDesign(pName,pPoints,pArrayCircles,pArrayLines){
+            BusinessLogic.getParseBusinessLogic().updateDesign(pName,pPoints,pArrayCircles,pArrayLines);
         }
 
         //Converts from RGB to HEX taken from http://jsfiddle.net/DCaQb/  

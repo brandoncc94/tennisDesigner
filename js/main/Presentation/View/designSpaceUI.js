@@ -209,6 +209,8 @@
                 /****************************************************************************************************/
             });
         }
+
+        
         function drawLine(pPosX1, pPosY1, pPosX2, pPosY2, pStrokeWidth, pStrokeColor, pType){
             var straight = new Kinetic.Line({
                 strokeWidth: 3,
@@ -237,6 +239,7 @@
             var cad = "Stroke Width: " + pStrokeWidth + "\n" + "Stroke Color: " + pStrokeColor + "\n" + "Points: [" + pPosX1 + ", " + pPosY1 + "] , " + "[" + pPosX2 + "," + pPosY2 + "]";
             
             var lineRef = LibraryData.createStraightLine(points3, pStrokeWidth, pStrokeColor);
+            alert(lineRef.convertToJson());
 
             Presentation.getPaintManagerHandler().sendLineToPaintManager(lineRef);
 

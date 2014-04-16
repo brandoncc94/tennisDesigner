@@ -38,8 +38,8 @@
 
     //This is a logic that centralizes the objects
     var paintManagerBL = (function(){
-        var linesCollection = [];
-        var circlesCollection = [];
+        var linesCollection = new Array();
+        var circlesCollection = new Array();
 
         //Let's centralize everything
         function insertLine(pLineObject){
@@ -76,6 +76,28 @@
                     alert(circlesCollection[i].getRadio());
             }
         }
+
+        function getArrayCircleJson(){
+            var arrayCircleJson =  new Array();
+            for (var i = 0; i <circlesCollection.length; i++) {
+                if(circlesCollection[i] != "empty"){
+                  arrayCircleJson.push(circlesCollection[i].convertToJson());
+                }
+            };
+            return arrayCircleJson;
+        }
+
+        function getArrayLineJson(){
+            var arrayLineJson =  new Array();
+            for (var i = 0; i <linesCollection.length; i++) {
+                if(linesCollection[i] != "empty"){
+                  arrayLineJson.push(linesCollection[i].convertToJson());
+                }
+            };
+            return arrayLineJson;
+        }
+
+
         //Let's make it public
         return {
             insertLine : insertLine,
@@ -84,7 +106,9 @@
             deleteCircleObject : deleteCircleObject,
             printArray : printArray,
             printArray2 : printArray2,
-            deleteAllElements : deleteAllElements
+            deleteAllElements : deleteAllElements,
+            getArrayCircleJson : getArrayCircleJson,
+            getArrayLineJson : getArrayLineJson
         };  
     })();
 

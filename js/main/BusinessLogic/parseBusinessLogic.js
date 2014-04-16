@@ -72,8 +72,8 @@ var BusinessLogic = window.BusinessLogic || {};
             DataAccess.getParseDataAcces().downloadDesignsName();
         }
 
-        function updateDesign(pName,pPoints){
-            DataAccess.getParseDataAcces().updateDesign(pName,pPoints);
+        function updateDesign(pName,pPoints,pArrayCircles,pArrayLines){
+            DataAccess.getParseDataAcces().updateDesign(pName,pPoints,pArrayCircles,pArrayLines);
         }
 
 
