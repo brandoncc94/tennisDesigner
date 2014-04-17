@@ -81,7 +81,7 @@
             return pE.pageY - ($("body").height() - $(".header-container").height() - $(".main-container").height() - $(".footer-container").height() + 200);
         }
 
-        function drawLineListener(pStrokeWidth, pStrokeColor){
+        function drawLineListener(pStrokeWidth, pStrokeColor,pType){
           //Let's draw a line with 2 clicks
           var clicks = 0;
           var clicksArray = [0, 0]; 
@@ -96,16 +96,16 @@
 
             x -= canvas.offsetLeft;
             y -= canvas.offsetTop;
-            drawLine(x, y);
+            drawLine(x, y,pType);
           }
 
-          function drawLine(x, y) { 
+          function drawLine(x, y,pType) { 
               if (clicks != 1) {
                   clicks++;
               } else {                  
                   clicks = 0;
                   canvas.removeEventListener('click',  getPosition, false);
-                  Presentation.getDesignSpace().drawLine(clicksArray[0], clicksArray[1], x, y, pStrokeWidth, pStrokeColor, "edit");   
+                  Presentation.getDesignSpace().drawLine(clicksArray[0], clicksArray[1], x, y, pStrokeWidth, pStrokeColor, "fire");   
               }                        
               clicksArray = [x,y];
           };
