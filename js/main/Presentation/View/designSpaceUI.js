@@ -273,9 +273,11 @@
                 figuresLayer.draw();
 
                 checkIntersection(positionsArray);
+                checkIntersectionQuadratic(positionsArray);
             });
 
             checkIntersection(positionsArray);
+            checkIntersectionQuadratic(positionsArray);
         }
 
         function checkIntersection(pLineObject){
@@ -284,7 +286,6 @@
             var staticLines = lineChildren[0].getPoints();
             
             for( var i=0; i<6; i++){  // for each static straight line
-
                var results = checkLineIntersection(pLineObject[0], pLineObject[1], pLineObject[2], pLineObject[3], 
                            staticLines[i], staticLines[i + 1], staticLines[i + 2], staticLines[i + 3]);
                if(results.onLine1 == true && results.onLine2 == true){
@@ -330,6 +331,106 @@
             }            
             //If both are true, they intersect each other
             return result;
+        }        
+
+        function checkIntersectionQuadratic(pLineObject){
+            var curveLineChildren = anchorLayer.getChildren();
+            //
+            var x1 = curveLineChildren[0].x();
+            var y1 = curveLineChildren[0].y(); 
+
+            var x2 = curveLineChildren[1].x();
+            var y2 = curveLineChildren[1].y();
+
+            var x3 = curveLineChildren[4].x();
+            var y3 = curveLineChildren[4].y();
+            
+            var staticLines = [x1, y1, x2, y2, x3, y3];
+
+            for(var i=0; i<4; i++){  // for each static straight line
+               var preliminary = getQuadraticCurvePoint(x1, y1, 100, 150, x2, y2, 0);
+               alert(preliminary.x + " " + preliminary.y);
+               var preliminary2 = getQuadraticCurvePoint(x1, y1, 200, 150, x3, y3, 0);
+               alert(preliminary2.x + " " + preliminary2.y);
+               var results = checkQuadraticPoints(pLineObject[0], pLineObject[1], pLineObject[2], pLineObject[3], 
+                           staticLines[i], staticLines[i + 1], staticLines[i + 2], staticLines[i + 3]);
+               if(results.onLine1 == true && results.onLine2 == true)
+                    alert("Collide!");
+               i+=1;
+            }
+        }
+        
+        function _getQBezierValue(t, p1, p2, p3) {
+            var iT = 1 - t;
+            return iT * iT * p1 + 2 * iT * t * p2 + t * t * p3;
+        }
+
+        function getQuadraticCurvePoint(startX, startY, cpX, cpY, endX, endY, position) {
+            return {
+                x:    _getQBezierValue(position, startX, cpX, endX),
+                y:    _getQBezierValue(position, startY, cpY, endY)
+            };
+        }
+
+        function checkQuadraticPoints(){
+            var slope     = 0.0; // For line.
+            var yInercept = 0.0;
+
+            var A = 0.0; // For parabolla, quadratic function coefficients.
+            var B = 0.0;
+            var C = 0.0;
+
+            var a = 0.0; // For solving quadratic formula.
+            var b = 0.0;
+            var c = 0.0;
+
+            var x1 = 0.0; // Point(s) of intersection.
+            var y1 = 0.0;
+            var x2 = 0.0;
+            var y2 = 0.0;
+
+            slope      = parseFloat(window.document.input.m.value);
+            yIntercept = parseFloat(window.document.input.b.value);
+
+            A = parseFloat(window.document.input.A.value);
+            B = parseFloat(window.document.input.B.value);
+            C = parseFloat(window.document.input.C.value);
+
+            a = A;
+            b = B - slope;
+            c = C - yIntercept;
+
+            // b^2 -4*ac
+            var discriminant = b * b - 4 * a * c;
+
+            if(discriminant > 0.0)
+            {
+                //-b+- sqrt(discriminant) / 2a
+                x1 = (-b + Math.sqrt(discriminant)) / (2.0 * a);
+                x2 = (-b - Math.sqrt(discriminant)) / (2.0 * a);
+
+                y1 = slope * x1 + yIntercept;
+                y2 = slope * x2 + yIntercept;
+
+                message = 'There are two points of intersection: \n';
+                message += '(' + x1 + ', ' + y1 + ')\n';
+                message += '(' + x2 + ', ' + y2 + ')';
+            }
+            else if(discriminant == 0.0)
+            {
+                x1 = (-b) / (2.0 * a);
+
+                y1 = slope * x1 + yIntercept;
+
+                message = 'There is one point of intersection: \n';
+                message += '(' + x1 + ', ' + y1 + ')';
+            }
+            else
+            {
+                message = 'There are no points of intersection.';
+            }
+
+            alert(message);
         }
 
         function updateLines() {
