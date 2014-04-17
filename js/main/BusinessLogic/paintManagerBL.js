@@ -97,6 +97,33 @@
             return arrayLineJson;
         }
 
+        function loadDesignCircles(pArrayCircles,pArrayLines){
+            for (var i = 0; i < pArrayCircles.length; i++) {
+              var circle  = pArrayCircles[i];
+              var posX = circle["points"][0];
+              var posY = circle["points"][1];
+              var radius = circle["radius"];
+              var fillColor = circle["fillColor"];
+              var strokeWidth = circle["strokeWidth"];
+              var strokeColor = circle["strokeColor"];
+              Presentation.getDesignSpaceHandler().sentDataToDrawCircle(posX,posY,radius,fillColor,strokeWidth,strokeColor);
+            };
+
+        }
+
+        function loadDesignLines(pArrayLines){
+            for (var i = 0; i < pArrayLines.length; i++) {
+              var circle  = pArrayLines[i];
+              var posX1 = circle["points"][0][0];
+              var posY1 = circle["points"][0][1];
+              var posX2 = circle["points"][1][0];
+              var posY2 = circle["points"][1][1];
+              var strokeWidth = circle["strokeWidth"];
+              var strokeColor = circle["strokeColor"];
+              Presentation.getDesignSpaceHandler().sentDataToDrawLine(posX1,posY1,posX2,posY2,strokeWidth,strokeColor);
+              
+            };
+        }
 
         //Let's make it public
         return {
@@ -108,7 +135,9 @@
             printArray2 : printArray2,
             deleteAllElements : deleteAllElements,
             getArrayCircleJson : getArrayCircleJson,
-            getArrayLineJson : getArrayLineJson
+            getArrayLineJson : getArrayLineJson,
+            loadDesignCircles : loadDesignCircles,
+            loadDesignLines : loadDesignLines
         };  
     })();
 

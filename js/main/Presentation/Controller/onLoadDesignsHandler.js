@@ -48,8 +48,8 @@
             Presentation.getOnLoad().loadDesignDataList(pDesignList);  
         }
 
-        function loadDesign(pName,pPoints){
-            Presentation.getOnLoad().loadDesignView(pName,pPoints);
+        function loadDesign(pName,pPoints,pArrayCircles,pArrayLines){
+            Presentation.getOnLoad().loadDesignView(pName,pPoints,pArrayCircles,pArrayLines);
         }
 
         function downloadDesign(pName){

@@ -68,6 +68,15 @@
             return BusinessLogic.getPaintManagerBL().getArrayLineJson();
         }
 
+        function loadDesignCircles(pArrayCircles){
+            BusinessLogic.getPaintManagerBL().loadDesignCircles(pArrayCircles);
+        }
+
+        function loadDesignLines(pArrayLines){
+            BusinessLogic.getPaintManagerBL().loadDesignLines(pArrayLines);
+        }
+
+
         return {
             sendLineToPaintManager : sendLineToPaintManager,
             sendCircleToPaintManager : sendCircleToPaintManager,
@@ -75,7 +84,9 @@
             deleteCircle : deleteCircle,
             deleteAllElements: deleteAllElements,
             getCirclesFromPaintManager : getCirclesFromPaintManager,
-            getLinesFromPaintManager : getLinesFromPaintManager
+            getLinesFromPaintManager : getLinesFromPaintManager,
+            loadDesignCircles : loadDesignCircles,
+            loadDesignLines : loadDesignLines
         }; 
     })();    
 

@@ -69,11 +69,13 @@ var DataAccess = window.DataAccess || {};
         Parse.$ = jQuery;
 
 
-        function uploadParseData(pName,pPoints){
+        function uploadParseData(pName,pPoints,pArrayCircles,pArrayLines){
             var tempDesign = new TennisDesign();
             tempDesign.save({
                 Name : pName,
-                Points : pPoints
+                Points : pPoints,
+                Circles : pArrayCircles,
+                Lines : pArrayLines
             });  
         }
 
@@ -88,7 +90,7 @@ var DataAccess = window.DataAccess || {};
                     var name = designs[0].get("Name");
                     var arrayCircles = designs[0].get("Circles");
                     var arrayLines = designs[0].get("Lines");
-                    BusinessLogic.getParseBusinessLogic().loadDesign(name,points); 
+                    BusinessLogic.getParseBusinessLogic().loadDesign(name,points,arrayCircles,arrayLines); 
                 }
                 
               },
@@ -123,7 +125,7 @@ var DataAccess = window.DataAccess || {};
             });
         }
 
-        function saveDesign(pName,pPoints){
+        function saveDesign(pName,pPoints,pArrayCircles,pArrayLines){
             var query_Name = new Parse.Query(TennisDesign);
             query_Name.equalTo("Name", pName);
             query_Name.count({
@@ -132,7 +134,7 @@ var DataAccess = window.DataAccess || {};
                      BusinessLogic.getParseBusinessLogic().nameDesignUsed();
                 }
                 else{
-                    uploadParseData(pName,pPoints);
+                    uploadParseData(pName,pPoints,pArrayCircles,pArrayLines);
                     BusinessLogic.getParseBusinessLogic().storedDesign();
                 }
                 
