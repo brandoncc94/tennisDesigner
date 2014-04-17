@@ -273,11 +273,11 @@
                 figuresLayer.draw();
 
                 checkIntersection(positionsArray);
-                checkIntersectionQuadratic(positionsArray);
+                //checkIntersectionQuadratic(positionsArray);
             });
 
             checkIntersection(positionsArray);
-            checkIntersectionQuadratic(positionsArray);
+            //checkIntersectionQuadratic(positionsArray);
         }
 
         function checkIntersection(pLineObject){
