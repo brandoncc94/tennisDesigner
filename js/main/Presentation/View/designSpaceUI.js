@@ -347,6 +347,27 @@
             
             var staticLines = [x1, y1, x2, y2, x3, y3];
 
+            var arrayPos = [];
+
+            var position = 0.0;
+            var startPt = {x: 150, y: 100};
+            var controlPt = {x: 200, y: 150};
+            var endPt = {x: 300, y: 100};
+            var canvas = document.createElement("canvas");
+            canvas.width = canvas.height = 500;
+            document.body.appendChild(canvas);
+            var ctx = canvas.getContext("2d");
+            
+
+            ctx.strokeStyle = "black";
+            ctx.moveTo(startPt.x, startPt.y);
+            ctx.quadraticCurveTo(controlPt.x, controlPt.y, endPt.x, endPt.y);
+            ctx.stroke();
+
+            for(var i = 0; i < 100; i++){
+                arrayPos.push();
+            }
+                    /*
             for(var i=0; i<4; i++){  // for each static straight line
                var preliminary = getQuadraticCurvePoint(x1, y1, 100, 150, x2, y2, 0);
                alert(preliminary.x + " " + preliminary.y);
@@ -357,7 +378,15 @@
                if(results.onLine1 == true && results.onLine2 == true)
                     alert("Collide!");
                i+=1;
-            }
+            }*/
+        }
+
+        function drawNextPoint() {
+            var pt = getQuadraticCurvePoint(startPt.x, startPt.y, controlPt.x, controlPt.y, endPt.x, endPt.y, position);
+            position = (position + 0.006) % 1.0;
+            arrayPos.push(Math.floor(pt.x  * 100) / 100 + " " + Math.floor(pt.y * 100) / 100);
+            ctx.fillStyle = "rgba(255,0,0,0.5)";
+            ctx.fillRect(pt.x - 1, pt.y - 1, 3, 3);
         }
         
         function _getQBezierValue(t, p1, p2, p3) {
