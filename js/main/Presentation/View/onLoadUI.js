@@ -128,11 +128,13 @@ var Presentation = window.Presentation || {};
         }
 
 
-        function loadDesignView(pName,pPoints){
+        function loadDesignView(pName,pPoints,pArrayCircles,pArrayLines){
+            Presentation.getDesignSpace().cleanFigures();
             var name = getDesignListSelected();
             $('#selectDesignName').text("Create your design: "+ name);
+            Presentation.getPaintManagerHandler().loadDesignCircles(pArrayCircles);
+            Presentation.getPaintManagerHandler().loadDesignLines(pArrayLines);
             loadPointsDesignView(pPoints);
-            Presentation.getDesignSpace().cleanFigures();
 
         }
 
@@ -160,7 +162,9 @@ var Presentation = window.Presentation || {};
         function updateDesign(){
             var name =  getDesignListSelected();
             var points = getPoints();
-            Presentation.getOnLoadDesignsHandler().updateDesign(name,points);
+            var arrayCircles = Presentation.getPaintManagerHandler().getCirclesFromPaintManager();
+            var arrayLines = Presentation.getPaintManagerHandler().getLinesFromPaintManager();
+            Presentation.getOnLoadDesignsHandler().updateDesign(name,points,arrayCircles,arrayLines);
         }
 
 
@@ -187,11 +191,14 @@ var Presentation = window.Presentation || {};
             }            
         }
 
-        function addDesign(){                
+        function addDesign(){
+            Presentation.getDesignSpace().cleanFigures();                
             if($('#tbxDesignName').val().length!=0){
                 //Sending the name design to parse
                 var pPoints = getPoints();
-                Presentation.getOnLoadHandler().saveDesignToData($('#tbxDesignName').val(),pPoints);
+                var arrayCircles = Presentation.getPaintManagerHandler().getCirclesFromPaintManager();
+                var arrayLines = Presentation.getPaintManagerHandler().getLinesFromPaintManager();
+                Presentation.getOnLoadHandler().saveDesignToData($('#tbxDesignName').val(),pPoints,arrayCircles,arrayLines);
             }else{
                 $('#tbxDesignName').effect( "shake", 1000 );
                 $('#tbxDesignName').val("");    

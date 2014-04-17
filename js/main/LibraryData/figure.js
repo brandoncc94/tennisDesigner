@@ -54,6 +54,10 @@ var Figure;
         
         getPointsFigure : function(){
             return this.pointsFigure;
+        },
+
+        convertToJson : function(){
+            return ; 
         }
     });
 

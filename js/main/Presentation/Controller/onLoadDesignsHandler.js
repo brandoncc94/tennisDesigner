@@ -48,16 +48,16 @@
             Presentation.getOnLoad().loadDesignDataList(pDesignList);  
         }
 
-        function loadDesign(pName,pPoints){
-            Presentation.getOnLoad().loadDesignView(pName,pPoints);
+        function loadDesign(pName,pPoints,pArrayCircles,pArrayLines){
+            Presentation.getOnLoad().loadDesignView(pName,pPoints,pArrayCircles,pArrayLines);
         }
 
         function downloadDesign(pName){
             BusinessLogic.getParseBusinessLogic().downloadDesign(pName);
         }
 
-        function updateDesign(pName,pPoints){
-            BusinessLogic.getParseBusinessLogic().updateDesign(pName,pPoints);
+        function updateDesign(pName,pPoints,pArrayCircles,pArrayLines){
+            BusinessLogic.getParseBusinessLogic().updateDesign(pName,pPoints,pArrayCircles,pArrayLines);
         }
 
         //Converts from RGB to HEX taken from http://jsfiddle.net/DCaQb/  

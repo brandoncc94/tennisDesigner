@@ -48,6 +48,13 @@
 
         getPositionX: function(){
             return this.positionX;
+        },
+
+        convertToArray: function(){
+            var pointArray = new Array();
+            pointArray.push(this.positionX);
+            pointArray.push(this.positionY);
+            return pointArray;
         }
 
     });

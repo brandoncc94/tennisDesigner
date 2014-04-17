@@ -27,7 +27,7 @@
         var CurveLine = Figure.extend({
             init: function(pPointsFigure, pStrokeWidth, pStrokeColor){
                 this._super(pPointsFigure, pStrokeWidth, pStrokeColor);
-            }        
+            }       
         });
         
 }(LibraryData, jQuery));

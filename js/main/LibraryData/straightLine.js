@@ -30,7 +30,19 @@
         var StraightLine = Figure.extend({
             init: function(pPointsFigure, pStrokeWidth, pStrokeColor){
                 this._super(pPointsFigure, pStrokeWidth, pStrokeColor);
-            }        
+            },
+
+            convertToJson : function(){
+              var points = new Array();
+              points.push(this.pointsFigure.getPositionX().convertToArray());
+              points.push(this.pointsFigure.getPositionY().convertToArray());
+              var lineJson = {
+                  points : points,
+                  strokeWidth : this.strokeWidth,
+                  strokeColor : this.strokeColor
+              };
+              return lineJson; 
+            }         
         });
 
 }(LibraryData, jQuery));

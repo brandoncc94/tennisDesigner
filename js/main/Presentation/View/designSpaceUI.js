@@ -209,6 +209,8 @@
                 /****************************************************************************************************/
             });
         }
+
+        
         function drawLine(pPosX1, pPosY1, pPosX2, pPosY2, pStrokeWidth, pStrokeColor, pType){
             var straight = new Kinetic.Line({
                 strokeWidth: 3,
@@ -649,6 +651,7 @@
             backgroundLayer.draw();
             //Now let's update the paint manager
             Presentation.getPaintManagerHandler().deleteAllElements();
+            idLabel= 0;
         }
 
         function init(){
@@ -666,6 +669,7 @@
             updateLines : updateLines,
             getAnchorLayer :getAnchorLayer,
             drawLine: drawLine,
+            drawCircle : drawCircle,
             dragElementsIntoCanvas: dragElementsIntoCanvas,
             cleanFigures : cleanFigures
         };            
