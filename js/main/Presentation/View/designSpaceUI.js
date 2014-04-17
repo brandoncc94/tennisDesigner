@@ -138,7 +138,7 @@
 
                 var posX = Presentation.getOnLoadDesignsHandler().getXPageReference(e);
                 var posY = Presentation.getOnLoadDesignsHandler().getYPageReference(e);
-                drawFigure(posX, posY, pRadius, pFillColor, pStrokeWidth, pStrokeColor, dragSrcEl, "edit");
+                drawFigure(posX, posY, pRadius, pFillColor, pStrokeWidth, pStrokeColor, dragSrcEl, "fire");
             });
         }
 
@@ -272,11 +272,11 @@
                 label.changeName(cad , "", straight.id());
                 figuresLayer.draw();
 
-                checkIntersection(positionsArray);
+                //checkIntersection(positionsArray);
                 //checkIntersectionQuadratic(positionsArray);
             });
 
-            checkIntersection(positionsArray);
+            //checkIntersection(positionsArray);
             //checkIntersectionQuadratic(positionsArray);
         }
 
@@ -641,6 +641,8 @@
 
             backgroundLayer.draw();
         }
+
+
 
         function cleanFigures(){
             //Destroy all the children of the figures and labels
