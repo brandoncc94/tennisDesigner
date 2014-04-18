@@ -208,7 +208,6 @@
                 });
             }
         }
-
         
         function drawLine(pPosX1, pPosY1, pPosX2, pPosY2, pStrokeWidth, pStrokeColor, pType){
             var straight = new Kinetic.Line({
@@ -268,7 +267,6 @@
             checkIntersection(positionsArray);
             checkIntersectionQuadratic(positionsArray);
             }           
-
         }
 
         function checkIntersection(pLineObject){
@@ -357,11 +355,7 @@
                     alert(results.x +" "+ results.y);
                }
             };                                    
-
-
         }
-
-        
 
         function updateLines() {
             var s = straight;
@@ -424,8 +418,8 @@
                             y: Y
                         });
                     }else if(x == 375 && y == 175){
-                        if (X < 320) {
-                            X = 320;
+                        if (X < 370) {
+                            X = 370;
                         }
                         if (X > 550) {
                             X = 550;
@@ -444,8 +438,8 @@
                         if (X < 290) {
                             X = 290;
                         }
-                        if (X > 550) {
-                            X = 550;
+                        if (X > 530) {
+                            X = 530;
                         }
                         if (Y < 240) {
                             Y = 240;
@@ -667,16 +661,10 @@
                 //store points in array
                 res.push(x);
                 res.push(y);
-
             }
         }
-
         return res;
     }
-
-
-
-
 
         function loadFiguresActions(){
             $( "#imgCircle" ).on( "click", function(){   

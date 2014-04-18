@@ -37,8 +37,9 @@
      **/
 
     var fireBL = (function(){
-        
+
         function paint(pLinesCollection, pCirclesCollection, pSoleObject){
+            var start = new Date().getTime();
             Presentation.getDesignSpace().fillBackground("red");
             Presentation.getDesignSpace().reduceAnchors();
 
@@ -49,6 +50,10 @@
             }
             paintLines(pLinesCollection);
             paintCircles(pCirclesCollection);
+
+            var end = new Date().getTime();
+            var time = end - start;
+            Presentation.getOnLoadHandler().sendExecutionTime(time);
         }
 
         function paintLines(pLinesCollection){
@@ -74,6 +79,7 @@
 
                 Presentation.getDesignSpace().drawCircle(points[0], points[1], radio, fillColor, strokeWidth, strokeColor, "fire"); 
             }
+
         }
 
         return {

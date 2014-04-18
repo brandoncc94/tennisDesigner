@@ -56,7 +56,6 @@
         }
 
         function deleteLineObject(pId){
-            alert(pId);
             linesCollection[pId] = "empty";            
         }
 
@@ -152,6 +151,71 @@
             BusinessLogic.getfireBL().paint(linesCollection, circlesCollection, sole);
         }
 
+        function createTable(pI, pTable) {
+          if(pI == 1){
+              var row = document.createElement("tr");
+              var column = document.createElement("td");
+              var columnText = document.createTextNode($('#metrix-table').find('td:eq(0)').text());
+              column.appendChild(columnText);
+              row.appendChild(column);
+
+              var column = document.createElement("td");
+              var columnText = document.createTextNode($('#metrix-table').find('td:eq(1)').text());                
+              column.appendChild(columnText);
+              row.appendChild(column);
+
+              pTable.appendChild(row);
+
+              return pTable;
+          }
+          else{
+            // Crea un elemento <table> 
+            var table   = document.createElement("table");
+            table.setAttribute("id", "tmpTable");
+           
+            // Crea las celdas
+            for (var i = 0; i < pI; i++) {
+              // Crea las hileras de la tabla
+              var row = document.createElement("tr");
+           
+              for (var j = 0; j < 1; j++) {
+                var column = document.createElement("td");
+                var columnText = document.createTextNode("Historial");
+                column.appendChild(columnText);
+                row.appendChild(column);
+
+                var column = document.createElement("td");
+                var columnText = document.createTextNode("Aqui va el resto");                
+                column.appendChild(columnText);
+                row.appendChild(column);
+              }
+              table.appendChild(row);
+            }
+
+            return table;
+          }
+        }
+
+        var convertDataToExcel = (function () {
+          var uri = 'data:application/vnd.ms-excel;base64,'
+          , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+          , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+          , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
+          return function (table, name, filename) {
+            var tmpTable = createTable(5);
+            var finalTable = createTable(1, tmpTable);
+            $("body").append(finalTable);
+            $("#tmpTable").hide();
+
+              if (!table.nodeType) table = document.getElementById(table)
+              var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }
+
+              document.getElementById("downloadLink").href = uri + base64(format(template, ctx));
+              document.getElementById("downloadLink").download = filename;
+              document.getElementById("downloadLink").click();
+          }
+        })()
+
         //Let's make it public
         return {
             insertLine : insertLine,
@@ -168,7 +232,8 @@
             loadDesignLines : loadDesignLines,
             loadDesignSole : loadDesignSole,
             sendToFire : sendToFire,
-            insertSole : insertSole
+            insertSole : insertSole,
+            convertDataToExcel : convertDataToExcel
         };  
     })();
 

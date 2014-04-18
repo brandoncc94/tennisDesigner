@@ -65,11 +65,16 @@
             Presentation.getOnLoad().storedDesign();
         }
 
+        function sendExecutionTime(pTime){
+            Presentation.getOnLoad().updateExecutionTime(pTime);
+        }
+
         return {
             drawGraphicalLabel:drawGraphicalLabel,
             saveDesignToData:saveDesignToData,
             nameDesignUsed : nameDesignUsed,
-            storedDesign : storedDesign
+            storedDesign : storedDesign,
+            sendExecutionTime : sendExecutionTime
         }; 
     })();    
 

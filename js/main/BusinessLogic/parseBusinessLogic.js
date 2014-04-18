@@ -76,12 +76,11 @@ var BusinessLogic = window.BusinessLogic || {};
             DataAccess.getParseDataAcces().updateDesign(pName,pPoints,pArrayCircles,pArrayLines,pSole);
         }
 
-
         //Load the drop down list, send reference to controller onLoadHandler.js
         function loadDesignsReference(pDesignList){
             Presentation.getOnLoadDesignsHandler().loadDesignsList(pDesignList);
         }
-
+  
         //Let's make it public
         return {
             downloadDesignsNameReference: downloadDesignsNameReference,

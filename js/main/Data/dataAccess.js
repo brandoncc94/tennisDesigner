@@ -55,12 +55,7 @@ var DataAccess = window.DataAccess || {};
      **/
 
     var TennisDataAcces = (function(){
-        // private property
         
-
-        return {
-            
-        };
     })();
 
 

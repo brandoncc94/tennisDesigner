@@ -48,6 +48,8 @@ var Presentation = window.Presentation || {};
             $('#listDesign-container').hide();
             $('#showMessage').hide();
             $('#contact-container').hide();
+            $('#metrix-table').hide();
+            $("#exportToExcel").hide();
 
             $('#imgSearchDesign').click(function(){
                 if(!$('#nameDesign-container').hidden){
@@ -68,13 +70,19 @@ var Presentation = window.Presentation || {};
             $('#nameDesign-container').effect( "explode" );
             });
 
-
             $('#imgSaveDesign').click(function(){
                 updateDesign();
             });
 
             $("#lieEdit a").click(function(){
                 $(".main-container").css('background-color', '#d9534f');
+                try{
+                    var name = getDesignListSelected();
+                    downloadDesign(name);                   
+                    updateDecorationPanel();
+                }catch(err){
+                    bootbox.alert("You haven't selected the design: ");
+                }
             });
 
             $("#lieArcade a").click(function(){
@@ -83,6 +91,16 @@ var Presentation = window.Presentation || {};
 
             $("#lieFire a").click(function(){
                 $(".main-container").css('background-color', '#428bca');
+                $("#decoration-container").fadeOut(500,function(){
+                    $("#decoration-container span").text("Metrix Results");
+                    $("#tabs").hide();
+                    $("#content").hide();
+                    $("#metrix-table").show();
+                    $("#exportToExcel").show();
+                    $("#algorithmName").text("Fire");                    
+                    $("#decoration-container").fadeIn(500);
+                });
+                
                 Presentation.getDesignSpace().cleanJustFigures();
                 Presentation.getPaintManagerHandler().sendToFire();
             });
@@ -96,10 +114,15 @@ var Presentation = window.Presentation || {};
             });
 
             $('#imgLoadDesign').click(function(){
+                updateDecorationPanel();
                 var name = getDesignListSelected();
                 downloadDesign(name);                                
-            });         
+            }); 
 
+            $("#exportToExcel").click(function(){
+                var name = getDesignListSelected();
+                Presentation.getPaintManagerHandler().convertTableToExcel('tmpTable', 'metrix-table', 'historyOf' + name + '.xls');                     
+            }); 
 
             $('#divBackgroundColor').colpick({
                 colorScheme:'dark',
@@ -137,10 +160,25 @@ var Presentation = window.Presentation || {};
             }).css('background-color', '#ff8800');  
         }
 
+        function updateDecorationPanel(){
+            if($("#metrix-table").is(":visible")){
+                $("#decoration-container").fadeOut(500,function(){
+                    $("#decoration-container span").text("Add Decoration: ");
+                    $("#tabs").show();
+                    $("#content").show();
+                    $("#metrix-table").hide();
+                    $("#exportToExcel").hide();
+                    $("#decoration-container").fadeIn(500);
+                });
+            }
+        }
+        function updateExecutionTime(pTime){
+            $("#executionTime").text(pTime);
+        }
+
         function downloadDesign(pName){
             Presentation.getOnLoadDesignsHandler().downloadDesign(pName);
         }
-
 
         function loadDesignView(pName,pPoints,pArrayCircles,pArrayLines,pSole){
             Presentation.getDesignSpace().cleanFigures();
@@ -220,10 +258,7 @@ var Presentation = window.Presentation || {};
                 $('#tbxDesignName').effect( "shake", 1000 );
                 $('#tbxDesignName').val("");    
             }
-        }
-
-            
-
+        } 
 
         function nameDesignUsed(){
             bootbox.alert("Name is not available!");
@@ -241,14 +276,14 @@ var Presentation = window.Presentation || {};
             $('#tbxDesignName').val("");
         }
 
-
         return {
             init:init,
             addDesign : addDesign,
             loadDesignDataList : loadDesignDataList,
             loadDesignView : loadDesignView,
             nameDesignUsed : nameDesignUsed,
-            storedDesign : storedDesign
+            storedDesign : storedDesign,
+            updateExecutionTime : updateExecutionTime
         };  
     })();
 
