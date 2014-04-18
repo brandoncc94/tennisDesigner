@@ -40,6 +40,7 @@
     var paintManagerBL = (function(){
         var linesCollection = new Array();
         var circlesCollection = new Array();
+        var sole;
 
         //Let's centralize everything
         function insertLine(pLineObject){
@@ -50,7 +51,12 @@
             circlesCollection.push(pCircleObject);
         }
 
+        function insertSole(pSoleObject){
+            sole = pSoleObject;
+        }
+
         function deleteLineObject(pId){
+            alert(pId);
             linesCollection[pId] = "empty";            
         }
 
@@ -89,7 +95,7 @@
 
         function getArrayLineJson(){
             var arrayLineJson =  new Array();
-            for (var i = 0; i <linesCollection.length; i++) {
+            for (var i = 0; i < linesCollection.length; i++) {
                 if(linesCollection[i] != "empty"){
                   arrayLineJson.push(linesCollection[i].convertToJson());
                 }
@@ -107,7 +113,7 @@
               var strokeWidth = circle["strokeWidth"];
               var strokeColor = circle["strokeColor"];
               Presentation.getDesignSpaceHandler().sentDataToDrawCircle(posX,posY,radius,fillColor,strokeWidth,strokeColor);
-            };
+            }
 
         }
 
@@ -121,8 +127,11 @@
               var strokeWidth = circle["strokeWidth"];
               var strokeColor = circle["strokeColor"];
               Presentation.getDesignSpaceHandler().sentDataToDrawLine(posX1,posY1,posX2,posY2,strokeWidth,strokeColor);
-              
-            };
+            }
+        }
+
+        function sendToFire(){
+            BusinessLogic.getfireBL().paint(linesCollection, circlesCollection, sole);
         }
 
         //Let's make it public
@@ -137,7 +146,9 @@
             getArrayCircleJson : getArrayCircleJson,
             getArrayLineJson : getArrayLineJson,
             loadDesignCircles : loadDesignCircles,
-            loadDesignLines : loadDesignLines
+            loadDesignLines : loadDesignLines,
+            sendToFire : sendToFire,
+            insertSole : insertSole
         };  
     })();
 

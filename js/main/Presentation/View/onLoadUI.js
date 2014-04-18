@@ -83,6 +83,8 @@ var Presentation = window.Presentation || {};
 
             $("#lieFire a").click(function(){
                 $(".main-container").css('background-color', '#428bca');
+                Presentation.getDesignSpace().cleanJustFigures();
+                Presentation.getPaintManagerHandler().sendToFire();
             });
 
             $("#lieContact a").click(function(){
@@ -106,7 +108,13 @@ var Presentation = window.Presentation || {};
                 onSubmit:function(hsb,hex,rgb,el) {
                     $(el).css('background-color', '#'+hex);
                     $(el).colpickHide();
-                    Presentation.getOnLoadHandler().drawGraphicalLabel("Background-color: ",hex);
+                    if(backgroundColorId == 0){
+                        idLabel+=1
+                        backgroundColorId = idLabel;
+                        Presentation.getOnLoadHandler().drawGraphicalLabel("background-color: " + hex, [10,10], -1, hex);
+                    }
+                    else
+                        Presentation.getOnLoadHandler().drawGraphicalLabel("background-color: " + hex, "", backgroundColorId - 1, hex);
                 }
             }).css('background-color', '#ff8800');  
 
@@ -118,7 +126,13 @@ var Presentation = window.Presentation || {};
                 onSubmit:function(hsb,hex,rgb,el) {
                     $(el).css('background-color', '#'+hex);
                     $(el).colpickHide();
-                    Presentation.getOnLoadHandler().drawGraphicalLabel("BorderSole-color: ",hex);
+                    if(borderSoleColorId == 0){
+                        idLabel+=1
+                        borderSoleColorId = idLabel;
+                        Presentation.getOnLoadHandler().drawGraphicalLabel("BorderSole-color: " + hex, [10,40], -1, hex, "Sole");
+                    }
+                    else
+                        Presentation.getOnLoadHandler().drawGraphicalLabel("BorderSole-color: " + hex, "", borderSoleColorId - 1, hex, "Sole");
                 }
             }).css('background-color', '#ff8800');  
         }
@@ -282,3 +296,5 @@ var Presentation = window.Presentation || {};
     $(init);
 
 }(Presentation, jQuery));
+
+var backgroundColorId = 0, borderSoleColorId = 0;

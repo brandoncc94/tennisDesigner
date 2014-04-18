@@ -7,13 +7,13 @@
  */
 
  /*
-  * Author:      juancar199400@gmail.com
-  * Date:        11/04/2014
-  * Description: Main controller to paint the view 
+  * Author:      brandoncc94@gmail.com
+  * Date:        17/04/2014
+  * Description: Fire method.
   */
 
 /*
- * Global Presentation Layer to be used with MVC Pattern
+ * Global Presentation Layer 
  * @namespace
  */
 (function (pContext, $) {
@@ -21,7 +21,7 @@
     /**
      * Public method to return a reference of handler module.
      * 
-     * @return {handlerModule} Handler declarations of the MVC.
+     * @return {fireBL} Handler declarations of the MVC.
      * @public
      */
     pContext.getfireBL = function() {
@@ -38,9 +38,46 @@
 
     var fireBL = (function(){
         
+        function paint(pLinesCollection, pCirclesCollection, pSoleObject){
+            Presentation.getDesignSpace().fillBackground("red");
+            Presentation.getDesignSpace().reduceAnchors();
+
+            if(pSoleObject == null){
+                Presentation.getDesignSpace().fillSole("black");
+            }else{
+                Presentation.getDesignSpace().fillSole(pSoleObject.getStrokeColor());
+            }
+            paintLines(pLinesCollection);
+            paintCircles(pCirclesCollection);
+        }
+
+        function paintLines(pLinesCollection){
+            for(var i = 0; i < pLinesCollection.length; i++){
+                var strokeWidth = pLinesCollection[i].getStrokeWidth();
+                var strokeColor = pLinesCollection[i].getStrokeColor();
+                var points = [pLinesCollection[i].getPointsFigure().getPositionX().getPositionX(), 
+                              pLinesCollection[i].getPointsFigure().getPositionX().getPositionY(),
+                              pLinesCollection[i].getPointsFigure().getPositionY().getPositionX(),
+                              pLinesCollection[i].getPointsFigure().getPositionY().getPositionY()];
+                Presentation.getDesignSpace().drawLine(points[0], points[1], points[2], points[3], strokeWidth, strokeColor, "fire"); 
+            }
+        }
+
+        function paintCircles(pCirclesCollection){
+            for(var i = 0; i < pCirclesCollection.length; i++){
+                var strokeWidth = pCirclesCollection[i].getStrokeWidth();
+                var strokeColor = pCirclesCollection[i].getStrokeColor();
+                var radio = pCirclesCollection[i].getRadio();
+                var fillColor = pCirclesCollection[i].getFillColor();
+                var points = [pCirclesCollection[i].getPointsFigure().getPositionX(), 
+                              pCirclesCollection[i].getPointsFigure().getPositionY()];
+
+                Presentation.getDesignSpace().drawCircle(points[0], points[1], radio, fillColor, strokeWidth, strokeColor, "fire"); 
+            }
+        }
 
         return {
-
+            paint: paint
         }; 
     })();    
 
