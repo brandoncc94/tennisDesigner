@@ -101,7 +101,7 @@
             });
 
             //Add all layers to the main stage
-                
+            
             canvasStage.add(backgroundLayer); 
             canvasStage.add(curveLayer);
             canvasStage.add(lineLayer);
@@ -109,6 +109,20 @@
             canvasStage.add(anchorLayer); 
 
             loadFiguresActions();
+            
+               
+            // for (var i = 0; i < 50; i++) {
+            //     var X = 110+i;
+            //     var a = curveLayer.getAllIntersections({x: X ,  y : 231 });
+            //     if(true){
+            //         alert(a);    
+            //     }
+                
+            // }
+                
+
+            
+            
         }    
 
         function dragElementsIntoCanvas(pRadius, pStrokeWidth, pStrokeColor, pFillColor){
@@ -272,12 +286,12 @@
                 label.changeName(cad , "", straight.id());
                 figuresLayer.draw();
 
-                //checkIntersection(positionsArray);
-                //checkIntersectionQuadratic(positionsArray);
+                checkIntersection(positionsArray);
+                checkIntersectionQuadratic(positionsArray);
             });
 
-            //checkIntersection(positionsArray);
-            //checkIntersectionQuadratic(positionsArray);
+            checkIntersection(positionsArray);
+            checkIntersectionQuadratic(positionsArray);
         }
 
         function checkIntersection(pLineObject){
@@ -334,133 +348,43 @@
         }        
 
         function checkIntersectionQuadratic(pLineObject){
-            var curveLineChildren = anchorLayer.getChildren();
-            //
-            var x1 = curveLineChildren[0].x();
-            var y1 = curveLineChildren[0].y(); 
+            var ptsa1 = [straight.start.attrs.x,straight.start.attrs.y,
+            straight.control1.attrs.x-(-straight.start.attrs.x+straight.control1.attrs.x)/2, straight.start.attrs.y+
+             (straight.control1.attrs.y)/5,
+             straight.control1.attrs.x,
+            straight.control1.attrs.y];
 
-            var x2 = curveLineChildren[1].x();
-            var y2 = curveLineChildren[1].y();
-
-            var x3 = curveLineChildren[4].x();
-            var y3 = curveLineChildren[4].y();
+            var pts1 = getCurvePoints(ptsa1);
             
-            var staticLines = [x1, y1, x2, y2, x3, y3];
-
-            var arrayPos = [];
-
-            var position = 0.0;
-            var startPt = {x: 150, y: 100};
-            var controlPt = {x: 200, y: 150};
-            var endPt = {x: 300, y: 100};
-            var canvas = document.createElement("canvas");
-            canvas.width = canvas.height = 500;
-            document.body.appendChild(canvas);
-            var ctx = canvas.getContext("2d");
-            
-
-            ctx.strokeStyle = "black";
-            ctx.moveTo(startPt.x, startPt.y);
-            ctx.quadraticCurveTo(controlPt.x, controlPt.y, endPt.x, endPt.y);
-            ctx.stroke();
-
-            for(var i = 0; i < 100; i++){
-                arrayPos.push();
-            }
-                    /*
-            for(var i=0; i<4; i++){  // for each static straight line
-               var preliminary = getQuadraticCurvePoint(x1, y1, 100, 150, x2, y2, 0);
-               alert(preliminary.x + " " + preliminary.y);
-               var preliminary2 = getQuadraticCurvePoint(x1, y1, 200, 150, x3, y3, 0);
-               alert(preliminary2.x + " " + preliminary2.y);
-               var results = checkQuadraticPoints(pLineObject[0], pLineObject[1], pLineObject[2], pLineObject[3], 
-                           staticLines[i], staticLines[i + 1], staticLines[i + 2], staticLines[i + 3]);
-               if(results.onLine1 == true && results.onLine2 == true)
-                    alert("Collide!");
-               i+=1;
-            }*/
-        }
-
-        function drawNextPoint() {
-            var pt = getQuadraticCurvePoint(startPt.x, startPt.y, controlPt.x, controlPt.y, endPt.x, endPt.y, position);
-            position = (position + 0.006) % 1.0;
-            arrayPos.push(Math.floor(pt.x  * 100) / 100 + " " + Math.floor(pt.y * 100) / 100);
-            ctx.fillStyle = "rgba(255,0,0,0.5)";
-            ctx.fillRect(pt.x - 1, pt.y - 1, 3, 3);
-        }
-        
-        function _getQBezierValue(t, p1, p2, p3) {
-            var iT = 1 - t;
-            return iT * iT * p1 + 2 * iT * t * p2 + t * t * p3;
-        }
-
-        function getQuadraticCurvePoint(startX, startY, cpX, cpY, endX, endY, position) {
-            return {
-                x:    _getQBezierValue(position, startX, cpX, endX),
-                y:    _getQBezierValue(position, startY, cpY, endY)
+            for (var i = 0; i+2 < pts1.length; i+=2) {
+                pts1[i]
+                var results  = checkLineIntersection(pLineObject[0],pLineObject[1],pLineObject[2],pLineObject[3],
+                 pts1[i],pts1[i+1],pts1[i+2],pts1[i+3]);
+                if(results.onLine1 == true && results.onLine2 == true){
+                    alert(results.x +" "+ results.y);
+               }
             };
+
+            var ptsa =[straight.start.attrs.x,straight.start.attrs.y,
+             straight.start.attrs.x-(straight.start.attrs.x)/5, straight.start.attrs.y+
+             (straight.end.attrs.y-straight.start.attrs.y)/2,
+                straight.end.attrs.x,
+                straight.end.attrs.y];
+            var pts = getCurvePoints(ptsa, 1,false, 16);
+
+            for (var i = 0; i+2 < pts.length; i+=2) {
+                pts[i]
+                var results  = checkLineIntersection(pLineObject[0],pLineObject[1],pLineObject[2],pLineObject[3],
+                 pts[i],pts[i+1],pts[i+2],pts[i+3]);
+                if(results.onLine1 == true && results.onLine2 == true){
+                    alert(results.x +" "+ results.y);
+               }
+            };                                    
+
+
         }
 
-        function checkQuadraticPoints(){
-            var slope     = 0.0; // For line.
-            var yInercept = 0.0;
-
-            var A = 0.0; // For parabolla, quadratic function coefficients.
-            var B = 0.0;
-            var C = 0.0;
-
-            var a = 0.0; // For solving quadratic formula.
-            var b = 0.0;
-            var c = 0.0;
-
-            var x1 = 0.0; // Point(s) of intersection.
-            var y1 = 0.0;
-            var x2 = 0.0;
-            var y2 = 0.0;
-
-            slope      = parseFloat(window.document.input.m.value);
-            yIntercept = parseFloat(window.document.input.b.value);
-
-            A = parseFloat(window.document.input.A.value);
-            B = parseFloat(window.document.input.B.value);
-            C = parseFloat(window.document.input.C.value);
-
-            a = A;
-            b = B - slope;
-            c = C - yIntercept;
-
-            // b^2 -4*ac
-            var discriminant = b * b - 4 * a * c;
-
-            if(discriminant > 0.0)
-            {
-                //-b+- sqrt(discriminant) / 2a
-                x1 = (-b + Math.sqrt(discriminant)) / (2.0 * a);
-                x2 = (-b - Math.sqrt(discriminant)) / (2.0 * a);
-
-                y1 = slope * x1 + yIntercept;
-                y2 = slope * x2 + yIntercept;
-
-                message = 'There are two points of intersection: \n';
-                message += '(' + x1 + ', ' + y1 + ')\n';
-                message += '(' + x2 + ', ' + y2 + ')';
-            }
-            else if(discriminant == 0.0)
-            {
-                x1 = (-b) / (2.0 * a);
-
-                y1 = slope * x1 + yIntercept;
-
-                message = 'There is one point of intersection: \n';
-                message += '(' + x1 + ', ' + y1 + ')';
-            }
-            else
-            {
-                message = 'There are no points of intersection.';
-            }
-
-            alert(message);
-        }
+        
 
         function updateLines() {
             var s = straight;
@@ -485,6 +409,7 @@
                 draggable: true,
                 dragBoundFunc: function (pos) {
                     //Anchor values
+
                     var X = pos.x;
                     var Y = pos.y;
                     if(x == 150 && y == 100){
@@ -573,6 +498,7 @@
                             y: Y
                         });
                     }
+                    
                 }
             });
 
@@ -592,9 +518,11 @@
 
             // when dragend redraw everything
             anchor.on('dragend', function() {
-                //alert(anchor.getPosition().x);
+                //alert();
+                //alert("x:"+anchor.getPosition().x+" Y:"+anchor.getPosition().y);
                 drawCurves();
                 updateLines();
+                anchorLayer.draw(); 
             });
 
             //Add to the layer the anchor we've just created
@@ -613,27 +541,168 @@
 
         // prueba(1,2,result);
 
+
+
+
         function drawCurves() {
             var context = curveLayer.getContext();
 
+
             //Clear method avoid repeting the color and leave marks behind
+            
             context.clear();
+            curveLayer.destroyChildren();
 
-            // draw curve lines
-            context.beginPath();
-            context.moveTo(straight.start.attrs.x, straight.start.attrs.y);
-            context.quadraticCurveTo(100,150,straight.end.attrs.x, straight.end.attrs.y);
-            context.setAttr('strokeStyle', '#60a637');
-            context.setAttr('lineWidth', 4);
-            context.stroke();
 
-            context.beginPath();
-            context.moveTo(straight.start.attrs.x, straight.start.attrs.y);
-            context.quadraticCurveTo(200,150,straight.control1.attrs.x, straight.control1.attrs.y);
-            context.setAttr('strokeStyle', '#60a637');
-            context.setAttr('lineWidth', 4);
-            context.stroke();
-        }      
+             var ptsa =[straight.start.attrs.x,straight.start.attrs.y,
+             straight.start.attrs.x-(straight.start.attrs.x)/5, straight.start.attrs.y+
+             (straight.end.attrs.y-straight.start.attrs.y)/2,
+                straight.end.attrs.x,
+                straight.end.attrs.y];
+              
+             var showPoints = false;
+
+            // var l =  new Kinetic.Shape({
+            //     drawFunc: function () {
+            //         context.beginPath();    
+            //         var pts = getCurvePoints(ptsa, 1,false, 16);
+            //         context.moveTo(pts[0], pts[1]);
+            //         for(i=2;i<pts.length-1;i+=2) context.lineTo(pts[i], pts[i+1]);
+            //         context.stroke();
+            //      },
+            //     strokeWidth :3,
+            //     stroke: "green"   
+
+            // });
+            var pts = getCurvePoints(ptsa, 1,false, 16);
+            
+            var line1 =  new Kinetic.Line({
+                x: 0,
+                y: 0,
+                points : pts , 
+                // drawFunc: function () {
+                //     context.beginPath();    
+                    
+                //     context.moveTo(pts[0], pts[1]);
+                //     for(i=2;i<pts.length-1;i+=2) context.lineTo(pts[i], pts[i+1]);
+                //     context.stroke();
+                //  },
+                strokeWidth :3,
+                stroke: "green"   
+
+            });
+
+            var ptsa1 = [straight.start.attrs.x,straight.start.attrs.y,
+            straight.control1.attrs.x-(-straight.start.attrs.x+straight.control1.attrs.x)/2, straight.start.attrs.y+
+             (straight.control1.attrs.y)/5,
+             straight.control1.attrs.x,
+            straight.control1.attrs.y];
+
+            var pts1 = getCurvePoints(ptsa1);
+            var line2 = new Kinetic.Line({
+                x: 0,
+                y: 0,
+                points: pts1,
+                stroke: 'green',
+                tension: 0,
+                // drawFunc: function () {
+                //     context.beginPath();
+                //     context.moveTo(straight.start.attrs.x, straight.start.attrs.y);
+                //     context.quadraticCurveTo(200,150,straight.control1.attrs.x, straight.control1.attrs.y);
+                //     context.setAttr('strokeStyle', '#60a637');
+                //     context.setAttr('lineWidth', 2);
+                //     context.stroke();
+                // },
+                strokeWidth: 3,
+                id : 2
+            });
+
+            curveLayer.add(line1);
+            curveLayer.add(line2);
+            curveLayer.draw();
+            //canvasStage.add(curveLayer);
+        }   
+
+        
+
+    function getCurvePoints(pts, tension, isClosed, numOfSegments) {
+
+        // use input value if provided, or use a default value   
+        tension = (typeof tension != 'undefined') ? tension : 0.5;
+        isClosed = isClosed ? isClosed : false;
+        numOfSegments = numOfSegments ? numOfSegments : 16;
+
+        var _pts = [], res = [],    // clone array
+            x, y,           // our x,y coords
+            t1x, t2x, t1y, t2y, // tension vectors
+            c1, c2, c3, c4,     // cardinal points
+            st, t, i;       // steps based on num. of segments
+
+        // clone array so we don't change the original
+        _pts = pts.slice(0);
+
+        // The algorithm require a previous and next point to the actual point array.
+        // Check if we will draw closed or open curve.
+        // If closed, copy end points to beginning and first points to end
+        // If open, duplicate first points to befinning, end points to end
+        if (isClosed) {
+            _pts.unshift(pts[pts.length - 1]);
+            _pts.unshift(pts[pts.length - 2]);
+            _pts.unshift(pts[pts.length - 1]);
+            _pts.unshift(pts[pts.length - 2]);
+            _pts.push(pts[0]);
+            _pts.push(pts[1]);
+        }
+        else {
+            _pts.unshift(pts[1]);   //copy 1. point and insert at beginning
+            _pts.unshift(pts[0]);
+            _pts.push(pts[pts.length - 2]); //copy last point and append
+            _pts.push(pts[pts.length - 1]);
+        }
+
+        // ok, lets start..
+
+        // 1. loop goes through point array
+        // 2. loop goes through each segment between the 2 pts + 1e point before and after
+        for (i=2; i < (_pts.length - 4); i+=2) {
+            for (t=0; t <= numOfSegments; t++) {
+
+                // calc tension vectors
+                t1x = (_pts[i+2] - _pts[i-2]) * tension;
+                t2x = (_pts[i+4] - _pts[i]) * tension;
+
+                t1y = (_pts[i+3] - _pts[i-1]) * tension;
+                t2y = (_pts[i+5] - _pts[i+1]) * tension;
+
+                // calc step
+                st = t / numOfSegments;
+
+                // calc cardinals
+                c1 =   2 * Math.pow(st, 3)  - 3 * Math.pow(st, 2) + 1; 
+                c2 = -(2 * Math.pow(st, 3)) + 3 * Math.pow(st, 2); 
+                c3 =       Math.pow(st, 3)  - 2 * Math.pow(st, 2) + st; 
+                c4 =       Math.pow(st, 3)  -     Math.pow(st, 2);
+
+                // calc x and y cords with common control vectors
+                x = c1 * _pts[i]    + c2 * _pts[i+2] + c3 * t1x + c4 * t2x;
+                y = c1 * _pts[i+1]  + c2 * _pts[i+3] + c3 * t1y + c4 * t2y;
+
+                //store points in array
+                res.push(x);
+                res.push(y);
+
+            }
+        }
+
+        return res;
+    }
+
+
+
+
+        
+    
+           
 
         function loadFiguresActions(){
             $( "#imgCircle" ).on( "click", function(){   
@@ -685,9 +754,12 @@
             idLabel= 0;
         }
 
+        
+
         function init(){
             drawCurves();
             updateLines();
+            
         }
 
         return {
