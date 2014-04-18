@@ -97,7 +97,7 @@
             // Before drawing lets syncronize the lines when we pick up the anchor
             anchorLayer.on('beforeDraw', function() {
                 drawCurves();
-               updateLines();
+                updateLines();
             });
 
             //Add all layers to the main stage
@@ -138,7 +138,7 @@
 
                 var posX = Presentation.getOnLoadDesignsHandler().getXPageReference(e);
                 var posY = Presentation.getOnLoadDesignsHandler().getYPageReference(e);
-                drawFigure(posX, posY, pRadius, pFillColor, pStrokeWidth, pStrokeColor, dragSrcEl, "fire");
+                drawFigure(posX, posY, pRadius, pFillColor, pStrokeWidth, pStrokeColor, dragSrcEl, "edit");
             });
         }
 
@@ -166,48 +166,33 @@
                 circle.fill(pFillColor);
                 circle.stroke(pStrokeColor);
                 circle.strokeWidth(pStrokeWidth);
+                circle.draggable(false);
             }
 
             figuresLayer.add(circle);
             figuresLayer.draw();
-
-            idLabel+=1;
-
+            
             var points = LibraryData.createPoint(pPosX, pPosY);
             var label = Presentation.getLabelUI();
-            var cad = "Radius: " + pRadius + "\n" + "Stroke Width: " + pStrokeWidth + "\n" + "Stroke Color: " + pStrokeColor + "\n" + "Fill Color: " + pFillColor;
-            label.init(cad , [pPosX, pPosY]);                    
 
             //Create the object and send it to the paint manager
             var circleRef = LibraryData.createCircle(points, pRadius, pStrokeWidth, pStrokeColor, pFillColor);
-            Presentation.getPaintManagerHandler().sendCircleToPaintManager(circleRef);
 
-            circle.on('click', function() {
+            if(pType != "fire"){
+                var cad = "Radius: " + pRadius + "\n" + "Stroke Width: " + pStrokeWidth + "\n" + "Stroke Color: " + pStrokeColor + "\n" + "Fill Color: " + pFillColor;
+                label.init(cad , [pPosX, pPosY], idLabel);    
+                
+                idLabel+=1;                
+                Presentation.getPaintManagerHandler().sendCircleToPaintManager(circleRef);
 
-                /*//Datos del objeto
-                alert("Position X: " + circleRef.getPointsFigure().getPositionX() + "\n" +
-                      "Position Y: " + circleRef.getPointsFigure().getPositionY() + "\n" + 
-                      "Radio:      " + circleRef.getRadio()     + "\n" + 
-                      "StrokeWidth:" + circleRef.getStrokeWidth() + "\n" + 
-                      "StrokeColor:" + circleRef.getStrokeColor() + "\n" +
-                      "FillColor  :" + circleRef.getFillColor() + "\n"); */
+                circle.on('click', function() {
+                    Presentation.getAlertsUI().changeFeatureDialog(circle, label, false, circleRef);
+                });
 
-                Presentation.getAlertsUI().changeFeatureDialog(circle, label, false, circleRef);
-            });
-
-            circle.on('dragend', function() {
-                /****************************************************************************************************/
-                /****************************************************************************************************/
-                /****************************************************************************************************/
-                /****************************************************************************************************/
-
-                circleRef.setPointsFigure(LibraryData.createPoint(circle.getPosition().x, circle.getPosition().y));
-
-                /****************************************************************************************************/
-                /****************************************************************************************************/
-                /****************************************************************************************************/
-                /****************************************************************************************************/
-            });
+                circle.on('dragend', function() {
+                    circleRef.setPointsFigure(LibraryData.createPoint(circle.getPosition().x, circle.getPosition().y));
+                });
+            }
         }
 
         
@@ -223,61 +208,51 @@
             if(pType == "fire"){
                 straight.strokeWidth(pStrokeWidth);
                 straight.stroke(pStrokeColor);
+                straight.draggable(false);
             }
 
             figuresLayer.add(straight);
             figuresLayer.draw();
 
-            idLabel+=1;
-
+            var label = Presentation.getLabelUI();
             var points = LibraryData.createPoint(pPosX1, pPosY1);
             var points2 = LibraryData.createPoint(pPosX2, pPosY2);
-            var points3 = LibraryData.createPoint(points, points2);
+            var points3 = LibraryData.createPoint(points, points2);               
 
-            var label = Presentation.getLabelUI();
-
-            var cad = "Stroke Width: " + pStrokeWidth + "\n" + "Stroke Color: " + pStrokeColor + "\n" + "Points: [" + pPosX1 + ", " + pPosY1 + "] , " + "[" + pPosX2 + "," + pPosY2 + "]";
-            
             var lineRef = LibraryData.createStraightLine(points3, pStrokeWidth, pStrokeColor);
-
-            Presentation.getPaintManagerHandler().sendLineToPaintManager(lineRef);
-
             var positionsArray = [lineRef.getPointsFigure().getPositionX().getPositionX(), lineRef.getPointsFigure().getPositionX().getPositionY(),
-                                       lineRef.getPointsFigure().getPositionY().getPositionX(), lineRef.getPointsFigure().getPositionY().getPositionY()];
+                                lineRef.getPointsFigure().getPositionY().getPositionX(), lineRef.getPointsFigure().getPositionY().getPositionY()];
 
-            label.init(cad , [pPosX2, pPosY2]);
+            if(pType != "fire"){
+                var cad = "Stroke Width: " + pStrokeWidth + "\n" + "Stroke Color: " + pStrokeColor + "\n" + "Points: [" + pPosX1 + ", " + pPosY1 + "] , " + "[" + pPosX2 + "," + pPosY2 + "]";
+                label.init(cad , [pPosX2, pPosY2], idLabel);
+                idLabel+=1;
+                Presentation.getPaintManagerHandler().sendLineToPaintManager(lineRef);
 
-            straight.on('click', function() {
-                /*//Datos del objeto
-                        alert("Position X: [" + lineRef.getPointsFigure().getPositionX().getPositionX() + ", " +
-                                                lineRef.getPointsFigure().getPositionX().getPositionY() + "] " + "\n" +
-                              "Position Y: [" + lineRef.getPointsFigure().getPositionY().getPositionX() + ", " +
-                                               lineRef.getPointsFigure().getPositionY().getPositionY() + "] " + "\n" +
-                              "StrokeWidth:" + lineRef.getStrokeWidth() + "\n" + 
-                              "StrokeColor:" + lineRef.getStrokeColor() + "\n"); */
+                straight.on('click', function() {
+                    Presentation.getAlertsUI().changeLineFeatureDialog(straight, label, false, lineRef);
+                });
 
-                Presentation.getAlertsUI().changeLineFeatureDialog(straight, label, false, lineRef);
-            });
+                straight.on('dragend', function() {
+                    var lineObj = Presentation.getOnLoadDesignsHandler().updateLine(this, lineRef);    
+                    //Just update the label and redraw the line layer to make it visible
+                    var positionsArray = [lineObj.getPointsFigure().getPositionX().getPositionX(), lineObj.getPointsFigure().getPositionX().getPositionY(),
+                                           lineObj.getPointsFigure().getPositionY().getPositionX(), lineObj.getPointsFigure().getPositionY().getPositionY()];
 
-            straight.on('dragend', function() {
-                var lineObj = Presentation.getOnLoadDesignsHandler().updateLine(this, lineRef);    
-                //Just update the label and redraw the line layer to make it visible
-                positionsArray = [lineObj.getPointsFigure().getPositionX().getPositionX(), lineObj.getPointsFigure().getPositionX().getPositionY(),
-                                       lineObj.getPointsFigure().getPositionY().getPositionX(), lineObj.getPointsFigure().getPositionY().getPositionY()];
+                    var cad = "Stroke Width: " + lineObj.getStrokeWidth() + "\n" + "Stroke Color: " + lineObj.getStrokeColor()   + "\n" + 
+                              "Points: [" + positionsArray[0] + ", " + positionsArray[1] + "] , " + 
+                              "[" + positionsArray[2] + "," + positionsArray[3] + "]";
+                    
+                    label.changeName(cad , "", straight.id());
+                    figuresLayer.draw();
 
-                var cad = "Stroke Width: " + lineObj.getStrokeWidth() + "\n" + "Stroke Color: " + lineObj.getStrokeColor()   + "\n" + 
-                          "Points: [" + positionsArray[0] + ", " + positionsArray[1] + "] , " + 
-                          "[" + positionsArray[2] + "," + positionsArray[3] + "]";
-                
-                label.changeName(cad , "", straight.id());
-                figuresLayer.draw();
-
-                //checkIntersection(positionsArray);
-                //checkIntersectionQuadratic(positionsArray);
-            });
+                    //checkIntersection(positionsArray);
+                    //checkIntersectionQuadratic(positionsArray);
+                });
 
             //checkIntersection(positionsArray);
             //checkIntersectionQuadratic(positionsArray);
+            }           
         }
 
         function checkIntersection(pLineObject){
@@ -469,7 +444,7 @@
             //Update the lines when moved dinamically
             straightLine.setPoints([s.control1.attrs.x, s.control1.attrs.y, s.control2.attrs.x, 
                         s.control2.attrs.y, s.control3.attrs.x, s.control3.attrs.y, s.end.attrs.x, s.end.attrs.y]);
-
+            
             //Let's draw the layer to make it visible
             lineLayer.draw();
         }
@@ -623,15 +598,15 @@
             context.beginPath();
             context.moveTo(straight.start.attrs.x, straight.start.attrs.y);
             context.quadraticCurveTo(100,150,straight.end.attrs.x, straight.end.attrs.y);
-            context.setAttr('strokeStyle', '#60a637');
-            context.setAttr('lineWidth', 4);
+            context.setAttr('strokeStyle', '#000');
+            context.setAttr('lineWidth', 2);
             context.stroke();
 
             context.beginPath();
             context.moveTo(straight.start.attrs.x, straight.start.attrs.y);
             context.quadraticCurveTo(200,150,straight.control1.attrs.x, straight.control1.attrs.y);
-            context.setAttr('strokeStyle', '#60a637');
-            context.setAttr('lineWidth', 4);
+            context.setAttr('strokeStyle', '#000');
+            context.setAttr('lineWidth', 2);
             context.stroke();
         }      
 
@@ -671,7 +646,34 @@
             backgroundLayer.draw();
         }
 
+        function fillSole(pColor){
+            var s = straight;
 
+            var fillSole = new Kinetic.Line({
+                points: [s.end.attrs.x, s.end.attrs.y, s.control3.attrs.x, s.control3.attrs.y],
+                stroke: pColor,
+                strokeWidth: 2
+            });
+
+            figuresLayer.add(fillSole);
+            figuresLayer.draw();
+        }
+
+        function reduceAnchors(){
+            var anchorArray = anchorLayer.getChildren();
+            for(var i = 0; i < anchorArray.length; i++){
+                anchorArray[i].radius(0);
+            }
+            anchorLayer.draw();
+        }
+
+        function defaultAnchors(){
+            var anchorArray = anchorLayer.getChildren();
+            for(var i = 0; i < anchorArray.length; i++){
+                anchorArray[i].radius(15);
+            }
+            anchorLayer.draw();
+        }
 
         function cleanFigures(){
             //Destroy all the children of the figures and labels
@@ -681,7 +683,19 @@
             figuresLayer.draw();
             backgroundLayer.draw();
             //Now let's update the paint manager
+            idLabel= 0;
             Presentation.getPaintManagerHandler().deleteAllElements();
+            defaultAnchors();
+        }
+
+
+        function cleanJustFigures(){
+            //Destroy all the children of the figures and labels
+            figuresLayer.destroyChildren();
+            backgroundLayer.destroyChildren();
+            //Redraw them
+            figuresLayer.draw();
+            backgroundLayer.draw();
             idLabel= 0;
         }
 
@@ -702,7 +716,11 @@
             drawLine: drawLine,
             drawCircle : drawCircle,
             dragElementsIntoCanvas: dragElementsIntoCanvas,
-            cleanFigures : cleanFigures
+            cleanFigures : cleanFigures,
+            cleanJustFigures : cleanJustFigures,
+            fillBackground : fillBackground,
+            fillSole : fillSole,
+            reduceAnchors : reduceAnchors
         };            
     })();
 

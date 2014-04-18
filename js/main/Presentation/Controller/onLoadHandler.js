@@ -42,10 +42,19 @@
             return BusinessLogic.getParseBusinessLogic().saveDesignParseData(pName,pPoints,pArrayCircles,pArrayLines);
         }
 
-        function drawGraphicalLabel(pType, pColor){
-            //Singleton instance
-            Presentation.getDesignSpace().getLabelUI().init(pType, pColor);
-            
+        function drawGraphicalLabel(pText, pPosition, pId, pColor, pType){
+            if(pType == "Sole"){
+                var straight = Presentation.getDesignSpace().getStraight();
+                var points = [straight.control3.attrs.x, straight.control3.attrs.y, straight.end.attrs.x, straight.end.attrs.y];
+                var border = LibraryData.createSole(points, 2, pColor);
+                BusinessLogic.getPaintManagerBL().insertSole(border);
+            }
+            if(pId == -1){
+                Presentation.getLabelUI().init(pText, pPosition);
+            }        
+            else{
+                Presentation.getLabelUI().changeName(pText, "", pId);            
+            }
         }
 
         function nameDesignUsed(){

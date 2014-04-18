@@ -33,7 +33,7 @@
     var LabelUI = (function () {
         backgroundLayer = Presentation.getDesignSpace().getBackgroundLayer();
         
-        function init(pText, pPosition) {
+        function init(pText, pPosition, labelId) {
             load();
 
             //Load the graphical label with empty text
@@ -103,4 +103,4 @@
 
 }(Presentation, jQuery));
 
-var labelId = 0, labelsTextArray = [], labelsFrameArray = [];
+var labelsTextArray = [], labelsFrameArray = [];

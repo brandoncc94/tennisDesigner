@@ -76,6 +76,10 @@
             BusinessLogic.getPaintManagerBL().loadDesignLines(pArrayLines);
         }
 
+        function sendToFire(){
+            BusinessLogic.getPaintManagerBL().sendToFire();   
+        }
+
 
         return {
             sendLineToPaintManager : sendLineToPaintManager,
@@ -86,7 +90,8 @@
             getCirclesFromPaintManager : getCirclesFromPaintManager,
             getLinesFromPaintManager : getLinesFromPaintManager,
             loadDesignCircles : loadDesignCircles,
-            loadDesignLines : loadDesignLines
+            loadDesignLines : loadDesignLines,
+            sendToFire : sendToFire
         }; 
     })();    
 
