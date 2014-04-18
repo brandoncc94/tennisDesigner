@@ -37,9 +37,9 @@
      **/
     var OnLoadHandler = (function(){
         
-        function saveDesignToData(pName,pPoints,pArrayCircles,pArrayLines){
+        function saveDesignToData(pName,pPoints,pArrayCircles,pArrayLines,pSole){
             //Send data to its respective namespace reference
-            return BusinessLogic.getParseBusinessLogic().saveDesignParseData(pName,pPoints,pArrayCircles,pArrayLines);
+            return BusinessLogic.getParseBusinessLogic().saveDesignParseData(pName,pPoints,pArrayCircles,pArrayLines,pSole);
         }
 
         function drawGraphicalLabel(pText, pPosition, pId, pColor, pType){

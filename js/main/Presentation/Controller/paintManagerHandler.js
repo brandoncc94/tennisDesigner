@@ -68,12 +68,20 @@
             return BusinessLogic.getPaintManagerBL().getArrayLineJson();
         }
 
+        function getSoleFromPaintManager(){
+          return BusinessLogic.getPaintManagerBL().getSoleJson();
+        }
+
         function loadDesignCircles(pArrayCircles){
             BusinessLogic.getPaintManagerBL().loadDesignCircles(pArrayCircles);
         }
 
         function loadDesignLines(pArrayLines){
             BusinessLogic.getPaintManagerBL().loadDesignLines(pArrayLines);
+        }
+
+        function loadDesignSole(pSole){
+          BusinessLogic.getPaintManagerBL().loadDesignSole(pSole);
         }
 
         function sendToFire(){
@@ -89,8 +97,10 @@
             deleteAllElements: deleteAllElements,
             getCirclesFromPaintManager : getCirclesFromPaintManager,
             getLinesFromPaintManager : getLinesFromPaintManager,
+            getSoleFromPaintManager : getSoleFromPaintManager,
             loadDesignCircles : loadDesignCircles,
             loadDesignLines : loadDesignLines,
+            loadDesignSole : loadDesignSole,
             sendToFire : sendToFire
         }; 
     })();    

@@ -56,24 +56,24 @@ var BusinessLogic = window.BusinessLogic || {};
             Presentation.getOnLoadHandler().storedDesign();
         }
 
-        function loadDesign(pName,pPoints,pArrayCircles,pArrayLines){
-            Presentation.getOnLoadDesignsHandler().loadDesign(pName,pPoints,pArrayCircles,pArrayLines);
+        function loadDesign(pName,pPoints,pArrayCircles,pArrayLines,pSole){
+            Presentation.getOnLoadDesignsHandler().loadDesign(pName,pPoints,pArrayCircles,pArrayLines,pSole);
         }
 
         function downloadDesign(pName){
             DataAccess.getParseDataAcces().downloadDesign(pName);
         }
         
-        function saveDesignParseData(pName,pPoints,pArrayCircles,pArrayLines){
-            DataAccess.getParseDataAcces().saveDesign(pName,pPoints,pArrayCircles,pArrayLines);
+        function saveDesignParseData(pName,pPoints,pArrayCircles,pArrayLines,pSole){
+            DataAccess.getParseDataAcces().saveDesign(pName,pPoints,pArrayCircles,pArrayLines,pSole);
         }
 
         function downloadDesignsNameReference(){
             DataAccess.getParseDataAcces().downloadDesignsName();
         }
 
-        function updateDesign(pName,pPoints,pArrayCircles,pArrayLines){
-            DataAccess.getParseDataAcces().updateDesign(pName,pPoints,pArrayCircles,pArrayLines);
+        function updateDesign(pName,pPoints,pArrayCircles,pArrayLines,pSole){
+            DataAccess.getParseDataAcces().updateDesign(pName,pPoints,pArrayCircles,pArrayLines,pSole);
         }
 
 

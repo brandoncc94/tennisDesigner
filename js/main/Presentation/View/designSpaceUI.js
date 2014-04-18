@@ -558,8 +558,7 @@
                 y: 0,
                 points : pts , 
                 // drawFunc: function () {
-                //     context.beginPath();    
-                    
+                //     context.beginPath();        
                 //     context.moveTo(pts[0], pts[1]);
                 //     for(i=2;i<pts.length-1;i+=2) context.lineTo(pts[i], pts[i+1]);
                 //     context.stroke();

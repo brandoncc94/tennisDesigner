@@ -142,12 +142,13 @@ var Presentation = window.Presentation || {};
         }
 
 
-        function loadDesignView(pName,pPoints,pArrayCircles,pArrayLines){
+        function loadDesignView(pName,pPoints,pArrayCircles,pArrayLines,pSole){
             Presentation.getDesignSpace().cleanFigures();
             var name = getDesignListSelected();
             $('#selectDesignName').text("Create your design: "+ name);
             Presentation.getPaintManagerHandler().loadDesignCircles(pArrayCircles);
             Presentation.getPaintManagerHandler().loadDesignLines(pArrayLines);
+            Presentation.getPaintManagerHandler().loadDesignSole(pSole);
             loadPointsDesignView(pPoints);
 
         }
@@ -178,7 +179,8 @@ var Presentation = window.Presentation || {};
             var points = getPoints();
             var arrayCircles = Presentation.getPaintManagerHandler().getCirclesFromPaintManager();
             var arrayLines = Presentation.getPaintManagerHandler().getLinesFromPaintManager();
-            Presentation.getOnLoadDesignsHandler().updateDesign(name,points,arrayCircles,arrayLines);
+            var sole = Presentation.getPaintManagerHandler().getSoleFromPaintManager();
+            Presentation.getOnLoadDesignsHandler().updateDesign(name,points,arrayCircles,arrayLines,sole);
         }
 
 
@@ -212,51 +214,13 @@ var Presentation = window.Presentation || {};
                 var pPoints = getPoints();
                 var arrayCircles = Presentation.getPaintManagerHandler().getCirclesFromPaintManager();
                 var arrayLines = Presentation.getPaintManagerHandler().getLinesFromPaintManager();
-                Presentation.getOnLoadHandler().saveDesignToData($('#tbxDesignName').val(),pPoints,arrayCircles,arrayLines);
+                var sole = Presentation.getPaintManagerHandler().getSoleFromPaintManager();
+                Presentation.getOnLoadHandler().saveDesignToData($('#tbxDesignName').val(),pPoints,arrayCircles,arrayLines,sole);
             }else{
                 $('#tbxDesignName').effect( "shake", 1000 );
                 $('#tbxDesignName').val("");    
             }
         }
-
-
-        // var arrayList = new Array();
-        // arrayList.push(2);
-        // arrayList.push("casa");
-        // arrayList.push(true);
-        
-        // if(arrayList[2]){
-        //     alert(arrayList);
-        // }
-
-        // var objecJson = {
-        //     Name: "juan",
-        //     Numero: 2
-        // }
-
-        // alert(objecJson["Numero"]);
-
-        // var typeObjects = {
-        //     LINE  : 1,
-        //     CIRCLE : 2
-        // };
-
-        // var c1 = 9;
-
-        // function guardar ( figura){
-        //     switch (tipo){
-        //         case typeObjects.CIRCLE:
-        //             guardarCircle(figura);
-        //             break;
-        //         case typeObjects.LINE:
-        //             alert("I'm a line");
-        //             break;
-        //         default:
-        //             alert("I don't know");
-        //     }
-        // }
-
-        // PerformAction(c1);
 
             
 

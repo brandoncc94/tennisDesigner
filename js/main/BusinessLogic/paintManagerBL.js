@@ -103,6 +103,16 @@
             return arrayLineJson;
         }
 
+        function getSoleJson(){
+            if(sole == null) return {
+                points : [],
+                strokeWidth : 2,
+                strokeColor : "black"
+            };
+            var soleJson = sole.convertToJson();
+            return soleJson;
+        }
+
         function loadDesignCircles(pArrayCircles,pArrayLines){
             for (var i = 0; i < pArrayCircles.length; i++) {
               var circle  = pArrayCircles[i];
@@ -130,6 +140,14 @@
             }
         }
 
+        function loadDesignSole(pSole){
+            var pointsSole = pSole["points"];
+            var strokeColor = pSole["strokeColor"];
+            var strokeWidth = pSole["strokeWidth"];
+            var newSole = LibraryData.createSole(pointsSole,strokeWidth,strokeColor);
+            insertSole(newSole);
+        }
+
         function sendToFire(){
             BusinessLogic.getfireBL().paint(linesCollection, circlesCollection, sole);
         }
@@ -145,8 +163,10 @@
             deleteAllElements : deleteAllElements,
             getArrayCircleJson : getArrayCircleJson,
             getArrayLineJson : getArrayLineJson,
+            getSoleJson : getSoleJson,
             loadDesignCircles : loadDesignCircles,
             loadDesignLines : loadDesignLines,
+            loadDesignSole : loadDesignSole,
             sendToFire : sendToFire,
             insertSole : insertSole
         };  

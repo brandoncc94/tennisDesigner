@@ -32,7 +32,16 @@
     var Sole = Figure.extend({
         init: function(pPointsFigure, pStrokeWidth, pStrokeColor){
             this._super(pPointsFigure, pStrokeWidth, pStrokeColor);
-        }        
+        },
+
+        convertToJson : function() {
+            var soleJson = {
+                points : this.pointsFigure,
+                strokeWidth : this.strokeWidth,
+                strokeColor : this.strokeColor
+            };
+            return soleJson;
+        }      
     });
 
 }(LibraryData, jQuery));
