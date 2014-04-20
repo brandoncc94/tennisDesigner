@@ -123,7 +123,6 @@
               var strokeColor = circle["strokeColor"];
               Presentation.getDesignSpaceHandler().sentDataToDrawCircle(posX,posY,radius,fillColor,strokeWidth,strokeColor);
             }
-
         }
 
         function loadDesignLines(pArrayLines){
@@ -148,7 +147,11 @@
         }
 
         function sendToFire(){
-            BusinessLogic.getfireBL().paint(linesCollection, circlesCollection, sole);
+            BusinessLogic.getfireBL().paintTennis(linesCollection, circlesCollection, sole);
+        }
+
+        function sendToArcade(){
+            BusinessLogic.getArcadeBL().paintTennis(linesCollection, circlesCollection, sole);
         }
 
         function createTable(pI, pTable) {
@@ -232,6 +235,7 @@
             loadDesignLines : loadDesignLines,
             loadDesignSole : loadDesignSole,
             sendToFire : sendToFire,
+            sendToArcade : sendToArcade,
             insertSole : insertSole,
             convertDataToExcel : convertDataToExcel
         };  

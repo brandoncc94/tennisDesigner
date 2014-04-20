@@ -88,6 +88,10 @@
             BusinessLogic.getPaintManagerBL().sendToFire();   
         }
 
+        function sendToArcade(){
+            BusinessLogic.getPaintManagerBL().sendToArcade();   
+        }
+
         function convertTableToExcel(pTable, pName, pFileName){
             BusinessLogic.getPaintManagerBL().convertDataToExcel(pTable, pName, pFileName);
         }
@@ -106,6 +110,7 @@
             loadDesignLines : loadDesignLines,
             loadDesignSole : loadDesignSole,
             sendToFire : sendToFire,
+            sendToArcade : sendToArcade,
             convertTableToExcel : convertTableToExcel
         }; 
     })();    

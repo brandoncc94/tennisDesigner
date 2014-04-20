@@ -107,7 +107,7 @@
             canvasStage.add(lineLayer);
             canvasStage.add(figuresLayer); 
             canvasStage.add(anchorLayer); 
-
+            
             loadFiguresActions();
             
                
@@ -165,7 +165,37 @@
                 Presentation.getOnLoadDesignsHandler().drawLineListener(pStrokeWidth, pStrokeColor);
         }
 
-        function drawCircle(pPosX, pPosY, pRadius, pFillColor, pStrokeWidth, pStrokeColor, pType){
+        function drawCircleFire(pPosX, pPosY, pRadius, pFillColor, pStrokeWidth, pStrokeColor){
+            var circle = new Kinetic.Circle({
+                x: pPosX,
+                y: pPosY,
+                radius: pRadius,
+                stroke: pStrokeColor,
+                strokeWidth: pStrokeWidth,
+                fill: pFillColor
+            });
+
+            figuresLayer.add(circle);
+            figuresLayer.draw();
+        }
+
+        function drawCircleArcade(pPosX, pPosY, pRadius, pFillColor, pStrokeWidth, pStrokeColor){
+            var maxRadius = parseInt(pRadius) - parseInt(pStrokeWidth);
+            for(var i = parseInt(pRadius); i > 0; i--){
+                var circle = new Kinetic.Circle({
+                    x: pPosX,
+                    y: pPosY,
+                    radius: i,
+                    stroke: (i <= maxRadius) ? pFillColor : pStrokeColor,
+                    strokeWidth: pStrokeWidth
+                });
+
+                figuresLayer.add(circle);
+                figuresLayer.draw();    
+            }
+        }
+
+        function drawCircle(pPosX, pPosY, pRadius, pFillColor, pStrokeWidth, pStrokeColor){
             var circle = new Kinetic.Circle({
                 x: pPosX,
                 y: pPosY,
@@ -176,13 +206,6 @@
                 id: idLabel
             });
 
-            if(pType == "fire"){
-                circle.fill(pFillColor);
-                circle.stroke(pStrokeColor);
-                circle.strokeWidth(pStrokeWidth);
-                circle.draggable(false);
-            }
-
             figuresLayer.add(circle);
             figuresLayer.draw();
             
@@ -192,24 +215,93 @@
             //Create the object and send it to the paint manager
             var circleRef = LibraryData.createCircle(points, pRadius, pStrokeWidth, pStrokeColor, pFillColor);
 
-            if(pType != "fire"){
-                var cad = "Radius: " + pRadius + "\n" + "Stroke Width: " + pStrokeWidth + "\n" + "Stroke Color: " + pStrokeColor + "\n" + "Fill Color: " + pFillColor;
-                label.init(cad , [pPosX, pPosY], idLabel);    
-                
-                idLabel+=1;                
-                Presentation.getPaintManagerHandler().sendCircleToPaintManager(circleRef);
+            var cad = "Radius: " + pRadius + "\n" + "Stroke Width: " + pStrokeWidth + "\n" + "Stroke Color: " + pStrokeColor + "\n" + "Fill Color: " + pFillColor;
+            label.init(cad , [pPosX, pPosY], idLabel);    
+            
+            idLabel+=1;                
+            Presentation.getPaintManagerHandler().sendCircleToPaintManager(circleRef);
 
-                circle.on('click', function() {
-                    Presentation.getAlertsUI().changeFeatureDialog(circle, label, false, circleRef);
-                });
+            circle.on('click', function() {
+                Presentation.getAlertsUI().changeFeatureDialog(circle, label, false, circleRef);
+            });
 
-                circle.on('dragend', function() {
-                    circleRef.setPointsFigure(LibraryData.createPoint(circle.getPosition().x, circle.getPosition().y));
-                });
-            }
+            circle.on('dragend', function() {
+                circleRef.setPointsFigure(LibraryData.createPoint(circle.getPosition().x, circle.getPosition().y));
+            });
         }
         
-        function drawLine(pPosX1, pPosY1, pPosX2, pPosY2, pStrokeWidth, pStrokeColor, pType){
+        function drawLineFire(pPosX1, pPosY1, pPosX2, pPosY2, pStrokeWidth, pStrokeColor){
+            var straight = new Kinetic.Line({
+                strokeWidth: pStrokeWidth,
+                stroke: pStrokeColor,
+                points: [pPosX1, pPosY1, pPosX2, pPosY2]
+            });
+
+            figuresLayer.add(straight);
+            figuresLayer.draw();
+        }
+
+         function convertRadiansToDegrees(rad){
+            return rad*(180/Math.PI);
+         }
+
+        function calculateDistance(x1, y1, x2, y2) {
+            return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+        }
+
+        function drawLineArcade(pPosX1, pPosY1, pPosX2, pPosY2, pStrokeWidth, pStrokeColor){
+            var half = Math.floor(parseInt(pStrokeWidth) / 2);
+            if(parseInt(pStrokeWidth) % 2 == 0){
+                half -=1;
+            }
+
+            var startingX1 = parseInt(pPosX1);
+            var endingX1 = parseInt(pPosX2);
+
+            var startingY1 = parseInt(pPosY1);
+            var endingY1 = parseInt(pPosY2);
+
+            var rectWidth = calculateDistance(startingX1, startingY1, endingX1, endingY1);
+
+            if(startingX1 > endingX1 && startingY1 < endingY1){
+                //we have the maximum X's value and add to it the half cause the stroke expands
+                var x = Math.max(startingX1, endingX1) + half;
+                //we have the minimum Y's value and add the stroke width of the line in edit, 3 in this case.
+                var y = Math.min(startingY1, endingY1) + 3;  
+            }else if(startingX1 < endingX1 && startingY1 > endingY1){
+                //we have the maximum X's value and add to it the half cause the stroke expands
+                var x = Math.min(startingX1, endingX1) - half;
+                //we have the minimum Y's value and add the stroke width of the line in edit, 3 in this case.
+                var y = Math.max(startingY1, endingY1) - 3;  
+            }else if(startingX1 > endingX1 && startingY1 > endingY1){
+                //we have the maximum X's value and add to it the half cause the stroke expands
+                var x = Math.max(startingX1, endingX1) - half;
+                //we have the minimum Y's value and add the stroke width of the line in edit, 3 in this case.
+                var y = Math.max(startingY1, endingY1) + 3;                  
+            }else{
+                //we have the maximum X's value and add to it the half cause the stroke expands
+                var x = Math.min(startingX1, endingX1) + 3;
+                //we have the minimum Y's value and add the stroke width of the line in edit, 3 in this case.
+                var y = Math.min(startingY1, endingY1) - half;   
+            }
+
+            var rectLine = new Kinetic.Rect({
+                x: x,
+                y: y,
+                width: rectWidth,
+                height: pStrokeWidth,
+                fill: pStrokeColor
+            });    
+
+            var angle = convertRadiansToDegrees(Math.atan2(pPosY2-pPosY1,pPosX2-pPosX1));
+            rectLine.rotate(angle);
+
+            figuresLayer.add(rectLine);
+            figuresLayer.draw(); 
+        }
+    
+
+        function drawLine(pPosX1, pPosY1, pPosX2, pPosY2, pStrokeWidth, pStrokeColor){
             var straight = new Kinetic.Line({
                 strokeWidth: 3,
                 stroke: 'black',
@@ -217,12 +309,6 @@
                 draggable: true,
                 id: idLabel
             });
-
-            if(pType == "fire"){
-                straight.strokeWidth(pStrokeWidth);
-                straight.stroke(pStrokeColor);
-                straight.draggable(false);
-            }
 
             figuresLayer.add(straight);
             figuresLayer.draw();
@@ -237,36 +323,34 @@
 
                                 lineRef.getPointsFigure().getPositionY().getPositionX(), lineRef.getPointsFigure().getPositionY().getPositionY()];
 
-            if(pType != "fire"){
-                var cad = "Stroke Width: " + pStrokeWidth + "\n" + "Stroke Color: " + pStrokeColor + "\n" + "Points: [" + pPosX1 + ", " + pPosY1 + "] , " + "[" + pPosX2 + "," + pPosY2 + "]";
-                label.init(cad , [pPosX2, pPosY2], idLabel);
-                idLabel+=1;
-                Presentation.getPaintManagerHandler().sendLineToPaintManager(lineRef);
+            var cad = "Stroke Width: " + pStrokeWidth + "\n" + "Stroke Color: " + pStrokeColor + "\n" + "Points: [" + pPosX1 + ", " + pPosY1 + "] , " + "[" + pPosX2 + "," + pPosY2 + "]";
+            label.init(cad , [pPosX2, pPosY2], idLabel);
+            idLabel+=1;
+            Presentation.getPaintManagerHandler().sendLineToPaintManager(lineRef);
 
-                straight.on('click', function() {
-                    Presentation.getAlertsUI().changeLineFeatureDialog(straight, label, false, lineRef);
-                });
+            straight.on('click', function() {
+                Presentation.getAlertsUI().changeLineFeatureDialog(straight, label, false, lineRef);
+            });
 
-                straight.on('dragend', function() {
-                    var lineObj = Presentation.getOnLoadDesignsHandler().updateLine(this, lineRef);    
-                    //Just update the label and redraw the line layer to make it visible
-                    var positionsArray = [lineObj.getPointsFigure().getPositionX().getPositionX(), lineObj.getPointsFigure().getPositionX().getPositionY(),
-                                           lineObj.getPointsFigure().getPositionY().getPositionX(), lineObj.getPointsFigure().getPositionY().getPositionY()];
+            straight.on('dragend', function() {
+                var lineObj = Presentation.getOnLoadDesignsHandler().updateLine(this, lineRef);    
+                //Just update the label and redraw the line layer to make it visible
+                var positionsArray = [lineObj.getPointsFigure().getPositionX().getPositionX(), lineObj.getPointsFigure().getPositionX().getPositionY(),
+                                       lineObj.getPointsFigure().getPositionY().getPositionX(), lineObj.getPointsFigure().getPositionY().getPositionY()];
 
-                    var cad = "Stroke Width: " + lineObj.getStrokeWidth() + "\n" + "Stroke Color: " + lineObj.getStrokeColor()   + "\n" + 
-                              "Points: [" + positionsArray[0] + ", " + positionsArray[1] + "] , " + 
-                              "[" + positionsArray[2] + "," + positionsArray[3] + "]";
-                    
-                    label.changeName(cad , "", straight.id());
-                    figuresLayer.draw();
+                var cad = "Stroke Width: " + lineObj.getStrokeWidth() + "\n" + "Stroke Color: " + lineObj.getStrokeColor()   + "\n" + 
+                          "Points: [" + positionsArray[0] + ", " + positionsArray[1] + "] , " + 
+                          "[" + positionsArray[2] + "," + positionsArray[3] + "]";
+                
+                label.changeName(cad , "", straight.id());
+                figuresLayer.draw();
 
-                    checkIntersection(positionsArray);
-                    checkIntersectionQuadratic(positionsArray);
-                });
+                checkIntersection(positionsArray);
+                checkIntersectionQuadratic(positionsArray);
+            });
 
             checkIntersection(positionsArray);
-            checkIntersectionQuadratic(positionsArray);
-            }           
+            checkIntersectionQuadratic(positionsArray);           
         }
 
         function checkIntersection(pLineObject){
@@ -680,16 +764,47 @@
         function fillBackground(pColor){
             var s = straight;
 
+            var ptsa =[straight.start.attrs.x,straight.start.attrs.y,
+                        straight.start.attrs.x-(straight.start.attrs.x)/5, straight.start.attrs.y+(straight.end.attrs.y-straight.start.attrs.y)/2,
+                        straight.end.attrs.x, straight.end.attrs.y];
+
+            var pts = getCurvePoints(ptsa, 1,false, 16);
+
+            var ptsa1 = [straight.start.attrs.x,straight.start.attrs.y,
+            straight.control1.attrs.x-(-straight.start.attrs.x+straight.control1.attrs.x)/2, straight.start.attrs.y+
+             (straight.control1.attrs.y)/5,
+             straight.control1.attrs.x,
+            straight.control1.attrs.y];
+
+            var pts1 = getCurvePoints(ptsa1);
+
             var figureBackground = new Kinetic.Shape({
                 sceneFunc: function(context) {
                   context.beginPath();
-                  context.moveTo(s.start.attrs.x, s.start.attrs.y);
-                  context.quadraticCurveTo(100,150,s.end.attrs.x, s.end.attrs.y);
+                  //context.quadraticCurveTo(100,150,s.end.attrs.x, s.end.attrs.y);
 
-                  context.lineTo(s.control3.attrs.x, s.control3.attrs.y);
-                  context.lineTo(s.control2.attrs.x, s.control2.attrs.y);
+                  for(var i = 0; i< pts1.length; i+=2){
+                    if(i == 0)
+                        context.moveTo(pts1[i], pts1[i+1]);
+                    else
+                        context.lineTo(pts1[i], pts1[i+1]);
+                  }
                   context.lineTo(s.control1.attrs.x, s.control1.attrs.y);
-                  context.quadraticCurveTo(200,150,s.start.attrs.x, s.start.attrs.y);
+                  context.lineTo(s.control2.attrs.x, s.control2.attrs.y);
+                  context.lineTo(s.control3.attrs.x, s.control3.attrs.y);
+                  context.lineTo(s.end.attrs.x, s.end.attrs.y);
+
+                  for(var i = 0; i< pts.length; i+=2){
+                    if(i == 0)
+                        context.moveTo(pts1[i], pts1[i+1]);
+                    else
+                        context.lineTo(pts1[i], pts1[i+1]);
+                  }
+                  /*for(var i = 15; i > 0 ; i-=2)
+                    context.lineTo(pts[i], pts[i-1]);
+                  for(var i = 15; i > 0 ; i-=2)
+                    context.lineTo(pts1[i], pts1[i-1]);*/
+                  //context.quadraticCurveTo(200,150,s.start.attrs.x, s.start.attrs.y);
                   context.closePath();
                   // KineticJS specific context method
                   context.fillStrokeShape(this);
@@ -773,7 +888,11 @@
             updateLines : updateLines,
             getAnchorLayer :getAnchorLayer,
             drawLine: drawLine,
+            drawLineFire : drawLineFire,
+            drawLineArcade : drawLineArcade,
             drawCircle : drawCircle,
+            drawCircleFire : drawCircleFire,
+            drawCircleArcade : drawCircleArcade,
             dragElementsIntoCanvas: dragElementsIntoCanvas,
             cleanFigures : cleanFigures,
             cleanJustFigures : cleanJustFigures,

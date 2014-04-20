@@ -87,6 +87,17 @@ var Presentation = window.Presentation || {};
 
             $("#lieArcade a").click(function(){
                 $(".main-container").css('background-color', '#5bc0de');
+                $("#decoration-container").fadeOut(500,function(){
+                    $("#decoration-container span").text("Metrix Results");
+                    $("#tabs").hide();
+                    $("#content").hide();
+                    $("#metrix-table").show();
+                    $("#exportToExcel").show();
+                    $("#algorithmName").text("Arcade");                    
+                    $("#decoration-container").fadeIn(500);
+                });
+                Presentation.getDesignSpace().cleanJustFigures();
+                Presentation.getPaintManagerHandler().sendToArcade();
             });
 
             $("#lieFire a").click(function(){

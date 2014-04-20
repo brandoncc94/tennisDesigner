@@ -8,8 +8,8 @@
 
  /*
   * Author:      brandoncc94@gmail.com
-  * Date:        17/04/2014
-  * Description: Fire method.
+  * Date:        19/04/2014
+  * Description: Arcade method.
   */
 
 /*
@@ -21,11 +21,11 @@
     /**
      * Public method to return a reference of handler module.
      * 
-     * @return {fireBL} Handler declarations of the MVC.
+     * @return {ArcadeBL} Handler declarations of the MVC.
      * @public
      */
-    pContext.getfireBL = function() {
-        return fireBL;
+    pContext.getArcadeBL = function() {
+        return arcadeBL;
     };
 
     /**
@@ -36,7 +36,7 @@
      * @namespace
      **/
 
-    var fireBL = (function(){
+    var arcadeBL = (function(){
 
         function paintTennis(pLinesCollection, pCirclesCollection, pSoleObject){
             var start = new Date().getTime();
@@ -64,7 +64,7 @@
                               pLinesCollection[i].getPointsFigure().getPositionX().getPositionY(),
                               pLinesCollection[i].getPointsFigure().getPositionY().getPositionX(),
                               pLinesCollection[i].getPointsFigure().getPositionY().getPositionY()];
-                Presentation.getDesignSpace().drawLineFire(points[0], points[1], points[2], points[3], strokeWidth, strokeColor); 
+                Presentation.getDesignSpace().drawLineArcade(points[0], points[1], points[2], points[3], strokeWidth, strokeColor); 
             }
         }
 
@@ -77,7 +77,7 @@
                 var points = [pCirclesCollection[i].getPointsFigure().getPositionX(), 
                               pCirclesCollection[i].getPointsFigure().getPositionY()];
 
-                Presentation.getDesignSpace().drawCircleFire(points[0], points[1], radio, fillColor, strokeWidth, strokeColor); 
+                Presentation.getDesignSpace().drawCircleArcade(points[0], points[1], radio, fillColor, strokeWidth, strokeColor); 
             }
 
         }
