@@ -203,7 +203,8 @@
                 stroke: "#000",
                 strokeWidth: 1,
                 draggable: true,
-                id: idLabel
+                id: idLabel,
+                name: nameCircle
             });
 
             figuresLayer.add(circle);
@@ -218,7 +219,9 @@
             var cad = "Radius: " + pRadius + "\n" + "Stroke Width: " + pStrokeWidth + "\n" + "Stroke Color: " + pStrokeColor + "\n" + "Fill Color: " + pFillColor;
             label.init(cad , [pPosX, pPosY], idLabel);    
             
-            idLabel+=1;                
+            idLabel+=1;   
+            nameCircle+=1;
+
             Presentation.getPaintManagerHandler().sendCircleToPaintManager(circleRef);
 
             circle.on('click', function() {
@@ -307,7 +310,8 @@
                 stroke: 'black',
                 points: [pPosX1, pPosY1, pPosX2, pPosY2],
                 draggable: true,
-                id: idLabel
+                id: idLabel,
+                name: nameLine
             });
 
             figuresLayer.add(straight);
@@ -325,7 +329,10 @@
 
             var cad = "Stroke Width: " + pStrokeWidth + "\n" + "Stroke Color: " + pStrokeColor + "\n" + "Points: [" + pPosX1 + ", " + pPosY1 + "] , " + "[" + pPosX2 + "," + pPosY2 + "]";
             label.init(cad , [pPosX2, pPosY2], idLabel);
+            
             idLabel+=1;
+            nameLine+=1;
+            
             Presentation.getPaintManagerHandler().sendLineToPaintManager(lineRef);
 
             straight.on('click', function() {
@@ -891,4 +898,4 @@
 
 
 var strokeWidthAlert = 0, radiusAlert = 0, strokeColorAlert = "", fillColorAlert = "";
-var idLabel = 0;
+var idLabel = 0, nameCircle = 0, nameLine = 0;

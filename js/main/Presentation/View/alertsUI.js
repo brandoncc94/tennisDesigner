@@ -104,7 +104,7 @@
                   callback: function(){
                       pReference.remove();
                       pLabel.destroy(pReference.id());
-                      Presentation.getPaintManagerHandler().deleteLine(pReference.id());
+                      Presentation.getPaintManagerHandler().deleteLine(pReference.name());
                       Presentation.getDesignSpace().getFiguresLayer().draw();
                   }
                 },
@@ -123,18 +123,9 @@
                             });
                         }
                         else{
-                            /****************************************************************************************************/
-                            /****************************************************************************************************/
-                            /****************************************************************************************************/    
-                            /****************************************************************************************************/
 
                             pLineObj.setStrokeWidth(strokeWidthAlert);
                             pLineObj.setStrokeColor(strokeColorAlert);
-
-                            /****************************************************************************************************/
-                            /****************************************************************************************************/
-                            /****************************************************************************************************/
-                            /****************************************************************************************************/
 
                             var cad = "Stroke Width: " + strokeWidthAlert + "\n" + "Stroke Color: " + strokeColorAlert  + "\n" + 
                                       "Points: [" + pLineObj.getPointsFigure().getPositionX().getPositionX() + ", " +pLineObj.getPointsFigure().getPositionX().getPositionY() + "] , " + 
@@ -246,7 +237,7 @@
                   callback: function(){
                       pReference.remove();
                       pLabel.destroy(pReference.id());
-                      Presentation.getPaintManagerHandler().deleteCircle(pReference.id());
+                      Presentation.getPaintManagerHandler().deleteCircle(pReference.name());
                       Presentation.getDesignSpace().getFiguresLayer().draw();
                   }
                 },
@@ -277,20 +268,10 @@
                             //Graphical radio
                             pReference.setRadius(radiusAlert);
 
-                            /****************************************************************************************************/
-                            /****************************************************************************************************/
-                            /****************************************************************************************************/
-                            /****************************************************************************************************/
-
                             pCircleObj.setRadio(radiusAlert);
                             pCircleObj.setStrokeWidth(strokeWidthAlert);
                             pCircleObj.setFillColor(fillColorAlert);
                             pCircleObj.setStrokeColor(strokeColorAlert);
-
-                            /****************************************************************************************************/
-                            /****************************************************************************************************/
-                            /****************************************************************************************************/
-                            /****************************************************************************************************/
 
                             var cad = "Radius: " + radiusAlert + "\n" + "Stroke Width: " + strokeWidthAlert + "\n" + "Stroke Color: " + strokeColorAlert + "\n" + "Fill Color: " + fillColorAlert;
                             pLabel.changeName(cad, "", pReference.id());                  

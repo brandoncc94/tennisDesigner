@@ -72,9 +72,15 @@ var Presentation = window.Presentation || {};
 
             $('#imgSaveDesign').click(function(){
                 updateDesign();
+                setTimeout(function(){$("#lieEdit a").click();},500);
             });
 
             $("#lieEdit a").click(function(){
+                idLabel = 0;      
+                nameCircle = 0;
+                nameLine = 0;
+                labelsTextArray = [];
+                labelsFrameArray = [];
                 $(".main-container").css('background-color', '#d9534f');
                 try{
                     var name = getDesignListSelected();
@@ -125,6 +131,11 @@ var Presentation = window.Presentation || {};
             });
 
             $('#imgLoadDesign').click(function(){
+                idLabel = 0;                
+                nameCircle = 0;
+                nameLine = 0;
+                labelsTextArray = [];
+                labelsFrameArray = [];
                 updateDecorationPanel();
                 var name = getDesignListSelected();
                 downloadDesign(name);                                

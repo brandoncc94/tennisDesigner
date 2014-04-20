@@ -93,7 +93,6 @@
             labelsFrameArray[pId].remove();
             backgroundLayer.draw();
         }
-
         return{
             init : init,
             changeName : changeName,
