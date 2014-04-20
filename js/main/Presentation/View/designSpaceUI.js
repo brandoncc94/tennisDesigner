@@ -764,53 +764,38 @@
         function fillBackground(pColor){
             var s = straight;
 
-            var ptsa =[straight.start.attrs.x,straight.start.attrs.y,
-                        straight.start.attrs.x-(straight.start.attrs.x)/5, straight.start.attrs.y+(straight.end.attrs.y-straight.start.attrs.y)/2,
-                        straight.end.attrs.x, straight.end.attrs.y];
-
-            var pts = getCurvePoints(ptsa, 1,false, 16);
-
-            var ptsa1 = [straight.start.attrs.x,straight.start.attrs.y,
-            straight.control1.attrs.x-(-straight.start.attrs.x+straight.control1.attrs.x)/2, straight.start.attrs.y+
-             (straight.control1.attrs.y)/5,
-             straight.control1.attrs.x,
-            straight.control1.attrs.y];
-
-            var pts1 = getCurvePoints(ptsa1);
-
             var figureBackground = new Kinetic.Shape({
                 sceneFunc: function(context) {
-                  context.beginPath();
-                  //context.quadraticCurveTo(100,150,s.end.attrs.x, s.end.attrs.y);
 
-                  for(var i = 0; i< pts1.length; i+=2){
-                    if(i == 0)
-                        context.moveTo(pts1[i], pts1[i+1]);
-                    else
-                        context.lineTo(pts1[i], pts1[i+1]);
-                  }
-                  context.lineTo(s.control1.attrs.x, s.control1.attrs.y);
-                  context.lineTo(s.control2.attrs.x, s.control2.attrs.y);
-                  context.lineTo(s.control3.attrs.x, s.control3.attrs.y);
-                  context.lineTo(s.end.attrs.x, s.end.attrs.y);
+                var ptsa =[straight.start.attrs.x,straight.start.attrs.y,
+                straight.start.attrs.x-(straight.start.attrs.x)/5, straight.start.attrs.y+
+                (straight.end.attrs.y-straight.start.attrs.y)/2,
+                    straight.end.attrs.x,
+                    straight.end.attrs.y];
+                var pts = getCurvePoints(ptsa, 1,false, 16);
+                //     
 
-                  for(var i = 0; i< pts.length; i+=2){
-                    if(i == 0)
-                        context.moveTo(pts1[i], pts1[i+1]);
-                    else
-                        context.lineTo(pts1[i], pts1[i+1]);
-                  }
-                  /*for(var i = 15; i > 0 ; i-=2)
-                    context.lineTo(pts[i], pts[i-1]);
-                  for(var i = 15; i > 0 ; i-=2)
-                    context.lineTo(pts1[i], pts1[i-1]);*/
-                  //context.quadraticCurveTo(200,150,s.start.attrs.x, s.start.attrs.y);
-                  context.closePath();
-                  // KineticJS specific context method
-                  context.fillStrokeShape(this);
-                },
-                fill: pColor
-            });
+                var ptsa1 = [straight.start.attrs.x,straight.start.attrs.y,
+                straight.control1.attrs.x-(-straight.start.attrs.x+straight.control1.attrs.x)/2, straight.start.attrs.y+
+                 (straight.control1.attrs.y)/5,
+                 straight.control1.attrs.x,
+                straight.control1.attrs.y];
+
+                var pts1 = getCurvePoints(ptsa1);
+            
+              context.beginPath();
+              context.moveTo(s.start.attrs.x, s.start.attrs.y);
+              for(i=2;i<pts.length-1;i+=2) context.lineTo(pts[i], pts[i+1]);
+              context.lineTo(s.control3.attrs.x, s.control3.attrs.y);
+              context.lineTo(s.control2.attrs.x, s.control2.attrs.y);
+              context.lineTo(s.start.attrs.x, s.start.attrs.y);
+              for(i=2;i<pts1.length-1;i+=2) context.lineTo(pts1[i], pts1[i+1]);
+              context.lineTo(s.control2.attrs.x, s.control2.attrs.y);
+              context.closePath();
+              context.fillStrokeShape(this);
+            },
+            fill: pColor
+        });
 
             backgroundLayer.add(figureBackground);
 
