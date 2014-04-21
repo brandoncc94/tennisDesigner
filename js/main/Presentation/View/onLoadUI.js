@@ -72,16 +72,11 @@ var Presentation = window.Presentation || {};
 
             $('#imgSaveDesign').click(function(){
                 updateDesign();
-                setTimeout(function(){$("#lieEdit a").click();},500);
+                setTimeout(function(){$("#lieEdit a").click();},1000);
             });
 
             $("#lieEdit a").click(function(){
-                idLabel = 0;      
-                nameCircle = 0;
-                nameLine = 0;
-                labelsTextArray = [];
-                labelsFrameArray = [];
-                $(".main-container").css('background-color', '#d9534f');
+                clearElements();
                 try{
                     var name = getDesignListSelected();
                     downloadDesign(name);                   
@@ -134,11 +129,7 @@ var Presentation = window.Presentation || {};
             });
 
             $('#imgLoadDesign').click(function(){
-                idLabel = 0;                
-                nameCircle = 0;
-                nameLine = 0;
-                labelsTextArray = [];
-                labelsFrameArray = [];
+                clearElements();
                 updateDecorationPanel();
                 var name = getDesignListSelected();
                 downloadDesign(name);                                
@@ -303,6 +294,15 @@ var Presentation = window.Presentation || {};
             setTimeout(function(){$('#listDesign-container').slideDown(3000)},1000);
             searchDesign();
             $('#tbxDesignName').val("");
+        }
+
+        function clearElements(){
+            idLabel = 0;      
+            nameCircle = 0;
+            nameLine = 0;
+            labelsTextArray = [];
+            labelsFrameArray = [];
+            $(".main-container").css('background-color', '#d9534f');
         }
 
         return {
