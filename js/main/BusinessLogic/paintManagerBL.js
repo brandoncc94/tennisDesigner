@@ -41,6 +41,7 @@
         var linesCollection = new Array();
         var circlesCollection = new Array();
         var sole;
+        var executionTimes = new Array();
 
         //Let's centralize everything
         function insertLine(pLineObject){
@@ -100,6 +101,10 @@
                 }
             };
             return arrayLineJson;
+        }
+
+        function setExecutionTimes(pExecutionTimes){
+            executionTimes = pExecutionTimes;
         }
 
         function getSoleJson(){
@@ -236,6 +241,7 @@
             loadDesignSole : loadDesignSole,
             sendToFire : sendToFire,
             sendToArcade : sendToArcade,
+            setExecutionTimes : setExecutionTimes,
             insertSole : insertSole,
             convertDataToExcel : convertDataToExcel
         };  

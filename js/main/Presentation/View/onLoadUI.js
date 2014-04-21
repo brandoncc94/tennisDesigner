@@ -146,6 +146,7 @@ var Presentation = window.Presentation || {};
 
             $("#exportToExcel").click(function(){
                 var name = getDesignListSelected();
+                Presentation.getOnLoadHandler().getExecutionTimes(name);
                 Presentation.getPaintManagerHandler().convertTableToExcel('tmpTable', 'metrix-table', 'historyOf' + name + '.xls');                     
             }); 
 

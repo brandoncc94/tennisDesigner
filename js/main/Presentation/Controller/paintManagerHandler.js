@@ -96,10 +96,14 @@
             BusinessLogic.getPaintManagerBL().convertDataToExcel(pTable, pName, pFileName);
         }
 
+        function sendExecutionTimes(pExecutionTimes){
+            BusinessLogic.getPaintManagerBL().setExecutionTimes(pExecutionTimes);
+        }
 
         return {
             sendLineToPaintManager : sendLineToPaintManager,
             sendCircleToPaintManager : sendCircleToPaintManager,
+            sendExecutionTimes : sendExecutionTimes,
             deleteLine : deleteLine,
             deleteCircle : deleteCircle,
             deleteAllElements: deleteAllElements,

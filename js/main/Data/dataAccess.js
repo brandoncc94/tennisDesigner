@@ -160,8 +160,6 @@ var DataAccess = window.DataAccess || {};
             
         }
 
-
-
         function addExecutionTimeDesign(pName,pTypeAlgorithm,pTime){
             var query_Name = new Parse.Query(TennisDesign);
             query_Name.equalTo("Name", pName);
@@ -192,10 +190,33 @@ var DataAccess = window.DataAccess || {};
             pDesign.save();
         }
 
+        function getExecutionsTimes(pDesign){  
+            var query_Name = new Parse.Query(TennisDesign);
+            query_Name.equalTo("Name", pName);
+            query_Name.find({
+              success: function(designs) {
+                if(designs.length==1){
+                    var arcadeTimes = designs[0].get("ArcadeTimes");
+                    var fireTimes = designs[0].get("FireTimes");
+                    var executionTimes = new Array();
+                    executionTimes.push(arcadeTimes);
+                    executionTimes.push(fireTimes);
+                    BusinessLogic.getPaintManagerHandler().sendExecutionTimes(executionTimes); 
+                }
+                
+              },
+              error: function(error) {
+                // The request failed
+              }
+            });
+
+        }
+
         return {
             addExecutionTimeDesign : addExecutionTimeDesign,
             uploadParseData: uploadParseData,
             downloadDesignsName: downloadDesignsName,
+            getExecutionsTimes : getExecutionsTimes,
             saveDesign : saveDesign,
             updateDesign : updateDesign,
             downloadDesign : downloadDesign

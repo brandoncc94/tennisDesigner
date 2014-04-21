@@ -85,6 +85,10 @@ var BusinessLogic = window.BusinessLogic || {};
             DataAccess.getParseDataAcces().addExecutionTimeDesign(pName,pTypeAlgorithm,pTime);
         }
 
+        function getExecutionTimes(pName){
+          DataAccess.getParseDataAcces().getExecutionTimes(pName);
+        }
+
         //Let's make it public
         return {
             addExecutionTimeDesign : addExecutionTimeDesign,
@@ -94,6 +98,7 @@ var BusinessLogic = window.BusinessLogic || {};
             saveDesignParseData : saveDesignParseData,
             updateDesign : updateDesign,
             nameDesignUsed : nameDesignUsed,
+            getExecutionTimes : getExecutionTimes,
             storedDesign : storedDesign,
             loadDesign : loadDesign
         };  
