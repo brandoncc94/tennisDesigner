@@ -190,7 +190,7 @@ var DataAccess = window.DataAccess || {};
             pDesign.save();
         }
 
-        function getExecutionsTimes(pDesign){  
+        function getExecutionTimes(pName){  
             var query_Name = new Parse.Query(TennisDesign);
             query_Name.equalTo("Name", pName);
             query_Name.find({
@@ -199,9 +199,11 @@ var DataAccess = window.DataAccess || {};
                     var arcadeTimes = designs[0].get("ArcadeTimes");
                     var fireTimes = designs[0].get("FireTimes");
                     var executionTimes = new Array();
+                    alert(arcadeTimes.length);
+                    alert(fireTimes.length);
                     executionTimes.push(arcadeTimes);
                     executionTimes.push(fireTimes);
-                    BusinessLogic.getPaintManagerHandler().sendExecutionTimes(executionTimes); 
+                    Presentation.getPaintManagerHandler().sendExecutionTimes(executionTimes); 
                 }
                 
               },
@@ -216,7 +218,7 @@ var DataAccess = window.DataAccess || {};
             addExecutionTimeDesign : addExecutionTimeDesign,
             uploadParseData: uploadParseData,
             downloadDesignsName: downloadDesignsName,
-            getExecutionsTimes : getExecutionsTimes,
+            getExecutionTimes : getExecutionTimes,
             saveDesign : saveDesign,
             updateDesign : updateDesign,
             downloadDesign : downloadDesign

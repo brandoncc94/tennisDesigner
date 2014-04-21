@@ -104,7 +104,13 @@
         }
 
         function setExecutionTimes(pExecutionTimes){
+            alert(pExecutionTimes.length);
+            alert(pExecutionTimes[0].length);
+            alert(pExecutionTimes[1].length);
             executionTimes = pExecutionTimes;
+            alert(executionTimes.length);
+            alert(executionTimes[0].length);
+            alert(executionTimes[1][0]["time"]);
         }
 
         function getSoleJson(){
