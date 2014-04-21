@@ -86,7 +86,7 @@ var BusinessLogic = window.BusinessLogic || {};
         }
 
         function getExecutionTimes(pName){
-          DataAccess.getParseDataAcces().getExecutionTimes(pName);
+          DataAccess.getParseDataAcces().getExecutionsTimes(pName);
         }
 
         //Let's make it public

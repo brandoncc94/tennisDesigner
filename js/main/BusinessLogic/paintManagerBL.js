@@ -107,6 +107,10 @@
             executionTimes = pExecutionTimes;
         }
 
+        function getExecutionTimes(){
+            return executionTimes;
+        }
+
         function getSoleJson(){
             if(sole == null) return {
                 points : [],
@@ -159,29 +163,16 @@
             BusinessLogic.getArcadeBL().paintTennis(linesCollection, circlesCollection, sole);
         }
 
-        function createTable(pI, pTable) {
-          if(pI == 1){
-              var row = document.createElement("tr");
-              var column = document.createElement("td");
-              var columnText = document.createTextNode($('#metrix-table').find('td:eq(0)').text());
-              column.appendChild(columnText);
-              row.appendChild(column);
-
-              var column = document.createElement("td");
-              var columnText = document.createTextNode($('#metrix-table').find('td:eq(1)').text());                
-              column.appendChild(columnText);
-              row.appendChild(column);
-
-              pTable.appendChild(row);
-
-              return pTable;
-          }
-          else{
-            // Crea un elemento <table> 
+        function createTable() {
+            // Create a <table> element
             var table   = document.createElement("table");
+            //set an ID
             table.setAttribute("id", "tmpTable");
+
+            var executionTimes = getExecutionTimes();
            
-            // Crea las celdas
+            alert(executionTimes.length);
+            // create the rows
             for (var i = 0; i < pI; i++) {
               // Crea las hileras de la tabla
               var row = document.createElement("tr");
@@ -201,7 +192,6 @@
             }
 
             return table;
-          }
         }
 
         var convertDataToExcel = (function () {
@@ -210,10 +200,9 @@
           , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
           , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
           return function (table, name, filename) {
-            var tmpTable = createTable(5);
-            var finalTable = createTable(1, tmpTable);
-            $("body").append(finalTable);
-            $("#tmpTable").hide();
+              var finalTable = createTable();
+              $("body").append(finalTable);
+              $("#tmpTable").hide();
 
               if (!table.nodeType) table = document.getElementById(table)
               var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }

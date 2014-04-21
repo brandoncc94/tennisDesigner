@@ -190,7 +190,7 @@ var DataAccess = window.DataAccess || {};
             pDesign.save();
         }
 
-        function getExecutionsTimes(pDesign){  
+        function getExecutionsTimes(pName){  
             var query_Name = new Parse.Query(TennisDesign);
             query_Name.equalTo("Name", pName);
             query_Name.find({
