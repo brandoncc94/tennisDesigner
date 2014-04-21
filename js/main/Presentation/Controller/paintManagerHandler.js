@@ -96,8 +96,8 @@
             BusinessLogic.getPaintManagerBL().convertDataToExcel(pTable, pName, pFileName);
         }
 
-        function sendExecutionTimes(pExecutionTimes){
-            BusinessLogic.getPaintManagerBL().setExecutionTimes(pExecutionTimes);
+        function sendExecutionTimes(pExecutionTimes, pName){
+            BusinessLogic.getPaintManagerBL().setExecutionTimes(pExecutionTimes, pName);
         }
 
         return {

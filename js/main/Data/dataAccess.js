@@ -177,10 +177,18 @@ var DataAccess = window.DataAccess || {};
             });   
         }
 
+        function convertToformatMMDDYYYY(pDate){
+            return pDate.getDate() + 
+            "/" +  pDate.getMonth() +
+            "/" +  pDate.getFullYear();
+        }
+
         function addExecutionTimeDesignAux(pDesign,pTypeAlgorithm,pTime){
+            var d = new Date();
+            var fDate = convertToformatMMDDYYYY(d);
             var metrixResult = {
                 time : pTime,
-                date : new Date()
+                date : fDate
             }
             if(pTypeAlgorithm=="Arcade"){
                 pDesign.get("ArcadeTimes").push(metrixResult);
@@ -199,11 +207,9 @@ var DataAccess = window.DataAccess || {};
                     var arcadeTimes = designs[0].get("ArcadeTimes");
                     var fireTimes = designs[0].get("FireTimes");
                     var executionTimes = new Array();
-                    alert(arcadeTimes.length);
-                    alert(fireTimes.length);
                     executionTimes.push(arcadeTimes);
                     executionTimes.push(fireTimes);
-                    Presentation.getPaintManagerHandler().sendExecutionTimes(executionTimes); 
+                    Presentation.getPaintManagerHandler().sendExecutionTimes(executionTimes, pName); 
                 }
                 
               },

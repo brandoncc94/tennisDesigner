@@ -103,14 +103,9 @@
             return arrayLineJson;
         }
 
-        function setExecutionTimes(pExecutionTimes){
-            alert(pExecutionTimes.length);
-            alert(pExecutionTimes[0].length);
-            alert(pExecutionTimes[1].length);
+        function setExecutionTimes(pExecutionTimes, pName){
             executionTimes = pExecutionTimes;
-            alert(executionTimes.length);
-            alert(executionTimes[0].length);
-            alert(executionTimes[1][0]["time"]);
+            convertDataToExcel('tmpTable', 'metrix-table', 'historyOf' + pName + '.xls');
         }
 
         function getExecutionTimes(){
@@ -171,26 +166,50 @@
 
         function createTable() {
             // Create a <table> element
-            var table   = document.createElement("table");
+            var table  = document.createElement("table");
             //set an ID
             table.setAttribute("id", "tmpTable");
 
             var executionTimes = getExecutionTimes();
-           
-            alert(executionTimes.length);
+                      
+            var title = document.createElement("th");
+            title.appendChild(document.createTextNode("Arcade"));
+            table.appendChild(title);
             // create the rows
-            for (var i = 0; i < pI; i++) {
+            for (var i = 0; i < executionTimes[0].length; i++) {
               // Crea las hileras de la tabla
               var row = document.createElement("tr");
            
               for (var j = 0; j < 1; j++) {
                 var column = document.createElement("td");
-                var columnText = document.createTextNode("Historial");
+                var columnText = document.createTextNode(executionTimes[0][i]["time"]);
                 column.appendChild(columnText);
                 row.appendChild(column);
 
                 var column = document.createElement("td");
-                var columnText = document.createTextNode("Aqui va el resto");                
+                var columnText = document.createTextNode(executionTimes[0][i]["date"]);                
+                column.appendChild(columnText);
+                row.appendChild(column);
+              }
+              table.appendChild(row);
+            }
+
+            var title = document.createElement("th");
+            title.appendChild(document.createTextNode("Fire"));
+            table.appendChild(title);
+            // create the rows
+            for (var i = 0; i < executionTimes[1].length; i++) {
+              // Crea las hileras de la tabla
+              var row = document.createElement("tr");
+           
+              for (var j = 0; j < 1; j++) {
+                var column = document.createElement("td");
+                var columnText = document.createTextNode(executionTimes[1][i]["time"]);
+                column.appendChild(columnText);
+                row.appendChild(column);
+
+                var column = document.createElement("td");
+                var columnText = document.createTextNode(executionTimes[1][i]["date"]);                
                 column.appendChild(columnText);
                 row.appendChild(column);
               }
