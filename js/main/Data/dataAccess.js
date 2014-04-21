@@ -37,9 +37,6 @@ var DataAccess = window.DataAccess || {};
      */
 
 
-    pContext.getTennisDataAcces = function() {
-        return TennisDataAcces;
-    };
 
 
     pContext.getParseDataAcces = function() {
@@ -54,10 +51,7 @@ var DataAccess = window.DataAccess || {};
      * @namespace
      **/
 
-    var TennisDataAcces = (function(){
-        
-    })();
-
+    
 
     var ParseDataAcces = (function(){
         var TennisDesign = Parse.Object.extend("TennisDesign");
@@ -71,7 +65,9 @@ var DataAccess = window.DataAccess || {};
                 Points : pPoints,
                 Circles : pArrayCircles,
                 Lines : pArrayLines,
-                Sole : pSole
+                Sole : pSole,
+                ArcadeTimes : [],
+                FireTimes : []
             });  
         }
 
@@ -164,26 +160,42 @@ var DataAccess = window.DataAccess || {};
             
         }
 
-        function downloadParseData(pKey,value){
-            var tennis_query = new Parse.Query(TennisDesign);
-            tennis_query.equalTo(pkey,value);
-            tennis_query.find({
-                success: function(results) {
-                    for (var i = 0 ;results.length;i++){
-                        var object = results[i];
-                        alert("Name:" + object.get('Name'));
-                    }
-                },
-                error: function(error) {
-                    alert("Error: " + error.code + " " + error.message);
+
+
+        function addExecutionTimeDesign(pName,pTypeAlgorithm,pTime){
+            var query_Name = new Parse.Query(TennisDesign);
+            query_Name.equalTo("Name", pName);
+            query_Name.find({
+              success: function(designs) {
+                if(designs.length==1){
+                    var design = designs[0];
+                    addExecutionTimeDesignAux(design,pTypeAlgorithm,pTime); 
                 }
-            });
+                
+              },
+              error: function(error) {
+                // The request failed
+              }
+            });   
+        }
+
+        function addExecutionTimeDesignAux(pDesign,pTypeAlgorithm,pTime){
+            var metrixResult = {
+                time : pTime,
+                date : new Date()
+            }
+            if(pTypeAlgorithm=="Arcade"){
+                pDesign.get("ArcadeTimes").push(metrixResult);
+            }else{
+                pDesign.get("FireTimes").push(metrixResult);
+            }
+            pDesign.save();
         }
 
         return {
+            addExecutionTimeDesign : addExecutionTimeDesign,
             uploadParseData: uploadParseData,
             downloadDesignsName: downloadDesignsName,
-            downloadParseData: downloadParseData,
             saveDesign : saveDesign,
             updateDesign : updateDesign,
             downloadDesign : downloadDesign

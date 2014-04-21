@@ -80,9 +80,14 @@ var BusinessLogic = window.BusinessLogic || {};
         function loadDesignsReference(pDesignList){
             Presentation.getOnLoadDesignsHandler().loadDesignsList(pDesignList);
         }
-  
+    
+        function addExecutionTimeDesign(pName,pTypeAlgorithm,pTime){
+            DataAccess.getParseDataAcces().addExecutionTimeDesign(pName,pTypeAlgorithm,pTime);
+        }
+
         //Let's make it public
         return {
+            addExecutionTimeDesign : addExecutionTimeDesign,
             downloadDesignsNameReference: downloadDesignsNameReference,
             downloadDesign : downloadDesign,
             loadDesignsReference : loadDesignsReference,

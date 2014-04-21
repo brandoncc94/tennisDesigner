@@ -128,8 +128,13 @@
           return pLineRef;
         }
 
-        return {
 
+        function addExecutionTimeDesign(pName,pTypeAlgorithm,pTime){
+          BusinessLogic.getParseBusinessLogic().addExecutionTimeDesign(pName,pTypeAlgorithm,pTime);
+        }
+
+        return {
+            addExecutionTimeDesign : addExecutionTimeDesign,
             downloadDesignsList : downloadDesignsList,
             downloadDesign : downloadDesign,
             loadDesignsList : loadDesignsList,

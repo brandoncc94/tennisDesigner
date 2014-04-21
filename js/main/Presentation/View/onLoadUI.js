@@ -92,34 +92,37 @@ var Presentation = window.Presentation || {};
             });
 
             $("#lieArcade a").click(function(){
-                $(".main-container").css('background-color', '#5bc0de');
-                $("#decoration-container").fadeOut(500,function(){
-                    $("#decoration-container span").text("Metrix Results");
-                    $("#tabs").hide();
-                    $("#content").hide();
-                    $("#metrix-table").show();
-                    $("#exportToExcel").show();
-                    $("#algorithmName").text("Arcade");                    
-                    $("#decoration-container").fadeIn(500);
-                });
-                Presentation.getDesignSpace().cleanJustFigures();
-                Presentation.getPaintManagerHandler().sendToArcade();
+                
+                    $(".main-container").css('background-color', '#5bc0de');
+                    $("#algorithmName").text("Arcade"); 
+                    $("#decoration-container").fadeOut(500,function(){
+                        $("#decoration-container span").text("Metrix Results");
+                        $("#tabs").hide();
+                        $("#content").hide();
+                        $("#metrix-table").show();
+                        $("#exportToExcel").show();                   
+                        $("#decoration-container").fadeIn(500);
+                    });
+                    Presentation.getDesignSpace().cleanJustFigures();
+                    Presentation.getPaintManagerHandler().sendToArcade();
+                
             });
 
             $("#lieFire a").click(function(){
-                $(".main-container").css('background-color', '#428bca');
-                $("#decoration-container").fadeOut(500,function(){
-                    $("#decoration-container span").text("Metrix Results");
-                    $("#tabs").hide();
-                    $("#content").hide();
-                    $("#metrix-table").show();
-                    $("#exportToExcel").show();
-                    $("#algorithmName").text("Fire");                    
-                    $("#decoration-container").fadeIn(500);
-                });
                 
-                Presentation.getDesignSpace().cleanJustFigures();
-                Presentation.getPaintManagerHandler().sendToFire();
+                    $(".main-container").css('background-color', '#428bca');
+                    $("#algorithmName").text("Fire");
+                    $("#decoration-container").fadeOut(500,function(){
+                        $("#decoration-container span").text("Metrix Results");
+                        $("#tabs").hide();
+                        $("#content").hide();
+                        $("#metrix-table").show();
+                        $("#exportToExcel").show();                    
+                        $("#decoration-container").fadeIn(500);
+                    });
+                    Presentation.getDesignSpace().cleanJustFigures();
+                    Presentation.getPaintManagerHandler().sendToFire();
+                
             });
 
             $("#lieContact a").click(function(){
@@ -195,7 +198,10 @@ var Presentation = window.Presentation || {};
             }
         }
         function updateExecutionTime(pTime){
+            var name = getDesignListSelected();
+            var typeAlgorithm = $("#algorithmName").text();
             $("#executionTime").text(pTime);
+            Presentation.getOnLoadDesignsHandler().addExecutionTimeDesign(name,typeAlgorithm,pTime);
         }
 
         function downloadDesign(pName){
