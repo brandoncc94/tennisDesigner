@@ -212,7 +212,18 @@ var Presentation = window.Presentation || {};
         }
 
         function loadDesignView(pName,pPoints,pArrayCircles,pArrayLines,pSole){
-            $("#canvas-container").fadeOut(500,function(){
+            // $("#canvas-container").fadeOut(500,function(){
+                // Presentation.getDesignSpace().cleanFigures();
+                // var name = getDesignListSelected();
+                // $('#selectDesignName').text("Create your design: "+ name);
+                // Presentation.getPaintManagerHandler().loadDesignCircles(pArrayCircles);
+                // Presentation.getPaintManagerHandler().loadDesignLines(pArrayLines);
+                // Presentation.getPaintManagerHandler().loadDesignSole(pSole);
+                // loadPointsDesignView(pPoints);
+                // $("#canvas-container").fadeIn(500);
+                // Presentation.getDesignSpace().divideSegments();
+            // });
+            
                 Presentation.getDesignSpace().cleanFigures();
                 var name = getDesignListSelected();
                 $('#selectDesignName').text("Create your design: "+ name);
@@ -220,9 +231,8 @@ var Presentation = window.Presentation || {};
                 Presentation.getPaintManagerHandler().loadDesignLines(pArrayLines);
                 Presentation.getPaintManagerHandler().loadDesignSole(pSole);
                 loadPointsDesignView(pPoints);
-                $("#canvas-container").fadeIn(500);
-                // Presentation.getDesignSpace().divideSegments();
-            });
+                // $("#canvas-container").fadeIn(500);
+                Presentation.getDesignSpace().divideSegments();
         }
 
         function loadPointsDesignView(pPoints){

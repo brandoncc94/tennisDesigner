@@ -119,11 +119,11 @@
 
             //Safe reference of the image moved
             $( "#imgCircle" ).on( "dragstart", function(){
-                dragSrcEl = this;
+                    dragSrcEl = this;
             });
 
             $( "#imgLine" ).on( "dragstart", function(){
-                dragSrcEl = this;
+                    dragSrcEl = this;
             });
             
             canvasContainer.addEventListener('dragover',function(e){
@@ -144,10 +144,8 @@
         }
 
         function drawFigure(pPosX, pPosY, pRadius, pFillColor, pStrokeWidth, pStrokeColor, dragSrcEl, pType){
-            
-            if(dragSrcEl.id == "imgCircle"){
+            if(dragSrcEl.id == "imgCircle")
                 drawCircle(pPosX, pPosY, pRadius, pFillColor, pStrokeWidth, pStrokeColor, pType);
-            }
             else if(dragSrcEl.id == "imgLine")
                 Presentation.getOnLoadDesignsHandler().drawLineListener(pStrokeWidth, pStrokeColor);
         }
@@ -446,20 +444,36 @@
 
         function divideSegments(){
             var lines = getTypeFigure('Line');
+            var pointIntersect = new Array();
             for (var i = 0; i < lines.length; i++) {
-                var pointIntersect = new Array();
                 var points = lines[i].getAttr("points");
                 var pointLines =  checkIntersection(points);
-                alert(pointLines);
+                // alert(pointLines);
                 if(pointLines.length>1){
-                    paintFigureLines(pointLines);
+                    pointIntersect.push(paintFigureLines(pointLines));
                 }
 
+            }
+
+            for(var j=0; j < pointIntersect.length - 1; j++){
+                for(var i=0; i < pointIntersect.length - 1; i++){
+                    if(pointIntersect[i][0][0] > pointIntersect[i + 1][0][0]){
+                        var tmpObject = pointIntersect[i];
+                        pointIntersect[i] = pointIntersect[i + 1];
+                        pointIntersect[i + 1] = tmpObject;
+                    }
+                }
+            }
+
+            for (var i = 0; i < pointIntersect.length; i++) {
+                paintPolygon(pointIntersect[i][0],pointIntersect[i][1]);
             };
+
         }
 
 
         function paintFigureLines(pointLines){
+            var polygons = Array();
             var lineChildren = lineLayer.getChildren();
             var straightLine = lineLayer.get('#straightLine')[0];
             var staticLines = lineChildren[0].getPoints();
@@ -468,21 +482,21 @@
                     if(pointLines[1][2]==3){
                         var polygon = [pointLines[0][0],pointLines[0][1],
                         staticLines[2],staticLines[3],staticLines[4],staticLines[5],pointLines[1][0],pointLines[1][1]];
-                        paintPolygon(polygon,"red");
-                        alert("");
+                        //paintPolygon(polygon,"red");
+                        return [polygon,"red"];
                     }else{
                         var polygon = [pointLines[0][0],pointLines[0][1],
                         staticLines[2],staticLines[3],staticLines[4],staticLines[5],staticLines[6],staticLines[7],
                         pointLines[1][0],pointLines[1][1]];
-                        paintPolygon(polygon,"blue");
-                        alert("");
+                        // paintPolygon(polygon,"blue");
+                        return [polygon,"blue"];
                     }
                 }else{
                     var polygon = [pointLines[0][0],pointLines[0][1],
                         staticLines[4],staticLines[5],staticLines[6],staticLines[7],
                         pointLines[1][0],pointLines[1][1]];
-                        paintPolygon(polygon,"yellow");
-                        alert("");
+                        // paintPolygon(polygon,"yellow");
+                        return [polygon,"yellow"];
                 }
             }else{
                 var pointIntersect = new Array();
@@ -901,12 +915,8 @@
               for(i=2;i<pts.length-1;i+=2) context.lineTo(pts[i], pts[i+1]);
               context.lineTo(s.control3.attrs.x, s.control3.attrs.y);
               context.lineTo(s.control2.attrs.x, s.control2.attrs.y);
-              context.lineTo(s.control3.attrs.x, s.control3.attrs.y);
-              context.moveTo(s.start.attrs.x, s.start.attrs.y);
-              for(i=2;i<pts1.length-1;i+=2) context.lineTo(pts1[i], pts1[i+1]);
-              context.lineTo(s.control2.attrs.x, s.control2.attrs.y);
-                context.lineTo(s.control3.attrs.x, s.control3.attrs.y);
-              
+              context.lineTo(s.control1.attrs.x, s.control1.attrs.y);
+              for(i=pts1.length-1;i>2;i-=2) context.lineTo(pts1[i-1], pts1[i]);
               context.closePath();
               context.fillStrokeShape(this);
             },
@@ -918,14 +928,8 @@
             backgroundLayer.draw();
         }
 
-<<<<<<< HEAD
 
-
-
-        function fillSole(pColor){
-=======
         function fillSole(pColor, pStrokeWidth){
->>>>>>> 01ec8dd32bc24b04d60591d4e36bab3552938919
             var s = straight;
 
             var fillSole = new Kinetic.Line({

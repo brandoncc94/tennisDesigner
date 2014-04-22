@@ -235,6 +235,8 @@
               document.getElementById("downloadLink").href = uri + base64(format(template, ctx));
               document.getElementById("downloadLink").download = filename;
               document.getElementById("downloadLink").click();
+
+              $("#tmpTable").remove();
           }
         })()
 
