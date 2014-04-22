@@ -207,6 +207,7 @@ var Presentation = window.Presentation || {};
             Presentation.getPaintManagerHandler().loadDesignLines(pArrayLines);
             Presentation.getPaintManagerHandler().loadDesignSole(pSole);
             loadPointsDesignView(pPoints);
+            Presentation.getDesignSpace().divideSegments();
 
         }
 
