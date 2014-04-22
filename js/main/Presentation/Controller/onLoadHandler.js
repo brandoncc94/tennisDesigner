@@ -42,12 +42,12 @@
             return BusinessLogic.getParseBusinessLogic().saveDesignParseData(pName,pPoints,pArrayCircles,pArrayLines,pSole);
         }
 
-        function drawGraphicalLabel(pText, pPosition, pId, pColor, pType){
+        function drawGraphicalLabel(pText, pPosition, pId, pStrokeWidth, pColor, pType){
             if(pType == "Sole"){
                 var straight = Presentation.getDesignSpace().getStraight();
                 var points = [straight.control3.attrs.x, straight.control3.attrs.y, straight.end.attrs.x, straight.end.attrs.y];
-                var border = LibraryData.createSole(points, 2, pColor);
-                BusinessLogic.getPaintManagerBL().insertSole(border);
+                var sole = LibraryData.createSole(points, pStrokeWidth, pColor);
+                BusinessLogic.getPaintManagerBL().insertSole(sole);
             }
             if(pId == -1){
                 Presentation.getLabelUI().init(pText, pPosition);

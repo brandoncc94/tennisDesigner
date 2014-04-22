@@ -46,7 +46,7 @@
             if(pSoleObject == null){
                 Presentation.getDesignSpace().fillSole("black");
             }else{
-                Presentation.getDesignSpace().fillSole(pSoleObject.getStrokeColor());
+                Presentation.getDesignSpace().fillSole(pSoleObject.getStrokeColor(), pSoleObject.getStrokeWidth());
             }
             paintLines(pLinesCollection);
             paintCircles(pCirclesCollection);

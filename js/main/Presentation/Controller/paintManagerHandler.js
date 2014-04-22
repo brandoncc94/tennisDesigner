@@ -100,6 +100,22 @@
             BusinessLogic.getPaintManagerBL().setExecutionTimes(pExecutionTimes, pName);
         }
 
+        function checkIfCollide(pCircleId){
+            BusinessLogic.getPaintManagerBL().checkIfCollide(pCircleId);   
+        }
+
+        function exchangeCircleIds(pId, pId2){
+            Presentation.getDesignSpace().exchangeCircleIds(pId, pId2);            
+        }
+
+        function checkIfLinesCollide(pLineId){
+            BusinessLogic.getPaintManagerBL().checkIfLinesCollide(pLineId);
+        }
+
+        function exchangeLinesIds(pId, pId2){
+            Presentation.getDesignSpace().exchangeLinesIds(pId, pId2);  
+        }
+
         return {
             sendLineToPaintManager : sendLineToPaintManager,
             sendCircleToPaintManager : sendCircleToPaintManager,
@@ -115,7 +131,11 @@
             loadDesignSole : loadDesignSole,
             sendToFire : sendToFire,
             sendToArcade : sendToArcade,
-            convertTableToExcel : convertTableToExcel
+            convertTableToExcel : convertTableToExcel,
+            checkIfCollide : checkIfCollide,
+            exchangeCircleIds : exchangeCircleIds,
+            checkIfLinesCollide : checkIfLinesCollide,
+            exchangeLinesIds : exchangeLinesIds
         }; 
     })();    
 

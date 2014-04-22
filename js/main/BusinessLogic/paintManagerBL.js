@@ -238,6 +238,123 @@
           }
         })()
 
+        function checkIfCollide(pCircleId){
+            for(var i = 0; i < circlesCollection.length; i++){
+                if(pCircleId != i){
+                    var radio = circlesCollection[pCircleId].getRadio();
+                    var posX = parseInt(circlesCollection[pCircleId].getPointsFigure().getPositionX());
+                    var posY = parseInt(circlesCollection[pCircleId].getPointsFigure().getPositionY());
+
+                    var radio2 = circlesCollection[i].getRadio();
+                    var posX2 = parseInt(circlesCollection[i].getPointsFigure().getPositionX());
+                    var posY2 = parseInt(circlesCollection[i].getPointsFigure().getPositionY());
+
+                    var distanceX = posX - posX2;
+                    var distanceY = posY - posY2;
+
+                    var distance = Math.sqrt((distanceX * distanceX) + (distanceY * distanceY));
+
+                    if(distance <= (parseInt(radio) + parseInt(radio2))){
+                        bootbox.dialog({
+                            title: "Priority",
+                            message: "¿Do you want to exchange priorities?",
+                            buttons: {
+                              danger: {
+                                label: "Cancel",
+                                className: "btn-danger"
+                              },
+                              success: {
+                                label: "Accept",
+                                className: "btn-success",
+                                callback: function() {
+                                  var tmpObject = circlesCollection[i];
+                                  circlesCollection[i] = circlesCollection[pCircleId];
+                                  circlesCollection[pCircleId] = tmpObject;
+                                  bootbox.alert("Changes applied.");
+                                  Presentation.getPaintManagerHandler().exchangeCircleIds(pCircleId, i);
+                                }
+                              }
+                            }
+                        }); 
+                        break;
+                    }
+                } 
+            }
+        }
+
+        function checkIfLinesCollide(pId){            
+            var arrayLineId = [linesCollection[pId].getPointsFigure().getPositionX().getPositionX(), linesCollection[pId].getPointsFigure().getPositionX().getPositionY(),
+                              linesCollection[pId].getPointsFigure().getPositionY().getPositionX(), linesCollection[pId].getPointsFigure().getPositionY().getPositionY()]
+            for( var i=0; i<linesCollection.length; i++){  // for each line compare
+              if(pId != i){
+                var arrayLineToCompare = [linesCollection[i].getPointsFigure().getPositionX().getPositionX(), linesCollection[i].getPointsFigure().getPositionX().getPositionY(),
+                              linesCollection[i].getPointsFigure().getPositionY().getPositionX(), linesCollection[i].getPointsFigure().getPositionY().getPositionY()]
+                var results = checkLineIntersection(arrayLineId[0], arrayLineId[1], arrayLineId[2], arrayLineId[3], 
+                           arrayLineToCompare[0], arrayLineToCompare[1], arrayLineToCompare[2], arrayLineToCompare[3]);
+                if(results.onLine1 == true && results.onLine2 == true){
+                    bootbox.dialog({
+                        title: "Priority",
+                        message: "¿Do you want exchange priorities?",
+                        buttons: {
+                          danger: {
+                            label: "Cancel",
+                            className: "btn-danger"
+                          },
+                          success: {
+                            label: "Accept",
+                            className: "btn-success",
+                            callback: function() {
+                              var tmpObject = linesCollection[i];
+                              linesCollection[i] = linesCollection[pId];
+                              linesCollection[pId] = tmpObject;
+                              bootbox.alert("Changes applied.");
+                              Presentation.getPaintManagerHandler().exchangeLinesIds(pId, i);
+                            }
+                          }
+                        }
+                    }); 
+                    break;
+                }                    
+              }               
+            }
+        }
+
+        //Taken from http://jsfiddle.net/justin_c_rounds/Gd2S2/light/
+        function checkLineIntersection(pLine1StartX, pLine1StartY, pLine1EndX, pLine1EndY, pLine2StartX, pLine2StartY, pLine2EndX, pLine2EndY) {
+            var denominator, a, b, numerator1, numerator2, result = {
+                x: null,        //  Position X of the intersection
+                y: null,        //  Position Y of the intersection
+                onLine1: false, 
+                onLine2: false
+            };
+            
+            denominator = ((pLine2EndY - pLine2StartY) * (pLine1EndX - pLine1StartX)) - ((pLine2EndX - pLine2StartX) * (pLine1EndY - pLine1StartY));
+            if (denominator == 0) {
+                return result;
+            }
+            a = pLine1StartY - pLine2StartY;
+            b = pLine1StartX - pLine2StartX;
+            numerator1 = ((pLine2EndX - pLine2StartX) * a) - ((pLine2EndY - pLine2StartY) * b);
+            numerator2 = ((pLine1EndX - pLine1StartX) * a) - ((pLine1EndY - pLine1StartY) * b);
+            a = numerator1 / denominator;
+            b = numerator2 / denominator;
+
+            // if we cast these lines infinitely in both directions, they intersect here:
+            result.x = pLine1StartX + (a * (pLine1EndX - pLine1StartX));
+            result.y = pLine1StartY + (a * (pLine1EndY - pLine1StartY));
+        
+            // if line1 is a segment and line2 is infinite, they intersect if:
+            if (a > 0 && a < 1) {
+                result.onLine1 = true;
+            }
+            // if line2 is a segment and line1 is infinite, they intersect if:
+            if (b > 0 && b < 1) {
+                result.onLine2 = true;
+            }            
+            //If both are true, they intersect each other
+            return result;
+        }        
+
         //Let's make it public
         return {
             insertLine : insertLine,
@@ -257,7 +374,9 @@
             sendToArcade : sendToArcade,
             setExecutionTimes : setExecutionTimes,
             insertSole : insertSole,
-            convertDataToExcel : convertDataToExcel
+            convertDataToExcel : convertDataToExcel,
+            checkIfCollide : checkIfCollide,
+            checkIfLinesCollide : checkIfLinesCollide
         };  
     })();
 

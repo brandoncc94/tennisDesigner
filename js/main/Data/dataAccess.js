@@ -36,9 +36,6 @@ var DataAccess = window.DataAccess || {};
      * @public
      */
 
-
-
-
     pContext.getParseDataAcces = function() {
         return ParseDataAcces;
     };
@@ -88,7 +85,7 @@ var DataAccess = window.DataAccess || {};
                 
               },
               error: function(error) {
-                // The request failed
+                alert("Something bad happened.");
               }
             });
         }
@@ -101,11 +98,12 @@ var DataAccess = window.DataAccess || {};
                 if(designs.length==1){
                     var design = designs[0];
                     updateDesignAux(design,pPoints,pArrayCircles,pArrayLines,pSole); 
+                    bootbox.alert("Design saved successfully!");
                 }
                 
               },
               error: function(error) {
-                // The request failed
+                alert("Something bad happened.");
               }
             });
         }
@@ -135,7 +133,7 @@ var DataAccess = window.DataAccess || {};
                 
               },
               error: function(error) {
-                // The request failed
+                alert("Something bad happened.");
               }
             });
         }
@@ -172,7 +170,7 @@ var DataAccess = window.DataAccess || {};
                 
               },
               error: function(error) {
-                // The request failed
+                alert("Something bad happened.");
               }
             });   
         }
@@ -214,7 +212,7 @@ var DataAccess = window.DataAccess || {};
                 
               },
               error: function(error) {
-                // The request failed
+                alert("Something bad happened.");
               }
             });
 

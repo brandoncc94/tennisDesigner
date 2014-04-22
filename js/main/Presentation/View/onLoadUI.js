@@ -43,6 +43,7 @@ var Presentation = window.Presentation || {};
      * @namespace
      **/
     var onLoad = (function(){
+
         function init(){
             $('#nameDesign-container').hide();
             $('#listDesign-container').hide();
@@ -50,6 +51,8 @@ var Presentation = window.Presentation || {};
             $('#contact-container').hide();
             $('#metrix-table').hide();
             $("#exportToExcel").hide();
+            $("#create-container").hide();
+            $("#decoration-container").hide();
 
             $('#imgSearchDesign').click(function(){
                 if(!$('#nameDesign-container').hidden){
@@ -72,7 +75,7 @@ var Presentation = window.Presentation || {};
 
             $('#imgSaveDesign').click(function(){
                 updateDesign();
-                setTimeout(function(){$("#lieEdit a").click();},1000);
+                setTimeout(function(){$("#lieEdit a").click();}, 500);
             });
 
             $("#lieEdit a").click(function(){
@@ -86,38 +89,44 @@ var Presentation = window.Presentation || {};
                 }
             });
 
-            $("#lieArcade a").click(function(){
-                
-                    $(".main-container").css('background-color', '#5bc0de');
+            $("#lieArcade a").click(function(){            
+                $(".main-container").css('background-color', '#5bc0de');
+                $("#canvas-container").fadeOut(500,function(){
+                    $("#canvas-container").fadeIn(500);
+                });
+
+                $("#decoration-container").fadeOut(500,function(){
                     $("#algorithmName").text("Arcade"); 
-                    $("#decoration-container").fadeOut(500,function(){
-                        $("#decoration-container span").text("Metrix Results");
-                        $("#tabs").hide();
-                        $("#content").hide();
-                        $("#metrix-table").show();
-                        $("#exportToExcel").show();                   
-                        $("#decoration-container").fadeIn(500);
-                    });
+                    $("#decoration-container span").text("Metrix Results");
+                    $("#tabs").hide();
+                    $("#content").hide();
+                    $("#metrix-table").show();
+                    $("#exportToExcel").show();                   
+                    $("#decoration-container").fadeIn(500);
                     Presentation.getDesignSpace().cleanJustFigures();
                     Presentation.getPaintManagerHandler().sendToArcade();
-                
+                });                
             });
 
             $("#lieFire a").click(function(){
-                
-                    $(".main-container").css('background-color', '#428bca');
+            
+                $(".main-container").css('background-color', '#428bca');
+                $("#canvas-container").fadeOut(500,function(){
+                    $("#canvas-container").fadeIn(500);
+                });
+                $("#decoration-container").fadeOut(500,function(){
+
                     $("#algorithmName").text("Fire");
-                    $("#decoration-container").fadeOut(500,function(){
-                        $("#decoration-container span").text("Metrix Results");
-                        $("#tabs").hide();
-                        $("#content").hide();
-                        $("#metrix-table").show();
-                        $("#exportToExcel").show();                    
-                        $("#decoration-container").fadeIn(500);
-                    });
+                    $("#decoration-container span").text("Metrix Results");
+                    $("#tabs").hide();
+                    $("#content").hide();
+                    $("#metrix-table").show();
+                    $("#exportToExcel").show();                    
+                    $("#decoration-container").fadeIn(500);
                     Presentation.getDesignSpace().cleanJustFigures();
                     Presentation.getPaintManagerHandler().sendToFire();
-                
+                });
+            
             });
 
             $("#lieContact a").click(function(){
@@ -168,15 +177,18 @@ var Presentation = window.Presentation || {};
                     if(borderSoleColorId == 0){
                         idLabel+=1
                         borderSoleColorId = idLabel;
-                        Presentation.getOnLoadHandler().drawGraphicalLabel("BorderSole-color: " + hex, [10,40], -1, hex, "Sole");
+                        Presentation.getOnLoadHandler().drawGraphicalLabel("BorderSole-color: " + hex, [10,40], -1, $("#tbxSoleStrokeWidth").val(), hex, "Sole");
                     }
                     else
-                        Presentation.getOnLoadHandler().drawGraphicalLabel("BorderSole-color: " + hex, "", borderSoleColorId - 1, hex, "Sole");
+                        Presentation.getOnLoadHandler().drawGraphicalLabel("BorderSole-color: " + hex, "", borderSoleColorId - 1, $("#tbxSoleStrokeWidth").val(), hex, "Sole");
                 }
             }).css('background-color', '#ff8800');  
         }
 
         function updateDecorationPanel(){
+            $('#decoration-container').slideDown(1000);
+            $('#create-container').slideDown(1000);
+
             if($("#metrix-table").is(":visible")){
                 $("#decoration-container").fadeOut(500,function(){
                     $("#decoration-container span").text("Add Decoration: ");
@@ -200,14 +212,16 @@ var Presentation = window.Presentation || {};
         }
 
         function loadDesignView(pName,pPoints,pArrayCircles,pArrayLines,pSole){
-            Presentation.getDesignSpace().cleanFigures();
-            var name = getDesignListSelected();
-            $('#selectDesignName').text("Create your design: "+ name);
-            Presentation.getPaintManagerHandler().loadDesignCircles(pArrayCircles);
-            Presentation.getPaintManagerHandler().loadDesignLines(pArrayLines);
-            Presentation.getPaintManagerHandler().loadDesignSole(pSole);
-            loadPointsDesignView(pPoints);
-
+            $("#canvas-container").fadeOut(500,function(){
+                Presentation.getDesignSpace().cleanFigures();
+                var name = getDesignListSelected();
+                $('#selectDesignName').text("Create your design: "+ name);
+                Presentation.getPaintManagerHandler().loadDesignCircles(pArrayCircles);
+                Presentation.getPaintManagerHandler().loadDesignLines(pArrayLines);
+                Presentation.getPaintManagerHandler().loadDesignSole(pSole);
+                loadPointsDesignView(pPoints);
+                $("#canvas-container").fadeIn(500);
+            });
         }
 
         function loadPointsDesignView(pPoints){
@@ -296,6 +310,8 @@ var Presentation = window.Presentation || {};
         }
 
         function clearElements(){
+            backgroundColorId = 0;
+            borderSoleColorId = 0;
             idLabel = 0;      
             nameCircle = 0;
             nameLine = 0;
