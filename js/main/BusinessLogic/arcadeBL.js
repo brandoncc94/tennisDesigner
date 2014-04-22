@@ -44,9 +44,9 @@
             Presentation.getDesignSpace().reduceAnchors();
 
             if(pSoleObject == null){
-                Presentation.getDesignSpace().fillSole("black");
+                Presentation.getDesignSpace().fillSole("black", 2);
             }else{
-                Presentation.getDesignSpace().fillSole(pSoleObject.getStrokeColor());
+                Presentation.getDesignSpace().fillSole(pSoleObject.getStrokeColor(), pSoleObject.getStrokeWidth());
             }
             paintLines(pLinesCollection);
             paintCircles(pCirclesCollection);

@@ -107,11 +107,8 @@
             canvasStage.add(lineLayer);
             canvasStage.add(figuresLayer); 
             canvasStage.add(anchorLayer); 
-            
-            loadFiguresActions();
-            
 
-            
+            loadFiguresActions();
             
         }    
 
@@ -220,8 +217,9 @@
 
             circle.on('dragend', function() {
                 circleRef.setPointsFigure(LibraryData.createPoint(circle.getPosition().x, circle.getPosition().y));
+                Presentation.getPaintManagerHandler().checkIfCollide(this.name());
             });
-        }
+        }        
         
         function drawLineFire(pPosX1, pPosY1, pPosX2, pPosY2, pStrokeWidth, pStrokeColor){
             var straight = new Kinetic.Line({
@@ -341,9 +339,9 @@
                 
                 label.changeName(cad , "", straight.id());
                 figuresLayer.draw();
-
                 // checkIntersection(positionsArray);
                 // checkIntersectionQuadratic(positionsArray);
+                Presentation.getPaintManagerHandler().checkIfLinesCollide(this.name());
             });
 
             // checkIntersection(positionsArray);
@@ -920,16 +918,20 @@
             backgroundLayer.draw();
         }
 
+<<<<<<< HEAD
 
 
 
         function fillSole(pColor){
+=======
+        function fillSole(pColor, pStrokeWidth){
+>>>>>>> 01ec8dd32bc24b04d60591d4e36bab3552938919
             var s = straight;
 
             var fillSole = new Kinetic.Line({
                 points: [s.end.attrs.x, s.end.attrs.y, s.control3.attrs.x, s.control3.attrs.y],
                 stroke: pColor,
-                strokeWidth: 2
+                strokeWidth: pStrokeWidth
             });
 
             figuresLayer.add(fillSole);
@@ -976,12 +978,21 @@
             idLabel= 0;
         }
 
-        
+        function exchangeCircleIds(pId, pId2){
+            var children = figuresLayer.getChildren();
+            children[pId].id(children[pId2]);
+            children[pId2].id(children[pId]); 
+        }
+
+        function exchangeLinesIds(pId, pId2){
+            var children = figuresLayer.getChildren();
+            children[pId].id(children[pId2]);
+            children[pId2].id(children[pId]); 
+        }
 
         function init(){
             drawCurves();
             updateLines();
-            
         }
 
         return {
@@ -1005,9 +1016,11 @@
             cleanJustFigures : cleanJustFigures,
             fillBackground : fillBackground,
             fillSole : fillSole,
-            reduceAnchors : reduceAnchors
+            reduceAnchors : reduceAnchors,
+            exchangeCircleIds : exchangeCircleIds,
+            exchangeLinesIds : exchangeLinesIds
         };            
-    })();
+    })()
 
 }(Presentation, jQuery));
 

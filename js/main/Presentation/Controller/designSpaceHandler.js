@@ -38,11 +38,11 @@
     var DesignSpaceHandler = (function(){
         
         function sentDataToDrawCircle(pPosX, pPosY, pRadius, pFillColor, pStrokeWidth, pStrokeColor){
-            Presentation.getDesignSpace().drawCircle(pPosX, pPosY, pRadius, pFillColor, pStrokeWidth, pStrokeColor, "edit");
+            Presentation.getDesignSpace().drawCircle(pPosX, pPosY, pRadius, pFillColor, pStrokeWidth, pStrokeColor);
         }
 
         function sentDataToDrawLine(pPosX1, pPosY1, pPosX2, pPosY2, pStrokeWidth, pStrokeColor){
-            Presentation.getDesignSpace().drawLine(pPosX1, pPosY1, pPosX2, pPosY2, pStrokeWidth, pStrokeColor, "edit");
+            Presentation.getDesignSpace().drawLine(pPosX1, pPosY1, pPosX2, pPosY2, pStrokeWidth, pStrokeColor);
         }
 
         return {
