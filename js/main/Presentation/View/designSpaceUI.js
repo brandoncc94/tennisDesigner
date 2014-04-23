@@ -59,6 +59,10 @@
             return figuresLayer;
         }
 
+        function getLineLayer(){
+            return lineLayer;
+        }
+
         function drawCanvasStage(){
             //We declare the stage to be working with 
             canvasStage = new Kinetic.Stage({
@@ -349,7 +353,7 @@
         function checkIntersection(pLineObject){
             var lineIntersetions = new Array();
 
-            var lineChildren = lineLayer.getChildren();
+            var lineChildren = lineLayer.get('Line');
             var straightLine = lineLayer.get('#straightLine')[0];
             var staticLines = lineChildren[0].getPoints();
             
@@ -900,7 +904,6 @@
                 straight.end.attrs.x,
                 straight.end.attrs.y];
                 var pts = getCurvePoints(ptsa, 1,false, 16);
-                //     
 
                 var ptsa1 = [straight.start.attrs.x,straight.start.attrs.y,
                 straight.control1.attrs.x-(-straight.start.attrs.x+straight.control1.attrs.x)/2, straight.start.attrs.y+
@@ -926,6 +929,54 @@
             backgroundLayer.add(figureBackground);
 
             backgroundLayer.draw();
+        }
+
+        function fillExternBackground(){
+            var s = straight;
+
+            var figureBackground = new Kinetic.Shape({
+                sceneFunc: function(context) {
+
+                    var ptsa =[straight.start.attrs.x,straight.start.attrs.y,
+                     straight.start.attrs.x-(straight.start.attrs.x)/5, straight.start.attrs.y+
+                     (straight.end.attrs.y-straight.start.attrs.y)/2,
+                    straight.end.attrs.x,
+                    straight.end.attrs.y];
+                    var pts = getCurvePoints(ptsa, 1,false, 16);
+                    //     
+
+                    var ptsa1 = [straight.start.attrs.x,straight.start.attrs.y,
+                    straight.control1.attrs.x-(-straight.start.attrs.x+straight.control1.attrs.x)/2, straight.start.attrs.y+
+                     (straight.control1.attrs.y)/5,
+                     straight.control1.attrs.x,
+                    straight.control1.attrs.y];
+
+                    var pts1 = getCurvePoints(ptsa1);
+                
+                      context.beginPath();
+                      context.moveTo(0 , 0);
+                      context.lineTo(s.start.attrs.x, s.start.attrs.y);
+                      for(i=2;i<pts.length-1;i+=2) context.lineTo(pts[i], pts[i+1]);
+                      context.lineTo(s.control3.attrs.x, s.control3.attrs.y);
+                      context.lineTo(s.control2.attrs.x, s.control2.attrs.y);
+                      context.lineTo(s.control1.attrs.x, s.control1.attrs.y);
+                      for(i=pts1.length-1;i>2;i-=2) context.lineTo(pts1[i-1], pts1[i]);
+                      context.lineTo(0, 0);
+                      context.lineTo(650, 0);
+                      context.lineTo(650, 350);
+                      context.lineTo(0, 350);
+                      context.lineTo(0, 0);
+                      context.closePath();
+                      context.fillStrokeShape(this);
+                },
+                
+                fill: "white",
+                id: "externBackground"
+            });
+            
+            lineLayer.add(figureBackground);
+            figureBackground.getParent().moveToTop();
+            lineLayer.draw();
         }
 
 
@@ -1022,7 +1073,9 @@
             fillSole : fillSole,
             reduceAnchors : reduceAnchors,
             exchangeCircleIds : exchangeCircleIds,
-            exchangeLinesIds : exchangeLinesIds
+            exchangeLinesIds : exchangeLinesIds,
+            fillExternBackground : fillExternBackground,
+            getLineLayer : getLineLayer
         };            
     })()
 

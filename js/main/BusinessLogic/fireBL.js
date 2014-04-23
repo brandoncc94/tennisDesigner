@@ -51,6 +51,7 @@
             paintLines(pLinesCollection);
             paintCircles(pCirclesCollection);
 
+            Presentation.getDesignSpace().fillExternBackground();
             var end = new Date().getTime();
             var time = end - start;
             Presentation.getOnLoadHandler().sendExecutionTime(time);

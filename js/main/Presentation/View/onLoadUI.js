@@ -82,6 +82,11 @@ var Presentation = window.Presentation || {};
                 clearElements();
                 try{
                     var name = getDesignListSelected();
+
+                    $("#canvas-container").fadeOut(500,function(){
+                        $("#canvas-container").fadeIn(500);
+                        reacomodeBackground();
+                    });
                     downloadDesign(name);                   
                     updateDecorationPanel();
                 }catch(err){
@@ -141,7 +146,12 @@ var Presentation = window.Presentation || {};
                 clearElements();
                 updateDecorationPanel();
                 var name = getDesignListSelected();
-                downloadDesign(name);                                
+                downloadDesign(name);         
+                
+                $("#canvas-container").fadeOut(500,function(){
+                    $("#canvas-container").fadeIn(500);
+                    reacomodeBackground();
+                });
             }); 
 
             $("#exportToExcel").click(function(){
@@ -331,6 +341,20 @@ var Presentation = window.Presentation || {};
             $(".main-container").css('background-color', '#d9534f');
         }
 
+        function reacomodeBackground(){
+            try{
+                var lineLayer = Presentation.getDesignSpace().getLineLayer();
+                var lineChildren = lineLayer.get('Shape');
+                for(var i = 0; i < lineChildren.length; i++){
+                    if(lineChildren[i].id() == "externBackground"){
+                        lineChildren[i].getParent().moveToBottom();
+                        lineLayer.draw();    
+                    }
+                }                
+            }catch(err){
+                console.log("There is no extern background yet.");
+            }
+        }
         return {
             init:init,
             addDesign : addDesign,
