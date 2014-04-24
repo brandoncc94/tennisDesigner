@@ -40,7 +40,7 @@
         var curveLayer, lineLayer, anchorLayer, backgroundLayer, 
                 figuresLayer, straight, labelText, canvasStage;
 
-
+        //Let's draw the default stage
         drawCanvasStage();
 
         function getBackgroundLayer(){
@@ -54,7 +54,7 @@
         function getAnchorLayer(){
             return anchorLayer;
         }
-
+        
         function getFiguresLayer(){
             return figuresLayer;
         }
@@ -63,6 +63,7 @@
             return lineLayer;
         }
 
+        //Funtion that draws the kinetic Stage, layers and anchors
         function drawCanvasStage(){
             //We declare the stage to be working with 
             canvasStage = new Kinetic.Stage({
@@ -97,7 +98,6 @@
                 end: buildAnchor(150, 250)
             };
 
-
             // Before drawing lets syncronize the lines when we pick up the anchor
             anchorLayer.on('beforeDraw', function() {
                 drawCurves();
@@ -105,19 +105,15 @@
             });
 
             //Add all layers to the main stage
-            
             canvasStage.add(backgroundLayer); 
             canvasStage.add(curveLayer);
             canvasStage.add(lineLayer);
             canvasStage.add(figuresLayer); 
-            canvasStage.add(anchorLayer); 
-
-            loadFiguresActions();
-            
+            canvasStage.add(anchorLayer);             
         }    
 
+        //When an elements is draged & dropped
         function dragElementsIntoCanvas(pRadius, pStrokeWidth, pStrokeColor, pFillColor){
-
             var canvasContainer = canvasStage.getContainer();    
             var dragSrcEl = null;
 
@@ -136,23 +132,25 @@
 
             canvasContainer.addEventListener('drop',function(e){
                 e.preventDefault(); //Stops the reference to do the defult event
-                //Singleton Pattern that allow only drag one figure and just one
-                if ( arguments.callee._singletonInstance )
+                if (arguments.callee._singletonInstance )
                     return arguments.callee._singletonInstance;
                 arguments.callee._singletonInstance = this;
 
+                //Get the position X & Y when dropped
                 var posX = Presentation.getOnLoadDesignsHandler().getXPageReference(e);
                 var posY = Presentation.getOnLoadDesignsHandler().getYPageReference(e);
-                drawFigure(posX, posY, pRadius, pFillColor, pStrokeWidth, pStrokeColor, dragSrcEl, "edit");
+                drawFigure(posX, posY, pRadius, pFillColor, pStrokeWidth, pStrokeColor, dragSrcEl);
             });
         }
 
-        function drawFigure(pPosX, pPosY, pRadius, pFillColor, pStrokeWidth, pStrokeColor, dragSrcEl, pType){
+        //Draw the figure selected
+        function drawFigure(pPosX, pPosY, pRadius, pFillColor, pStrokeWidth, pStrokeColor, dragSrcEl){
             if(dragSrcEl.id == "imgCircle")
-                drawCircle(pPosX, pPosY, pRadius, pFillColor, pStrokeWidth, pStrokeColor, pType);
+                drawCircle(pPosX, pPosY, pRadius, pFillColor, pStrokeWidth, pStrokeColor);
             else if(dragSrcEl.id == "imgLine")
                 Presentation.getOnLoadDesignsHandler().drawLineListener(pStrokeWidth, pStrokeColor);
         }
+
 
         function drawCircleFire(pPosX, pPosY, pRadius, pFillColor, pStrokeWidth, pStrokeColor){
             var circle = new Kinetic.Circle({
@@ -204,19 +202,22 @@
 
             //Create the object and send it to the paint manager
             var circleRef = LibraryData.createCircle(points, pRadius, pStrokeWidth, pStrokeColor, pFillColor);
-
-            var cad = "Radius: " + pRadius + "\n" + "Stroke Width: " + pStrokeWidth + "\n" + "Stroke Color: " + pStrokeColor + "\n" + "Fill Color: " + pFillColor;
+            var cad = "Radius: " + pRadius + "\n" + "Stroke Width: " + pStrokeWidth + "\n" + 
+                      "Stroke Color: " + pStrokeColor + "\n" + "Fill Color: " + pFillColor;
             label.init(cad , [pPosX, pPosY], idLabel);    
-            
+            //Let's increment id's
             idLabel+=1;   
             nameCircle+=1;
 
+            //Send the object created to the PAINT MANAGER that centralizes everything
             Presentation.getPaintManagerHandler().sendCircleToPaintManager(circleRef);
 
+            //If circle clicked -> change characteristics
             circle.on('click', function() {
                 Presentation.getAlertsUI().changeFeatureDialog(circle, label, false, circleRef);
             });
 
+            //If circle dragend -> update the points and check if a colition happened
             circle.on('dragend', function() {
                 circleRef.setPointsFigure(LibraryData.createPoint(circle.getPosition().x, circle.getPosition().y));
                 Presentation.getPaintManagerHandler().checkIfCollide(this.name());
@@ -259,22 +260,18 @@
             if(startingX1 > endingX1 && startingY1 < endingY1){
                 //we have the maximum X's value and add to it the half cause the stroke expands
                 var x = Math.max(startingX1, endingX1) + half;
-                //we have the minimum Y's value and add the stroke width of the line in edit, 3 in this case.
                 var y = Math.min(startingY1, endingY1) + 3;  
             }else if(startingX1 < endingX1 && startingY1 > endingY1){
-                //we have the maximum X's value and add to it the half cause the stroke expands
+                //we have the minimum X's value and quit to it the half cause the stroke expands
                 var x = Math.min(startingX1, endingX1) - half;
-                //we have the minimum Y's value and add the stroke width of the line in edit, 3 in this case.
                 var y = Math.max(startingY1, endingY1) - 3;  
             }else if(startingX1 > endingX1 && startingY1 > endingY1){
                 //we have the maximum X's value and add to it the half cause the stroke expands
                 var x = Math.max(startingX1, endingX1) - half;
-                //we have the minimum Y's value and add the stroke width of the line in edit, 3 in this case.
                 var y = Math.max(startingY1, endingY1) + 3;                  
             }else{
                 //we have the maximum X's value and add to it the half cause the stroke expands
                 var x = Math.min(startingX1, endingX1) + 3;
-                //we have the minimum Y's value and add the stroke width of the line in edit, 3 in this case.
                 var y = Math.min(startingY1, endingY1) - half;   
             }
 
@@ -295,6 +292,7 @@
     
 
         function drawLine(pPosX1, pPosY1, pPosX2, pPosY2, pStrokeWidth, pStrokeColor){
+            //Let's create the graphical line
             var straight = new Kinetic.Line({
                 strokeWidth: 3,
                 stroke: 'black',
@@ -317,141 +315,44 @@
 
                                 lineRef.getPointsFigure().getPositionY().getPositionX(), lineRef.getPointsFigure().getPositionY().getPositionY()];
 
-            var cad = "Stroke Width: " + pStrokeWidth + "\n" + "Stroke Color: " + pStrokeColor + "\n" + "Points: [" + pPosX1 + ", " + pPosY1 + "] , " + "[" + pPosX2 + "," + pPosY2 + "]";
+            var cad = "Stroke Width: " + pStrokeWidth + "\n" + "Stroke Color: " + pStrokeColor + "\n" + 
+                      "Points: [" + pPosX1 + ", " + pPosY1 + "] , " + "[" + pPosX2 + "," + pPosY2 + "]";
             label.init(cad , [pPosX2, pPosY2], idLabel);
-            
+            //Let's increase the Id's
             idLabel+=1;
             nameLine+=1;
             
+            //Send the object created to the PAINT MANAGER that centralizes everything
             Presentation.getPaintManagerHandler().sendLineToPaintManager(lineRef);
 
+            //If straight is clicked -> change features of the lines
             straight.on('click', function() {
                 Presentation.getAlertsUI().changeLineFeatureDialog(straight, label, false, lineRef);
             });
 
+            //If straight is dragend -> let's update the features of the object, the label and check if lines collide
             straight.on('dragend', function() {
                 var lineObj = Presentation.getOnLoadDesignsHandler().updateLine(this, lineRef);    
-                //Just update the label and redraw the line layer to make it visible
                 var positionsArray = [lineObj.getPointsFigure().getPositionX().getPositionX(), lineObj.getPointsFigure().getPositionX().getPositionY(),
                                        lineObj.getPointsFigure().getPositionY().getPositionX(), lineObj.getPointsFigure().getPositionY().getPositionY()];
-
                 var cad = "Stroke Width: " + lineObj.getStrokeWidth() + "\n" + "Stroke Color: " + lineObj.getStrokeColor()   + "\n" + 
                           "Points: [" + positionsArray[0] + ", " + positionsArray[1] + "] , " + 
                           "[" + positionsArray[2] + "," + positionsArray[3] + "]";
                 
                 label.changeName(cad , "", straight.id());
                 figuresLayer.draw();
-                // checkIntersection(positionsArray);
-                // checkIntersectionQuadratic(positionsArray);
                 Presentation.getPaintManagerHandler().checkIfLinesCollide(this.name());
-            });
-
-            // checkIntersection(positionsArray);
-            // checkIntersectionQuadratic(positionsArray);           
+                Presentation.getExtraCalculationsHandler().checkIntersection(positionsArray);
+                Presentation.getExtraCalculationsHandler().checkIntersectionQuadratic(positionsArray);
+            });         
         }
-
-        function checkIntersection(pLineObject){
-            var lineIntersetions = new Array();
-
-            var lineChildren = lineLayer.get('Line');
-            var straightLine = lineLayer.get('#straightLine')[0];
-            var staticLines = lineChildren[0].getPoints();
-            
-            for( var i=0; i<6; i++){  // for each static straight line
-               var results = checkLineIntersection(pLineObject[0], pLineObject[1], pLineObject[2], pLineObject[3], 
-                           staticLines[i], staticLines[i + 1], staticLines[i + 2], staticLines[i + 3]);
-               if(results.onLine1 == true && results.onLine2 == true){
-                    lineIntersetions.push([results.x,results.y,i+1]);
-               }
-               i+=1;
-            }
-            return lineIntersetions;
-        }
-
-        //Taken from http://jsfiddle.net/justin_c_rounds/Gd2S2/light/
-        function checkLineIntersection(pLine1StartX, pLine1StartY, pLine1EndX, pLine1EndY, pLine2StartX, pLine2StartY, pLine2EndX, pLine2EndY) {
-            
-            //alert(pLine2StartX + " " + pLine2StartY + " " + pLine2EndX + " " + pLine2EndY);
-            var denominator, a, b, numerator1, numerator2, result = {
-                x: null,        //  Position X of the intersection
-                y: null,        //  Position Y of the intersection
-                onLine1: false, 
-                onLine2: false
-            };
-            
-            denominator = ((pLine2EndY - pLine2StartY) * (pLine1EndX - pLine1StartX)) - ((pLine2EndX - pLine2StartX) * (pLine1EndY - pLine1StartY));
-            if (denominator == 0) {
-                return result;
-            }
-            a = pLine1StartY - pLine2StartY;
-            b = pLine1StartX - pLine2StartX;
-            numerator1 = ((pLine2EndX - pLine2StartX) * a) - ((pLine2EndY - pLine2StartY) * b);
-            numerator2 = ((pLine1EndX - pLine1StartX) * a) - ((pLine1EndY - pLine1StartY) * b);
-            a = numerator1 / denominator;
-            b = numerator2 / denominator;
-
-            // if we cast these lines infinitely in both directions, they intersect here:
-            result.x = pLine1StartX + (a * (pLine1EndX - pLine1StartX));
-            result.y = pLine1StartY + (a * (pLine1EndY - pLine1StartY));
-        
-            // if line1 is a segment and line2 is infinite, they intersect if:
-            if (a > 0 && a < 1) {
-                result.onLine1 = true;
-            }
-            // if line2 is a segment and line1 is infinite, they intersect if:
-            if (b > 0 && b < 1) {
-                result.onLine2 = true;
-            }            
-            //If both are true, they intersect each other
-            return result;
-        }        
-
-        function checkIntersectionQuadratic(pLineObject){
-            var pointIntersect = new Array();
-            var ptsa1 = [straight.start.attrs.x,straight.start.attrs.y,
-            straight.control1.attrs.x-(-straight.start.attrs.x+straight.control1.attrs.x)/2, straight.start.attrs.y+
-             (straight.control1.attrs.y)/5,
-             straight.control1.attrs.x,
-            straight.control1.attrs.y];
-
-            var pts1 = getCurvePoints(ptsa1);
-            
-            for (var i = 0; i+2 < pts1.length; i+=2) {
-                pts1[i]
-                var results  = checkLineIntersection(pLineObject[0],pLineObject[1],pLineObject[2],pLineObject[3],
-                 pts1[i],pts1[i+1],pts1[i+2],pts1[i+3]);
-                if(results.onLine1 == true && results.onLine2 == true){
-                    pointIntersect.push([results.x,results.y,2]);
-               }
-            };
-
-            var ptsa =[straight.start.attrs.x,straight.start.attrs.y,
-             straight.start.attrs.x-(straight.start.attrs.x)/5, straight.start.attrs.y+
-             (straight.end.attrs.y-straight.start.attrs.y)/2,
-                straight.end.attrs.x,
-                straight.end.attrs.y];
-            var pts = getCurvePoints(ptsa, 1,false, 16);
-
-            for (var i = 0; i+2 < pts.length; i+=2) {
-                pts[i]
-                var results  = checkLineIntersection(pLineObject[0],pLineObject[1],pLineObject[2],pLineObject[3],
-                 pts[i],pts[i+1],pts[i+2],pts[i+3]);
-                if(results.onLine1 == true && results.onLine2 == true){
-                    pointIntersect.push([results.x,results.y,4]);
-               }
-            };                                  
-            return pointIntersect;
-        }
-
-
-
 
         function divideSegments(){
             var lines = getTypeFigure('Line');
             var pointIntersect = new Array();
             for (var i = 0; i < lines.length; i++) {
                 var points = lines[i].getAttr("points");
-                var pointLines =  checkIntersection(points);
+                var pointLines =  Presentation.getExtraCalculationsHandler().checkIntersection(points);
                 // alert(pointLines);
                 if(pointLines.length>1){
                     pointIntersect.push(paintFigureLines(pointLines));
@@ -472,9 +373,7 @@
             for (var i = 0; i < pointIntersect.length; i++) {
                 paintPolygon(pointIntersect[i][0],pointIntersect[i][1]);
             };
-
         }
-
 
         function paintFigureLines(pointLines){
             var polygons = Array();
@@ -563,8 +462,6 @@
             backgroundLayer.draw();
         }
 
-
-
         function getTypeFigure(pType){
             var figures = figuresLayer.getChildren();
             var figuresType = new Array();
@@ -575,19 +472,9 @@
             return figuresType;
         }
 
-
-        function getAllIntersections(pLine){
-            var lines; 
-
-        }
-
-
-
-
         function updateLines() {
             var s = straight;
             var straightLine = lineLayer.get('#straightLine')[0];
-
             //Update the lines when moved dinamically
             straightLine.setPoints([s.control1.attrs.x, s.control1.attrs.y, s.control2.attrs.x, 
                         s.control2.attrs.y, s.control3.attrs.x, s.control3.attrs.y, s.end.attrs.x, s.end.attrs.y]);
@@ -606,8 +493,6 @@
                 strokeWidth: 2,
                 draggable: true,
                 dragBoundFunc: function (pos) {
-                    //Anchor values
-
                     var X = pos.x;
                     var Y = pos.y;
                     if(x == 150 && y == 100){
@@ -627,7 +512,7 @@
                             x: X,
                             y: Y
                         });
-                    }else if(x == 300 && y == 100){
+                      }else if(x == 300 && y == 100){
                         if (X < 290) {
                             X = 290;
                         }
@@ -644,7 +529,7 @@
                             x: X,
                             y: Y
                         });
-                    }else if(x == 375 && y == 175){
+                      }else if(x == 375 && y == 175){
                         if (X < 370) {
                             X = 370;
                         }
@@ -661,7 +546,7 @@
                             x: X,
                             y: Y
                         });
-                    }else if(x == 450 && y == 250){
+                      }else if(x == 450 && y == 250){
                         if (X < 290) {
                             X = 290;
                         }
@@ -678,7 +563,7 @@
                             x: X,
                             y: Y
                         });
-                    }else{
+                      }else{
                         if (X < 30) {
                             X = 30;
                         }
@@ -695,8 +580,7 @@
                             x: X,
                             y: Y
                         });
-                    }
-                    
+                      } 
                 }
             });
 
@@ -716,8 +600,6 @@
 
             // when dragend redraw everything
             anchor.on('dragend', function() {
-                //alert();
-                //alert("x:"+anchor.getPosition().x+" Y:"+anchor.getPosition().y);
                 drawCurves();
                 updateLines();
                 anchorLayer.draw(); 
@@ -729,53 +611,99 @@
         }
 
 
+        //Taken from http://stackoverflow.com/questions/7054272/how-to-draw-smooth-curve-through-n-points-using-javascript-html5-canvas
+        function getCurvePoints(pts, tension, isClosed, numOfSegments, pType) {
+            // use input value if provided, or use a default value   
+            tension = (typeof tension != 'undefined') ? tension : 0.5;
+            isClosed = isClosed ? isClosed : false;
+            numOfSegments = numOfSegments ? numOfSegments : 16;
+
+            var _pts = [], res = [],    // clone array
+                x, y,           // our x,y coords
+                t1x, t2x, t1y, t2y, // tension vectors
+                c1, c2, c3, c4,     // cardinal points
+                st, t, i;       // steps based on num. of segments
+
+            // clone array so we don't change the original
+            _pts = pts.slice(0);
+
+            // The algorithm require a previous and next point to the actual point array.
+            // Check if we will draw closed or open curve.
+            // If closed, copy end points to beginning and first points to end
+            // If open, duplicate first points to befinning, end points to end
+            if (isClosed) {
+                _pts.unshift(pts[pts.length - 1]);
+                _pts.unshift(pts[pts.length - 2]);
+                _pts.unshift(pts[pts.length - 1]);
+                _pts.unshift(pts[pts.length - 2]);
+                _pts.push(pts[0]);
+                _pts.push(pts[1]);
+            }
+            else {
+                _pts.unshift(pts[1]);   //copy 1. point and insert at beginning
+                _pts.unshift(pts[0]);
+                _pts.push(pts[pts.length - 2]); //copy last point and append
+                _pts.push(pts[pts.length - 1]);
+            }
+
+            // ok, lets start..
+
+
+            // 1. loop goes through point array
+            // 2. loop goes through each segment between the 2 pts + 1e point before and after
+            for (i=2; i < (_pts.length - 4); i+=2) {
+                for (t=0; t <= numOfSegments; t++) {
+
+                    // calc tension vectors
+                    t1x = (_pts[i+2] - _pts[i-2]) * tension;
+                    t2x = (_pts[i+4] - _pts[i]) * tension;
+
+                    t1y = (_pts[i+3] - _pts[i-1]) * tension;
+                    t2y = (_pts[i+5] - _pts[i+1]) * tension;
+
+                    // calc step
+                    st = t / numOfSegments;
+
+                    // calc cardinals
+                    c1 =   2 * Math.pow(st, 3)  - 3 * Math.pow(st, 2) + 1; 
+                    c2 = -(2 * Math.pow(st, 3)) + 3 * Math.pow(st, 2); 
+                    c3 =       Math.pow(st, 3)  - 2 * Math.pow(st, 2) + st; 
+                    c4 =       Math.pow(st, 3)  -     Math.pow(st, 2);
+
+                    // calc x and y cords with common control vectors
+                    x = c1 * _pts[i]    + c2 * _pts[i+2] + c3 * t1x + c4 * t2x;
+                    y = c1 * _pts[i+1]  + c2 * _pts[i+3] + c3 * t1y + c4 * t2y;
+
+                    //store points in array
+                    res.push(x);
+                    res.push(y);
+                }
+            }
+            return res;
+        }
 
         function drawCurves() {
             var context = curveLayer.getContext();
-
-
             //Clear method avoid repeting the color and leave marks behind
-            
             context.clear();
             curveLayer.destroyChildren();
 
+            var ptsa =[straight.start.attrs.x,straight.start.attrs.y,
+                   straight.start.attrs.x-(straight.start.attrs.x)/5, straight.start.attrs.y+
+                   (straight.end.attrs.y-straight.start.attrs.y)/2,
+                    straight.end.attrs.x, straight.end.attrs.y];
 
-             var ptsa =[straight.start.attrs.x,straight.start.attrs.y,
-             straight.start.attrs.x-(straight.start.attrs.x)/5, straight.start.attrs.y+
-             (straight.end.attrs.y-straight.start.attrs.y)/2,
-                straight.end.attrs.x,
-                straight.end.attrs.y];
-              
-             var showPoints = false;
-
-            // var l =  new Kinetic.Shape({
-            //     drawFunc: function () {
-            //         context.beginPath();    
-            //         var pts = getCurvePoints(ptsa, 1,false, 16);
-            //         context.moveTo(pts[0], pts[1]);
-            //         for(i=2;i<pts.length-1;i+=2) context.lineTo(pts[i], pts[i+1]);
-            //         context.stroke();
-            //      },
-            //     strokeWidth :3,
-            //     stroke: "green"   
-
-            // });
-            var pts = getCurvePoints(ptsa, 1,false, 16);
-            
+            var pts = getCurvePoints(ptsa, 1,false, 16);                
             var line1 =  new Kinetic.Line({
-                x: 0,
-                y: 0,
-                points : pts , 
-                // drawFunc: function () {
-                //     context.beginPath();        
-                //     context.moveTo(pts[0], pts[1]);
-                //     for(i=2;i<pts.length-1;i+=2) context.lineTo(pts[i], pts[i+1]);
-                //     context.stroke();
-                //  },
-                strokeWidth :3,
-                stroke: "green"   
+                    x: 0,
+                    y: 0,
+                    points : pts , 
+                    strokeWidth :3,
+                    stroke: "black"   
+                });
 
-            });
+                curveLayer.add(line1);
+                curveLayer.draw();
 
             var ptsa1 = [straight.start.attrs.x,straight.start.attrs.y,
             straight.control1.attrs.x-(-straight.start.attrs.x+straight.control1.attrs.x)/2, straight.start.attrs.y+
@@ -783,114 +711,18 @@
              straight.control1.attrs.x,
             straight.control1.attrs.y];
 
-            var pts1 = getCurvePoints(ptsa1);
-            var line2 = new Kinetic.Line({
-                x: 0,
-                y: 0,
-                points: pts1,
-                stroke: 'green',
-                tension: 0,
-                // drawFunc: function () {
-                //     context.beginPath();
-                //     context.moveTo(straight.start.attrs.x, straight.start.attrs.y);
-                //     context.quadraticCurveTo(200,150,straight.control1.attrs.x, straight.control1.attrs.y);
-                //     context.setAttr('strokeStyle', '#60a637');
-                //     context.setAttr('lineWidth', 2);
-                //     context.stroke();
-                // },
-                strokeWidth: 3,
-                id : 2
-            });
+            var pts1 = getCurvePoints(ptsa1, 1,false, 16);       
+            var line2 =  new Kinetic.Line({
+                    x: 0,
+                    y: 0,
+                    points : pts1 , 
+                    strokeWidth :3,
+                    stroke: "black"   
+                });
 
-            curveLayer.add(line1);
             curveLayer.add(line2);
             curveLayer.draw();
-            //canvasStage.add(curveLayer);
-        }   
-
-        
-
-    function getCurvePoints(pts, tension, isClosed, numOfSegments) {
-
-        // use input value if provided, or use a default value   
-        tension = (typeof tension != 'undefined') ? tension : 0.5;
-        isClosed = isClosed ? isClosed : false;
-        numOfSegments = numOfSegments ? numOfSegments : 16;
-
-        var _pts = [], res = [],    // clone array
-            x, y,           // our x,y coords
-            t1x, t2x, t1y, t2y, // tension vectors
-            c1, c2, c3, c4,     // cardinal points
-            st, t, i;       // steps based on num. of segments
-
-        // clone array so we don't change the original
-        _pts = pts.slice(0);
-
-        // The algorithm require a previous and next point to the actual point array.
-        // Check if we will draw closed or open curve.
-        // If closed, copy end points to beginning and first points to end
-        // If open, duplicate first points to befinning, end points to end
-        if (isClosed) {
-            _pts.unshift(pts[pts.length - 1]);
-            _pts.unshift(pts[pts.length - 2]);
-            _pts.unshift(pts[pts.length - 1]);
-            _pts.unshift(pts[pts.length - 2]);
-            _pts.push(pts[0]);
-            _pts.push(pts[1]);
-        }
-        else {
-            _pts.unshift(pts[1]);   //copy 1. point and insert at beginning
-            _pts.unshift(pts[0]);
-            _pts.push(pts[pts.length - 2]); //copy last point and append
-            _pts.push(pts[pts.length - 1]);
-        }
-
-        // ok, lets start..
-
-
-        // 1. loop goes through point array
-        // 2. loop goes through each segment between the 2 pts + 1e point before and after
-        for (i=2; i < (_pts.length - 4); i+=2) {
-            for (t=0; t <= numOfSegments; t++) {
-
-                // calc tension vectors
-                t1x = (_pts[i+2] - _pts[i-2]) * tension;
-                t2x = (_pts[i+4] - _pts[i]) * tension;
-
-                t1y = (_pts[i+3] - _pts[i-1]) * tension;
-                t2y = (_pts[i+5] - _pts[i+1]) * tension;
-
-                // calc step
-                st = t / numOfSegments;
-
-                // calc cardinals
-                c1 =   2 * Math.pow(st, 3)  - 3 * Math.pow(st, 2) + 1; 
-                c2 = -(2 * Math.pow(st, 3)) + 3 * Math.pow(st, 2); 
-                c3 =       Math.pow(st, 3)  - 2 * Math.pow(st, 2) + st; 
-                c4 =       Math.pow(st, 3)  -     Math.pow(st, 2);
-
-                // calc x and y cords with common control vectors
-                x = c1 * _pts[i]    + c2 * _pts[i+2] + c3 * t1x + c4 * t2x;
-                y = c1 * _pts[i+1]  + c2 * _pts[i+3] + c3 * t1y + c4 * t2y;
-
-                //store points in array
-                res.push(x);
-                res.push(y);
-            }
-        }
-        return res;
-    }
-
-        function loadFiguresActions(){
-            $( "#imgCircle" ).on( "click", function(){   
-                Presentation.getAlertsUI().insertFeatureDialog(false);
-            });
-
-            $( "#imgLine" ).on( "click", function(){
-                Presentation.getAlertsUI().insertLineFeatureDialog(false);
-            });
-        }
-    
+        }       
         
         function fillBackground(pColor){
             var s = straight;
@@ -903,7 +735,7 @@
              (straight.end.attrs.y-straight.start.attrs.y)/2,
                 straight.end.attrs.x,
                 straight.end.attrs.y];
-                var pts = getCurvePoints(ptsa, 1,false, 16);
+                var pts = getCurvePoints(ptsa, 1,false, 16); 
 
                 var ptsa1 = [straight.start.attrs.x,straight.start.attrs.y,
                 straight.control1.attrs.x-(-straight.start.attrs.x+straight.control1.attrs.x)/2, straight.start.attrs.y+
@@ -911,7 +743,7 @@
                  straight.control1.attrs.x,
                 straight.control1.attrs.y];
 
-                var pts1 = getCurvePoints(ptsa1);
+                var pts1 = getCurvePoints(ptsa1, 1,false, 16); 
             
               context.beginPath();
               context.moveTo(s.start.attrs.x, s.start.attrs.y);
@@ -942,8 +774,7 @@
                      (straight.end.attrs.y-straight.start.attrs.y)/2,
                     straight.end.attrs.x,
                     straight.end.attrs.y];
-                    var pts = getCurvePoints(ptsa, 1,false, 16);
-                    //     
+                    var pts = getCurvePoints(ptsa, 1,false, 16); 
 
                     var ptsa1 = [straight.start.attrs.x,straight.start.attrs.y,
                     straight.control1.attrs.x-(-straight.start.attrs.x+straight.control1.attrs.x)/2, straight.start.attrs.y+
@@ -951,23 +782,23 @@
                      straight.control1.attrs.x,
                     straight.control1.attrs.y];
 
-                    var pts1 = getCurvePoints(ptsa1);
+                    var pts1 = getCurvePoints(ptsa1, 1,false, 16); 
                 
-                      context.beginPath();
-                      context.moveTo(0 , 0);
-                      context.lineTo(s.start.attrs.x, s.start.attrs.y);
-                      for(i=2;i<pts.length-1;i+=2) context.lineTo(pts[i], pts[i+1]);
-                      context.lineTo(s.control3.attrs.x, s.control3.attrs.y);
-                      context.lineTo(s.control2.attrs.x, s.control2.attrs.y);
-                      context.lineTo(s.control1.attrs.x, s.control1.attrs.y);
-                      for(i=pts1.length-1;i>2;i-=2) context.lineTo(pts1[i-1], pts1[i]);
-                      context.lineTo(0, 0);
-                      context.lineTo(650, 0);
-                      context.lineTo(650, 350);
-                      context.lineTo(0, 350);
-                      context.lineTo(0, 0);
-                      context.closePath();
-                      context.fillStrokeShape(this);
+                    context.beginPath();
+                    context.moveTo(0 , 0);
+                    context.lineTo(s.start.attrs.x, s.start.attrs.y);
+                    for(i=2;i<pts.length-1;i+=2) context.lineTo(pts[i], pts[i+1]);
+                    context.lineTo(s.control3.attrs.x, s.control3.attrs.y);
+                    context.lineTo(s.control2.attrs.x, s.control2.attrs.y);
+                    context.lineTo(s.control1.attrs.x, s.control1.attrs.y);
+                    for(i=pts1.length-1;i>2;i-=2) context.lineTo(pts1[i-1], pts1[i]);
+                    context.lineTo(0, 0);
+                    context.lineTo(650, 0);
+                    context.lineTo(650, 350);
+                    context.lineTo(0, 350);
+                    context.lineTo(0, 0);
+                    context.closePath();
+                    context.fillStrokeShape(this);
                 },
                 
                 fill: "white",

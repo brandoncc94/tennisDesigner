@@ -154,6 +154,14 @@ var Presentation = window.Presentation || {};
                 });
             }); 
 
+            $( "#imgCircle" ).on( "click", function(){   
+                Presentation.getAlertsUI().insertFeatureDialog(false);
+            });
+
+            $( "#imgLine" ).on( "click", function(){
+                Presentation.getAlertsUI().insertLineFeatureDialog(false);
+            });
+            
             $("#exportToExcel").click(function(){
                 var name = getDesignListSelected();
                 Presentation.getOnLoadHandler().getExecutionTimes(name);                     
