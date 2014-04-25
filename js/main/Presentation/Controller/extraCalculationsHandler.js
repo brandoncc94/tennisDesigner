@@ -56,10 +56,6 @@
             Presentation.getDesignSpace().paintPolygon(pPointIntersectA, pPointIntersectB);
         }
         
-        /*function getCurvePoints(pts, tension, isClosed, numOfSegments){
-            BusinessLogic.getExtraCalculationsBL().getCurvePoints(pts, tension, isClosed, numOfSegments);
-        }*/
-
         function sendDrawCurves(pResult){
             Presentation.getDesignSpace().drawCurvesPoints(pResult);
         }
@@ -67,7 +63,6 @@
         return {
             checkIntersection : checkIntersection,
             checkIntersectionQuadratic : checkIntersectionQuadratic,
-            //getCurvePoints : getCurvePoints,
             sendDrawCurves : sendDrawCurves,
             checkIntersectionArray : checkIntersectionArray,
             divideSegments : divideSegments,

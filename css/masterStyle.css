@@ -37,12 +37,6 @@ h2{
 	float:left;
 }
 
-.footer-container footer{
-	padding: 0;
-	text-align: center;
-	color: white;
-}
-
 /*Id's*/
 /***************************************************************
 					NAVIGATION BUTTONS
@@ -98,7 +92,7 @@ h2{
 #canvas-container{
 	margin: 10px;
 	border: 1px solid black;
-	display:block;
+	display: block;
 }
 
 /***************************************************************
@@ -198,6 +192,13 @@ h2{
 	height: 37px;
 }
 
+
+
+.footer-container footer{
+	padding: 0;
+	text-align: center;
+	color: white;
+}
 /***************************************************************
 					MAIN CONTAINER
 ***************************************************************/

@@ -60,17 +60,8 @@
             BusinessLogic.getParseBusinessLogic().updateDesign(pName,pPoints,pArrayCircles,pArrayLines,pSole);
         }
 
-        //Converts from RGB to HEX taken from http://jsfiddle.net/DCaQb/  
-        function convertToHex(pColor) {
-            var color = '';
-            var parts = pColor.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
-            delete(parts[0]);
-            for (var i = 1; i <= 3; ++i) {
-                parts[i] = parseInt(parts[i]).toString(16);
-                if (parts[i].length == 1) parts[i] = '0' + parts[i];
-            }
-            color = '#' + parts.join('');
-            return color;
+        function addExecutionTimeDesign(pName,pTypeAlgorithm,pTime){
+          BusinessLogic.getParseBusinessLogic().addExecutionTimeDesign(pName,pTypeAlgorithm,pTime);
         }
 
         function getXPageReference(pE){
@@ -82,33 +73,46 @@
         }
 
         function drawLineListener(pStrokeWidth, pStrokeColor,pType){
-          //Let's draw a line with 2 clicks
-          var clicks = 0;
-          var clicksArray = [0, 0]; 
-          var canvas = document.getElementById("canvas-container");
-          canvas.addEventListener('click', getPosition, false);
-
-          function getPosition(event){
-            var x = event.x;
-            var y = event.y;
-
+            //Let's draw a line with 2 clicks
+            var clicks = 0;
+            var clicksArray = [0, 0]; 
             var canvas = document.getElementById("canvas-container");
+            canvas.addEventListener('click', getPosition, false);
 
-            x -= canvas.offsetLeft;
-            y -= canvas.offsetTop;
-            drawLine(x, y,pType);
-          }
+            function getPosition(event){
+              var x = event.x;
+              var y = event.y;
 
-          function drawLine(x, y,pType) { 
-              if (clicks != 1) {
-                  clicks++;
-              } else {                  
-                  clicks = 0;
-                  canvas.removeEventListener('click',  getPosition, false);
-                  Presentation.getDesignSpace().drawLine(clicksArray[0], clicksArray[1], x, y, pStrokeWidth, pStrokeColor, "edit");   
-              }                        
-              clicksArray = [x,y];
-          };
+              var canvas = document.getElementById("canvas-container");
+
+              x -= canvas.offsetLeft;
+              y -= canvas.offsetTop;
+              drawLine(x, y,pType);
+            }
+
+            function drawLine(x, y,pType) { 
+                if (clicks != 1) {
+                    clicks++;
+                } else {                  
+                    clicks = 0;
+                    canvas.removeEventListener('click',  getPosition, false);
+                    Presentation.getDesignSpace().drawLine(clicksArray[0], clicksArray[1], x, y, pStrokeWidth, pStrokeColor);   
+                }                        
+                clicksArray = [x,y];
+            };
+        }
+
+        //Converts from RGB to HEX taken from http://jsfiddle.net/DCaQb/  
+        function convertToHex(pColor) {
+            var color = '';
+            var parts = pColor.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+            delete(parts[0]);
+            for (var i = 1; i <= 3; ++i) {
+                parts[i] = parseInt(parts[i]).toString(16);
+                if (parts[i].length == 1) parts[i] = '0' + parts[i];
+            }
+            color = '#' + parts.join('');
+            return color;
         }
 
         function updateLine(pThis, pLineRef){
@@ -126,11 +130,6 @@
           pLineRef.setPointsFigure(points3);
 
           return pLineRef;
-        }
-
-
-        function addExecutionTimeDesign(pName,pTypeAlgorithm,pTime){
-          BusinessLogic.getParseBusinessLogic().addExecutionTimeDesign(pName,pTypeAlgorithm,pTime);
         }
 
         return {
