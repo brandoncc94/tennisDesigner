@@ -84,12 +84,8 @@
           BusinessLogic.getPaintManagerBL().loadDesignSole(pSole);
         }
 
-        function sendToFire(){
-            BusinessLogic.getPaintManagerBL().sendToFire();   
-        }
-
-        function sendToArcade(){
-            BusinessLogic.getPaintManagerBL().sendToArcade();   
+        function sendToDrawingManager(){
+            BusinessLogic.getPaintManagerBL().sendToDrawingManager();   
         }
 
         function convertTableToExcel(pTable, pName, pFileName){
@@ -129,8 +125,7 @@
             loadDesignCircles : loadDesignCircles,
             loadDesignLines : loadDesignLines,
             loadDesignSole : loadDesignSole,
-            sendToFire : sendToFire,
-            sendToArcade : sendToArcade,
+            sendToDrawingManager : sendToDrawingManager,
             convertTableToExcel : convertTableToExcel,
             checkIfCollide : checkIfCollide,
             exchangeCircleIds : exchangeCircleIds,

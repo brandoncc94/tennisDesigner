@@ -62,8 +62,26 @@
                 fillColor : this.fillColor
             };
             return circleJson;
-        }
+        },
 
+        paint : function(){
+            var strokeWidth = this.getStrokeWidth();
+            var strokeColor = this.getStrokeColor();
+            var radio = this.getRadio();
+            var fillColor = this.getFillColor();
+            var points = [this.getPointsFigure().getPositionX(), 
+                          this.getPointsFigure().getPositionY()];
+            //Let's see the current State
+            switch(currentState){
+                case State.FIRE:
+                    Presentation.getDesignSpaceHandler().sendCircleToFire(points[0], points[1], radio, fillColor, strokeWidth, strokeColor); 
+                break;
+
+                case State.ARCADE:
+                    Presentation.getDesignSpaceHandler().sendCircleToArcade(points[0], points[1], radio, fillColor, strokeWidth, strokeColor); 
+                break;
+            }
+        }
     }); 
 
 }(LibraryData, jQuery));

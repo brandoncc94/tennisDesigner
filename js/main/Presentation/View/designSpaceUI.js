@@ -166,20 +166,18 @@
             figuresLayer.draw();
         }
 
-        function drawCircleArcade(pPosX, pPosY, pRadius, pFillColor, pStrokeWidth, pStrokeColor){
-            var maxRadius = parseInt(pRadius) - parseInt(pStrokeWidth);
-            for(var i = parseInt(pRadius); i > 0; i--){
-                var circle = new Kinetic.Circle({
-                    x: pPosX,
-                    y: pPosY,
-                    radius: i,
-                    stroke: (i <= maxRadius) ? pFillColor : pStrokeColor,
-                    strokeWidth: pStrokeWidth
-                });
 
-                figuresLayer.add(circle);
-                figuresLayer.draw();    
-            }
+        function drawCircleArcade(pPosX, pPosY, pIndex, pStroke, pStrokeWidth){
+            var circle = new Kinetic.Circle({
+                x: pPosX,
+                y: pPosY,
+                radius: pIndex,
+                stroke: pStroke,
+                strokeWidth: pStrokeWidth
+            });
+
+            figuresLayer.add(circle);
+            figuresLayer.draw();  
         }
 
         function drawCircle(pPosX, pPosY, pRadius, pFillColor, pStrokeWidth, pStrokeColor){
@@ -235,61 +233,19 @@
             figuresLayer.draw();
         }
 
-         function convertRadiansToDegrees(rad){
-            return rad*(180/Math.PI);
-         }
-
-        function calculateDistance(x1, y1, x2, y2) {
-            return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
-        }
-
-        function drawLineArcade(pPosX1, pPosY1, pPosX2, pPosY2, pStrokeWidth, pStrokeColor){
-            var half = Math.floor(parseInt(pStrokeWidth) / 2);
-            if(parseInt(pStrokeWidth) % 2 == 0){
-                half -=1;
-            }
-
-            var startingX1 = parseInt(pPosX1);
-            var endingX1 = parseInt(pPosX2);
-
-            var startingY1 = parseInt(pPosY1);
-            var endingY1 = parseInt(pPosY2);
-
-            var rectWidth = calculateDistance(startingX1, startingY1, endingX1, endingY1);
-
-            if(startingX1 > endingX1 && startingY1 < endingY1){
-                //we have the maximum X's value and add to it the half cause the stroke expands
-                var x = Math.max(startingX1, endingX1) + half;
-                var y = Math.min(startingY1, endingY1) + 3;  
-            }else if(startingX1 < endingX1 && startingY1 > endingY1){
-                //we have the minimum X's value and quit to it the half cause the stroke expands
-                var x = Math.min(startingX1, endingX1) - half;
-                var y = Math.max(startingY1, endingY1) - 3;  
-            }else if(startingX1 > endingX1 && startingY1 > endingY1){
-                //we have the maximum X's value and add to it the half cause the stroke expands
-                var x = Math.max(startingX1, endingX1) - half;
-                var y = Math.max(startingY1, endingY1) + 3;                  
-            }else{
-                //we have the maximum X's value and add to it the half cause the stroke expands
-                var x = Math.min(startingX1, endingX1) + 3;
-                var y = Math.min(startingY1, endingY1) - half;   
-            }
-
+        function drawRectangleArcade(pPosX, pPosY, pRectWidth, pStrokeWidth, pStrokeColor, pAngle){
             var rectLine = new Kinetic.Rect({
-                x: x,
-                y: y,
-                width: rectWidth,
+                x: pPosX,
+                y: pPosY,
+                width: pRectWidth,
                 height: pStrokeWidth,
                 fill: pStrokeColor
             });    
 
-            var angle = convertRadiansToDegrees(Math.atan2(pPosY2-pPosY1,pPosX2-pPosX1));
-            rectLine.rotate(angle);
-
+            rectLine.rotate(pAngle);
             figuresLayer.add(rectLine);
             figuresLayer.draw(); 
         }
-    
 
         function drawLine(pPosX1, pPosY1, pPosX2, pPosY2, pStrokeWidth, pStrokeColor){
             //Let's create the graphical line
@@ -348,7 +304,6 @@
         }
 
         function checkIntersectionArray(pPointLines){
-            alert(pPointLines);
             if(pPointLines.length>1)
                 pointIntersect.push(paintFigureLines(pPointLines));
         }
@@ -801,10 +756,8 @@
             getAnchorLayer :getAnchorLayer,
             drawLine: drawLine,
             drawLineFire : drawLineFire,
-            drawLineArcade : drawLineArcade,
             drawCircle : drawCircle,
             drawCircleFire : drawCircleFire,
-            drawCircleArcade : drawCircleArcade,
             dragElementsIntoCanvas: dragElementsIntoCanvas,
             divideSegments : divideSegments,
             cleanFigures : cleanFigures,
@@ -817,7 +770,9 @@
             fillExternBackground : fillExternBackground,
             getLineLayer : getLineLayer,
             checkIntersectionArray : checkIntersectionArray,
-            paintPolygon : paintPolygon
+            paintPolygon : paintPolygon,
+            drawRectangleArcade : drawRectangleArcade,
+            drawCircleArcade : drawCircleArcade
         };            
     })()
 

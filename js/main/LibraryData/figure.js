@@ -58,6 +58,10 @@ var Figure;
 
         convertToJson : function(){
             return ; 
+        },
+
+        paint : function(pFigure){
+            console.log("Painting figure.");
         }
     });
 

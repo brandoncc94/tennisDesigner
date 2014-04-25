@@ -79,6 +79,7 @@ var Presentation = window.Presentation || {};
             });
 
             $("#lieEdit a").click(function(){
+                currentState = State.EDIT;
                 clearElements();
                 try{
                     var name = getDesignListSelected();
@@ -95,6 +96,7 @@ var Presentation = window.Presentation || {};
             });
 
             $("#lieArcade a").click(function(){            
+                currentState = State.ARCADE;
                 $(".main-container").css('background-color', '#5bc0de');
                 $("#canvas-container").fadeOut(500,function(){
                     $("#canvas-container").fadeIn(500);
@@ -109,12 +111,12 @@ var Presentation = window.Presentation || {};
                     $("#exportToExcel").show();                   
                     $("#decoration-container").fadeIn(500);
                     Presentation.getDesignSpace().cleanJustFigures();
-                    Presentation.getPaintManagerHandler().sendToArcade();
+                    Presentation.getPaintManagerHandler().sendToDrawingManager();
                 });                
             });
 
             $("#lieFire a").click(function(){
-            
+                currentState = State.FIRE;
                 $(".main-container").css('background-color', '#428bca');
                 $("#canvas-container").fadeOut(500,function(){
                     $("#canvas-container").fadeIn(500);
@@ -129,7 +131,7 @@ var Presentation = window.Presentation || {};
                     $("#exportToExcel").show();                    
                     $("#decoration-container").fadeIn(500);
                     Presentation.getDesignSpace().cleanJustFigures();
-                    Presentation.getPaintManagerHandler().sendToFire();
+                    Presentation.getPaintManagerHandler().sendToDrawingManager();
                 });
             
             });
@@ -383,4 +385,4 @@ var Presentation = window.Presentation || {};
 
 }(Presentation, jQuery));
 
-var backgroundColorId = 0, borderSoleColorId = 0;
+var backgroundColorId = 0, borderSoleColorId = 0, currentState = 0;

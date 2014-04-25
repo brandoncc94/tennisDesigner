@@ -38,52 +38,67 @@
 
     var arcadeBL = (function(){
 
-        function paintTennis(pLinesCollection, pCirclesCollection, pSoleObject){
-            var start = new Date().getTime();
-            Presentation.getDesignSpace().fillBackground("red");
-            Presentation.getDesignSpace().reduceAnchors();
+        function drawCircleArcade(pPosX, pPosY, pRadius, pFillColor, pStrokeWidth, pStrokeColor){
+            var figuresLayer = Presentation.getDesignSpace().getFiguresLayer();
+            var maxRadius = parseInt(pRadius) - parseInt(pStrokeWidth);
+            for(var i = parseInt(pRadius); i > 0; i--){
+                var stroke = (i <= maxRadius) ? pFillColor : pStrokeColor;
 
-            if(pSoleObject == null){
-                Presentation.getDesignSpace().fillSole("black", 2);
+                Presentation.getDesignSpaceHandler().drawCircleArcade(pPosX, pPosY, i, stroke, pStrokeWidth);
+
+                if(String(pFillColor) === "")
+                    break; 
+            }
+        }
+
+        function drawLineArcade(pPosX1, pPosY1, pPosX2, pPosY2, pStrokeWidth, pStrokeColor){
+            var half = Math.floor(parseInt(pStrokeWidth) / 2);
+            if(parseInt(pStrokeWidth) % 2 == 0){
+                half -=1;
+            }
+
+            var startingX1 = parseInt(pPosX1);
+            var endingX1 = parseInt(pPosX2);
+
+            var startingY1 = parseInt(pPosY1);
+            var endingY1 = parseInt(pPosY2);
+
+            var rectWidth = calculateDistance(startingX1, startingY1, endingX1, endingY1);
+
+            if(startingX1 > endingX1 && startingY1 < endingY1){
+                //we have the maximum X's value and add to it the half cause the stroke expands
+                var x = Math.max(startingX1, endingX1) + half;
+                var y = Math.min(startingY1, endingY1) + 3;  
+            }else if(startingX1 < endingX1 && startingY1 > endingY1){
+                //we have the minimum X's value and quit to it the half cause the stroke expands
+                var x = Math.min(startingX1, endingX1) - half;
+                var y = Math.max(startingY1, endingY1) - 3;  
+            }else if(startingX1 > endingX1 && startingY1 > endingY1){
+                //we have the maximum X's value and add to it the half cause the stroke expands
+                var x = Math.max(startingX1, endingX1) - half;
+                var y = Math.max(startingY1, endingY1) + 3;                  
             }else{
-                Presentation.getDesignSpace().fillSole(pSoleObject.getStrokeColor(), pSoleObject.getStrokeWidth());
+                //we have the maximum X's value and add to it the half cause the stroke expands
+                var x = Math.min(startingX1, endingX1) + 3;
+                var y = Math.min(startingY1, endingY1) - half;   
             }
-            paintLines(pLinesCollection);
-            paintCircles(pCirclesCollection);
 
-            var end = new Date().getTime();
-            var time = end - start;
-            Presentation.getOnLoadHandler().sendExecutionTime(time);
+            var angle = convertRadiansToDegrees(Math.atan2(pPosY2-pPosY1,pPosX2-pPosX1));
+            Presentation.getDesignSpaceHandler().drawRectangleArcade(x, y, rectWidth, pStrokeWidth, pStrokeColor, angle);
+        }
+        
+
+        function convertRadiansToDegrees(pRad){
+           return pRad*(180/Math.PI);
         }
 
-        function paintLines(pLinesCollection){
-            for(var i = 0; i < pLinesCollection.length; i++){
-                var strokeWidth = pLinesCollection[i].getStrokeWidth();
-                var strokeColor = pLinesCollection[i].getStrokeColor();
-                var points = [pLinesCollection[i].getPointsFigure().getPositionX().getPositionX(), 
-                              pLinesCollection[i].getPointsFigure().getPositionX().getPositionY(),
-                              pLinesCollection[i].getPointsFigure().getPositionY().getPositionX(),
-                              pLinesCollection[i].getPointsFigure().getPositionY().getPositionY()];
-                Presentation.getDesignSpace().drawLineArcade(points[0], points[1], points[2], points[3], strokeWidth, strokeColor); 
-            }
-        }
-
-        function paintCircles(pCirclesCollection){
-            for(var i = 0; i < pCirclesCollection.length; i++){
-                var strokeWidth = pCirclesCollection[i].getStrokeWidth();
-                var strokeColor = pCirclesCollection[i].getStrokeColor();
-                var radio = pCirclesCollection[i].getRadio();
-                var fillColor = pCirclesCollection[i].getFillColor();
-                var points = [pCirclesCollection[i].getPointsFigure().getPositionX(), 
-                              pCirclesCollection[i].getPointsFigure().getPositionY()];
-
-                Presentation.getDesignSpace().drawCircleArcade(points[0], points[1], radio, fillColor, strokeWidth, strokeColor); 
-            }
-
+        function calculateDistance(x1, y1, x2, y2) {
+            return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
         }
 
         return {
-            paintTennis: paintTennis
+            drawCircleArcade: drawCircleArcade,
+            drawLineArcade : drawLineArcade
         }; 
     })();    
 

@@ -156,12 +156,8 @@
             insertSole(newSole);
         }
 
-        function sendToFire(){
-            BusinessLogic.getfireBL().paintTennis(linesCollection, circlesCollection, sole);
-        }
-
-        function sendToArcade(){
-            BusinessLogic.getArcadeBL().paintTennis(linesCollection, circlesCollection, sole);
+        function sendToDrawingManager(){
+            BusinessLogic.getDrawingManager().paintTennis(linesCollection, circlesCollection, sole);
         }
 
         function createTable() {
@@ -372,8 +368,7 @@
             loadDesignCircles : loadDesignCircles,
             loadDesignLines : loadDesignLines,
             loadDesignSole : loadDesignSole,
-            sendToFire : sendToFire,
-            sendToArcade : sendToArcade,
+            sendToDrawingManager : sendToDrawingManager,
             setExecutionTimes : setExecutionTimes,
             insertSole : insertSole,
             convertDataToExcel : convertDataToExcel,

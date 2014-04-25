@@ -42,7 +42,26 @@
                   strokeColor : this.strokeColor
               };
               return lineJson; 
-            }         
+            },
+
+            paint : function(){
+              var strokeWidth = this.getStrokeWidth();
+              var strokeColor = this.getStrokeColor();
+              var points = [this.getPointsFigure().getPositionX().getPositionX(), 
+                            this.getPointsFigure().getPositionX().getPositionY(),
+                            this.getPointsFigure().getPositionY().getPositionX(),
+                            this.getPointsFigure().getPositionY().getPositionY()];
+              //Let's see the current State
+              switch(currentState){
+                case State.FIRE:
+                    Presentation.getDesignSpaceHandler().sendLineToFire(points[0], points[1], points[2], points[3], strokeWidth, strokeColor); 
+                break;
+
+                case State.ARCADE:
+                    Presentation.getDesignSpaceHandler().sendLineToArcade(points[0], points[1], points[2], points[3], strokeWidth, strokeColor); 
+                break;
+              }
+            }     
         });
 
 }(LibraryData, jQuery));

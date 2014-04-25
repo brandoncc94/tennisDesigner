@@ -24,7 +24,7 @@
      * @return {fireBL} Handler declarations of the MVC.
      * @public
      */
-    pContext.getfireBL = function() {
+    pContext.getFireBL = function() {
         return fireBL;
     };
 
@@ -37,54 +37,18 @@
      **/
 
     var fireBL = (function(){
-
-        function paintTennis(pLinesCollection, pCirclesCollection, pSoleObject){
-            var start = new Date().getTime();
-            Presentation.getDesignSpace().fillBackground("red");
-            Presentation.getDesignSpace().reduceAnchors();
-
-            if(pSoleObject == null){
-                Presentation.getDesignSpace().fillSole("black");
-            }else{
-                Presentation.getDesignSpace().fillSole(pSoleObject.getStrokeColor(), pSoleObject.getStrokeWidth());
-            }
-            paintLines(pLinesCollection);
-            paintCircles(pCirclesCollection);
-
-            Presentation.getDesignSpace().fillExternBackground();
-            var end = new Date().getTime();
-            var time = end - start;
-            Presentation.getOnLoadHandler().sendExecutionTime(time);
+        
+        function drawCircleFire(pPosX, pPosY, pRadius, pFillColor, pStrokeWidth, pStrokeColor){
+            Presentation.getDesignSpaceHandler().drawCircleFire(pPosX, pPosY, pRadius, pFillColor, pStrokeWidth, pStrokeColor);  
         }
 
-        function paintLines(pLinesCollection){
-            for(var i = 0; i < pLinesCollection.length; i++){
-                var strokeWidth = pLinesCollection[i].getStrokeWidth();
-                var strokeColor = pLinesCollection[i].getStrokeColor();
-                var points = [pLinesCollection[i].getPointsFigure().getPositionX().getPositionX(), 
-                              pLinesCollection[i].getPointsFigure().getPositionX().getPositionY(),
-                              pLinesCollection[i].getPointsFigure().getPositionY().getPositionX(),
-                              pLinesCollection[i].getPointsFigure().getPositionY().getPositionY()];
-                Presentation.getDesignSpace().drawLineFire(points[0], points[1], points[2], points[3], strokeWidth, strokeColor); 
-            }
-        }
-
-        function paintCircles(pCirclesCollection){
-            for(var i = 0; i < pCirclesCollection.length; i++){
-                var strokeWidth = pCirclesCollection[i].getStrokeWidth();
-                var strokeColor = pCirclesCollection[i].getStrokeColor();
-                var radio = pCirclesCollection[i].getRadio();
-                var fillColor = pCirclesCollection[i].getFillColor();
-                var points = [pCirclesCollection[i].getPointsFigure().getPositionX(), 
-                              pCirclesCollection[i].getPointsFigure().getPositionY()];
-
-                Presentation.getDesignSpace().drawCircleFire(points[0], points[1], radio, fillColor, strokeWidth, strokeColor); 
-            }
-
+        function drawLineFire(pPosX, pPosY, pRadius, pFillColor, pStrokeWidth, pStrokeColor){
+            Presentation.getDesignSpaceHandler().drawLineFire(pPosX, pPosY, pRadius, pFillColor, pStrokeWidth, pStrokeColor);  
         }
 
         return {
-            paintTennis: paintTennis
+            drawCircleFire: drawCircleFire,
+            drawLineFire : drawLineFire
         }; 
     })();    
 
