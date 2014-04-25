@@ -39,11 +39,9 @@
     var arcadeBL = (function(){
 
         function drawCircleArcade(pPosX, pPosY, pRadius, pFillColor, pStrokeWidth, pStrokeColor){
-            var figuresLayer = Presentation.getDesignSpace().getFiguresLayer();
             var maxRadius = parseInt(pRadius) - parseInt(pStrokeWidth);
             for(var i = parseInt(pRadius); i > 0; i--){
                 var stroke = (i <= maxRadius) ? pFillColor : pStrokeColor;
-
                 Presentation.getDesignSpaceHandler().drawCircleArcade(pPosX, pPosY, i, stroke, pStrokeWidth);
 
                 if(String(pFillColor) === "")

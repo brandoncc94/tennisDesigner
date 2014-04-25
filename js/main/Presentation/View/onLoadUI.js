@@ -252,7 +252,7 @@ var Presentation = window.Presentation || {};
                 Presentation.getPaintManagerHandler().loadDesignSole(pSole);
                 loadPointsDesignView(pPoints);
                 // $("#canvas-container").fadeIn(500);
-                Presentation.getDesignSpace().divideSegments();
+                Presentation.getOnLoadHandler().executeDivideSegments();
         }
 
         function loadPointsDesignView(pPoints){

@@ -73,13 +73,18 @@
             BusinessLogic.getParseBusinessLogic().getExecutionTimes(pName);
         }
 
+        function executeDivideSegments(){
+            BusinessLogic.getExtraCalculationsBL().divideSegments();
+        }
+
         return {
             drawGraphicalLabel:drawGraphicalLabel,
             saveDesignToData:saveDesignToData,
             getExecutionTimes : getExecutionTimes,
             nameDesignUsed : nameDesignUsed,
             storedDesign : storedDesign,
-            sendExecutionTime : sendExecutionTime
+            sendExecutionTime : sendExecutionTime,
+            executeDivideSegments : executeDivideSegments
         }; 
     })();    
 

@@ -1,4 +1,3 @@
-
 //Taken from http://stackoverflow.com/questions/7054272/how-to-draw-smooth-curve-through-n-points-using-javascript-html5-canvas
 function getCurvePoints(pts, tension, isClosed, numOfSegments, pType) {
     // use input value if provided, or use a default value   

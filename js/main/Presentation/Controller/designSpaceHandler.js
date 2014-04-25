@@ -77,6 +77,10 @@
             Presentation.getDesignSpace().drawCircleArcade(pPosX, pPosY, pIndex, pStroke, pStrokeWidth);
         }
 
+        function paintPolygon(pPolygon, pColor){
+            Presentation.getDesignSpace().paintPolygon(pPolygon, pColor);
+        }
+
         return {
             sentDataToDrawCircle : sentDataToDrawCircle,
             sentDataToDrawLine : sentDataToDrawLine,
@@ -87,7 +91,8 @@
             drawCircleFire : drawCircleFire,
             drawCircleArcade : drawCircleArcade,
             drawRectangleArcade : drawRectangleArcade,
-            drawLineFire : drawLineFire
+            drawLineFire : drawLineFire,
+            paintPolygon : paintPolygon
         }; 
     })();    
 
