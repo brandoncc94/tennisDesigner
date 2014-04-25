@@ -36,12 +36,24 @@
      * @namespace
      **/
     var extraCalculationsHandler = (function(){
-        function checkIntersection(pLineObject){
-            BusinessLogic.getExtraCalculationsBL().checkIntersection(pLineObject);
+        function checkIntersection(pLineObject, pType, pLen){
+            BusinessLogic.getExtraCalculationsBL().checkIntersection(pLineObject, pType, pLen);
+        }
+
+        function checkIntersectionArray(pLineObject, pType){
+            Presentation.getDesignSpace().checkIntersectionArray(pLineObject, pType);
         }
 
         function checkIntersectionQuadratic(pLineObject){
             BusinessLogic.getExtraCalculationsBL().checkIntersectionQuadratic(pLineObject);
+        }
+
+        function divideSegments(){
+            BusinessLogic.getExtraCalculationsBL().divideSegments();
+        }
+
+        function paintPolygon(pPointIntersectA, pPointIntersectB){
+            Presentation.getDesignSpace().paintPolygon(pPointIntersectA, pPointIntersectB);
         }
         
         /*function getCurvePoints(pts, tension, isClosed, numOfSegments){
@@ -51,11 +63,15 @@
         function sendDrawCurves(pResult){
             Presentation.getDesignSpace().drawCurvesPoints(pResult);
         }
+
         return {
             checkIntersection : checkIntersection,
             checkIntersectionQuadratic : checkIntersectionQuadratic,
             //getCurvePoints : getCurvePoints,
-            sendDrawCurves : sendDrawCurves
+            sendDrawCurves : sendDrawCurves,
+            checkIntersectionArray : checkIntersectionArray,
+            divideSegments : divideSegments,
+            paintPolygon : paintPolygon
         }; 
     })();    
 

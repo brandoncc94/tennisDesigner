@@ -144,7 +144,8 @@
 
         function insertFeatureDialog(pChange){     
             HTML = "<div id='infos'>\
-                    <span>Fill Color: </span><div id='tmpDivBackgroundColor' class='color-box'></div></br></br>\
+                    <span>Fill Color: </span><div id='tmpDivBackgroundColor' class='color-box'></div>\
+                    <span style='margin-left: 15px'>Empty: </span><input type='checkbox' id='cbxEmpty'></br></br>\
                     <span>Stroke Color: </span><div id='tmp2DivBackgroundColor' class='color-box'></div></br></br>\
                     <span>Stroke Width: </span><input type='text' id='tbxStrokeWidth'></input></br></br>\
                     <span>Radius: </span> <input type='text' id='tbxRadius'>\
@@ -193,6 +194,8 @@
                             });
                         }else{
                             bootbox.alert("Now drag the circle.");
+                            if($("#cbxEmpty").is(':checked'))
+                                fillColorAlert = "";
                             Presentation.getDesignSpace().dragElementsIntoCanvas(radiusAlert, strokeWidthAlert, strokeColorAlert, fillColorAlert);
                         }
                     }
@@ -203,7 +206,8 @@
 
         function changeFeatureDialog(pReference, pLabel, pChange, pCircleObj){ 
             HTML = "<div id='infos'>\
-                    <span>Fill Color: </span><div id='tmpDivBackgroundColor' class='color-box'></div></br></br>\
+                    <span>Fill Color: </span><div id='tmpDivBackgroundColor' class='color-box'></div>\
+                    <span style='margin-left: 15px'>Empty: </span><input type='checkbox' id='cbxEmpty'></br></br>\
                     <span>Stroke Color: </span><div id='tmp2DivBackgroundColor' class='color-box'></div></br></br>\
                     <span>Stroke Width: </span><input type='text' id='tbxStrokeWidth'></input></br></br>\
                     <span>Radius: </span> <input type='text' id='tbxRadius'>\
@@ -222,9 +226,12 @@
             strokeColorAlert = pCircleObj.getStrokeColor();
 
             colorPickers += "<script> $('#tbxStrokeWidth').val(strokeWidthAlert);\
-                                       $('#tbxRadius').val(radiusAlert);\
-                                       $('#tmpDivBackgroundColor').colpick({colorScheme:'dark',layout:'rgbhex',color:'ff8800',onSubmit:function(hsb,hex,rgb,el) {$(el).css('background-color', '#'+hex); $(el).colpickHide(); }}).css('background-color', fillColorAlert);\
-                                       $('#tmp2DivBackgroundColor').colpick({colorScheme:'dark',layout:'rgbhex',color:'ff8800',onSubmit:function(hsb,hex,rgb,el) {$(el).css('background-color', '#'+hex);$(el).colpickHide();  }}).css('background-color', strokeColorAlert);\
+                                      $('#tbxRadius').val(radiusAlert);\
+                                      if(fillColorAlert === '')\
+                                          document.getElementById('cbxEmpty').checked=true;\
+                                      else\
+                                          $('#tmpDivBackgroundColor').colpick({colorScheme:'dark',layout:'rgbhex',color:'ff8800',onSubmit:function(hsb,hex,rgb,el) {$(el).css('background-color', '#'+hex); $(el).colpickHide(); }}).css('background-color', fillColorAlert);\
+                                      $('#tmp2DivBackgroundColor').colpick({colorScheme:'dark',layout:'rgbhex',color:'ff8800',onSubmit:function(hsb,hex,rgb,el) {$(el).css('background-color', '#'+hex);$(el).colpickHide();  }}).css('background-color', strokeColorAlert);\
                              </script>";
 
             bootbox.dialog({
@@ -265,7 +272,9 @@
                             });
                         }
                         else{
-                            //Graphical radio
+                            if($("#cbxEmpty").is(':checked'))
+                                fillColorAlert = "";
+                            //Graphical radio                              
                             pReference.setRadius(radiusAlert);
 
                             pCircleObj.setRadio(radiusAlert);
