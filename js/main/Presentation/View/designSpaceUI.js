@@ -714,7 +714,7 @@
             //Send the object created to the PAINT MANAGER that centralizes everything
             Presentation.getPaintManagerHandler().sendBorderToPaintManager(borderObj);
 
-            poly.on('click', function() {
+            poly.on('click', function(){
                 Presentation.getAlertsUI().changeColorZones(borderObj, this.id());
             });
 

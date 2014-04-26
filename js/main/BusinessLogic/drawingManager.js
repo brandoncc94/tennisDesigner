@@ -54,6 +54,7 @@
             Presentation.getDesignSpace().fillExternBackground();
             var end = new Date().getTime();
             var time = end - start;
+            time = time / 1000;
             Presentation.getOnLoadHandler().sendExecutionTime(time);
         }
 
@@ -61,7 +62,7 @@
             for(var i = 0; i < pBordersCollection.length; i++)
                 pBordersCollection[i].paint();
         }
-        
+
         function paintLines(pLinesCollection){            
             for(var i = 0; i < pLinesCollection.length; i++)
                 pLinesCollection[i].paint();

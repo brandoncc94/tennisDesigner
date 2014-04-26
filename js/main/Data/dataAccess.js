@@ -177,8 +177,11 @@ var DataAccess = window.DataAccess || {};
 
         function convertToformatMMDDYYYY(pDate){
             return pDate.getDate() + 
-            "/" +  pDate.getMonth() +
-            "/" +  pDate.getFullYear();
+            "/" +  (parseInt(pDate.getMonth()) + 1) +
+            "/" +  pDate.getFullYear() +
+            "-" + pDate.getHours() + 
+            ":" + pDate.getMinutes() +
+            ":" + pDate.getSeconds();
         }
 
         function addExecutionTimeDesignAux(pDesign,pTypeAlgorithm,pTime){
