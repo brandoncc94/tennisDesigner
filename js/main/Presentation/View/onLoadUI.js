@@ -179,10 +179,10 @@ var Presentation = window.Presentation || {};
                     if(backgroundColorId == 0){
                         idLabel+=1
                         backgroundColorId = idLabel;
-                        Presentation.getOnLoadHandler().drawGraphicalLabel("background-color: " + hex, [10,10], -1, hex);
+                        Presentation.getOnLoadHandler().drawGraphicalLabel("background-color: " + hex, [10,10], -1, "", hex, "background-color");
                     }
                     else
-                        Presentation.getOnLoadHandler().drawGraphicalLabel("background-color: " + hex, "", backgroundColorId - 1, hex);
+                        Presentation.getOnLoadHandler().drawGraphicalLabel("background-color: " + hex, "", backgroundColorId - 1, "", hex, "background-color");
                 }
             }).css('background-color', '#ff8800');  
 
@@ -242,7 +242,7 @@ var Presentation = window.Presentation || {};
                 Presentation.getPaintManagerHandler().loadDesignBackgroundColor(pBackgroundColor);
                 loadPointsDesignView(pPoints);
                 $("#canvas-container").fadeIn(500);
-                // Presentation.getDesignSpace().divideSegments();
+                Presentation.getOnLoadHandler().executeDivideSegments();
             });
         }
 

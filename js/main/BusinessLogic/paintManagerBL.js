@@ -64,10 +64,10 @@
         }
 
         function setBackgroundColor(pColor){
-          backgroundColor = pColor;
+            backgroundColor = pColor;
         }
 
-        function deleteLineObject(pId){
+        function deleteLineObject(pId){mae
             linesCollection[pId] = "empty";            
         }
 
@@ -114,8 +114,6 @@
             }
             return arrayLineJson;
         }
-
-
 
         function getSoleJson(){
             if(sole == null) return {
@@ -182,7 +180,7 @@
         }
 
         function sendToDrawingManager(){
-            BusinessLogic.getDrawingManager().paintTennis(linesCollection, circlesCollection, borderCollection, sole);
+            BusinessLogic.getDrawingManager().paintTennis(linesCollection, circlesCollection, borderCollection, sole, backgroundColor);
         }
 
         function createTable() {
@@ -402,7 +400,8 @@
             convertDataToExcel : convertDataToExcel,
             checkIfCollide : checkIfCollide,
             checkIfLinesCollide : checkIfLinesCollide,
-            getSpecificBorder : getSpecificBorder
+            getSpecificBorder : getSpecificBorder,
+            setBackgroundColor : setBackgroundColor
         };  
     })();
 

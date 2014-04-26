@@ -38,9 +38,9 @@
 
     var drawingManager = (function(){
 
-        function paintTennis(pLinesCollection, pCirclesCollection, pBordersCollection, pSoleObject){
+        function paintTennis(pLinesCollection, pCirclesCollection, pBordersCollection, pSoleObject, pBackgroundColor){
             var start = new Date().getTime();
-            Presentation.getDesignSpace().fillBackground("red");
+            Presentation.getDesignSpace().fillBackground(pBackgroundColor);
             Presentation.getDesignSpace().reduceAnchors();
 
             if(pSoleObject == null){

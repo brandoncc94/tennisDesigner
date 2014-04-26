@@ -50,6 +50,9 @@
                 var sole = LibraryData.createSole(points, pStrokeWidth, pColor);
                 BusinessLogic.getPaintManagerBL().insertSole(sole);
             }
+            else if(pType == "background-color"){
+                BusinessLogic.getPaintManagerBL().setBackgroundColor(pColor);
+            }
             if(pId == -1){
                 Presentation.getLabelUI().init(pText, pPosition);
             }        

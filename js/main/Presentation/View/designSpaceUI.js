@@ -710,7 +710,7 @@
                 backgroundLayer.drawScene();
             });
 
-            var borderObj = LibraryData.createBorder(poly.getAttr("points"), "#000");
+            var borderObj = LibraryData.createBorder(poly.getAttr("points"), "");
             //Send the object created to the PAINT MANAGER that centralizes everything
             Presentation.getPaintManagerHandler().sendBorderToPaintManager(borderObj);
 
