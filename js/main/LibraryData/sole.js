@@ -41,7 +41,12 @@
                 strokeColor : this.strokeColor
             };
             return soleJson;
-        }      
+        },
+        paint : function(){
+            var strokeWidth = this.getStrokeWidth();
+            var strokeColor = this.getStrokeColor();
+            Presentation.getDesignSpaceHandler().fillSole(strokeWidth, strokeColor); 
+        }
     });
 
 }(LibraryData, jQuery));

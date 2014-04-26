@@ -47,7 +47,7 @@
             if(pSoleObject == null){
                 Presentation.getDesignSpace().fillSole("black", 2);
             }else{
-                Presentation.getDesignSpace().fillSole(pSoleObject.getStrokeColor(), pSoleObject.getStrokeWidth());
+                pSoleObject.paint();
             }
             paintBorders(pBordersCollection);
             paintLines(pLinesCollection);
