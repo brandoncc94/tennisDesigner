@@ -81,6 +81,10 @@
             Presentation.getDesignSpace().paintPolygon(pPolygon, pColor);
         }
 
+        function paintSector(pPolygon, pColor){
+            Presentation.getDesignSpace().paintSector(pPolygon, pColor); 
+        }
+
         return {
             sentDataToDrawCircle : sentDataToDrawCircle,
             sentDataToDrawLine : sentDataToDrawLine,
@@ -92,7 +96,8 @@
             drawCircleArcade : drawCircleArcade,
             drawRectangleArcade : drawRectangleArcade,
             drawLineFire : drawLineFire,
-            paintPolygon : paintPolygon
+            paintPolygon : paintPolygon,
+            paintSector : paintSector
         }; 
     })();    
 

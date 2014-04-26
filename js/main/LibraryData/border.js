@@ -18,13 +18,19 @@
 (function (pContext, $) {
     'use strict';
 
-    pContext.createBorder = function(pPointsFigure, pStrokeWidth, pStrokeColor){
-        return new Border(pPointsFigure, pStrokeWidth, pStrokeColor);
+    pContext.createBorder = function(pPointsFigure, pFillColor){
+        return new Border(pPointsFigure, pFillColor);
     };
 
     var Border = Figure.extend({
-        init: function(pPointsFigure, pStrokeWidth, pStrokeColor){
-            this._super(pPointsFigure, pStrokeWidth, pStrokeColor);
+        init: function(pPointsFigure, pFillColor){
+            this._super(pPointsFigure, 1, pFillColor);
+        },
+
+        paint: function(){
+            var polygons = this.getPointsFigure();
+            var color = this.getStrokeColor();
+            Presentation.getDesignSpaceHandler().paintSector(polygons, color); 
         }
     });
 

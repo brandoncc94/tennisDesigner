@@ -293,11 +293,56 @@
               }
             });
         }
+
+        function changeColorZones(pBorderObj, pId){
+            Presentation.getPaintManagerHandler().getSpecificBorder(pId);
+        }
+
+        function updateBorder(pBorderObj){
+            HTML = "<div id='infos'>\
+                    <span>Fill Color: </span><div id='tmpDivBackgroundColor' class='color-box'></div>\
+                    <span style='margin-left: 15px'>Empty: </span><input type='checkbox' id='cbxEmpty'></br></br>\
+                    </div>";
+            colorPickers = "<script>\
+                    $('#tmpDivBackgroundColor').colpick({colorScheme:'dark',layout:'rgbhex',color:'ff8800',onSubmit:function(hsb,hex,rgb,el) {$(el).css('background-color', '#'+hex); $(el).colpickHide(); }}).css('background-color', '#ff8800');\
+                    </script>";
+
+            colorPickersOriginal = colorPickers;
+            
+            fillColorAlert = pBorderObj.getStrokeColor();
+
+            colorPickers += "<script> if(fillColorAlert === '')\
+                                          document.getElementById('cbxEmpty').checked=true;\
+                                      else\
+                                          $('#tmpDivBackgroundColor').colpick({colorScheme:'dark',layout:'rgbhex',color:'ff8800',onSubmit:function(hsb,hex,rgb,el) {$(el).css('background-color', '#'+hex); $(el).colpickHide(); }}).css('background-color', fillColorAlert);\
+                             </script>";
+
+            bootbox.dialog({
+              message: HTML + colorPickers,
+              title: "Change Characteristics",
+              buttons: {
+                main: {
+                  label: "Apply",
+                  className: "btn-primary",
+                  callback: function() {
+                        fillColorAlert = Presentation.getOnLoadDesignsHandler().convertToHex($("#tmpDivBackgroundColor").css('backgroundColor'));        
+                        if($("#cbxEmpty").is(':checked'))
+                            fillColorAlert = "";
+
+                        pBorderObj.setStrokeColor(fillColorAlert);
+                        bootbox.alert("Changes applied.");
+                  }
+                }
+              }
+            });
+        }
         return{
-            insertLineFeatureDialog:insertLineFeatureDialog,
-            insertFeatureDialog:insertFeatureDialog,
-            changeLineFeatureDialog:changeLineFeatureDialog,
-            changeFeatureDialog:changeFeatureDialog
+            insertLineFeatureDialog : insertLineFeatureDialog,
+            insertFeatureDialog : insertFeatureDialog,
+            changeLineFeatureDialog : changeLineFeatureDialog,
+            changeFeatureDialog : changeFeatureDialog,
+            changeColorZones : changeColorZones,
+            updateBorder : updateBorder
 
         };
     })();

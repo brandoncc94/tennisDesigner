@@ -38,7 +38,7 @@
 
     var drawingManager = (function(){
 
-        function paintTennis(pLinesCollection, pCirclesCollection, pSoleObject){
+        function paintTennis(pLinesCollection, pCirclesCollection, pBordersCollection, pSoleObject){
             var start = new Date().getTime();
             Presentation.getDesignSpace().fillBackground("red");
             Presentation.getDesignSpace().reduceAnchors();
@@ -48,6 +48,7 @@
             }else{
                 Presentation.getDesignSpace().fillSole(pSoleObject.getStrokeColor(), pSoleObject.getStrokeWidth());
             }
+            paintBorders(pBordersCollection);
             paintLines(pLinesCollection);
             paintCircles(pCirclesCollection);
             Presentation.getDesignSpace().fillExternBackground();
@@ -56,6 +57,11 @@
             Presentation.getOnLoadHandler().sendExecutionTime(time);
         }
 
+        function paintBorders(pBordersCollection){
+            for(var i = 0; i < pBordersCollection.length; i++)
+                pBordersCollection[i].paint();
+        }
+        
         function paintLines(pLinesCollection){            
             for(var i = 0; i < pLinesCollection.length; i++)
                 pLinesCollection[i].paint();

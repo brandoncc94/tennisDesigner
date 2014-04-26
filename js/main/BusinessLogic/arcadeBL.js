@@ -85,7 +85,6 @@
             Presentation.getDesignSpaceHandler().drawRectangleArcade(x, y, rectWidth, pStrokeWidth, pStrokeColor, angle);
         }
         
-
         function convertRadiansToDegrees(pRad){
            return pRad*(180/Math.PI);
         }
