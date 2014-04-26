@@ -40,6 +40,7 @@
 
         function paintTennis(pLinesCollection, pCirclesCollection, pBordersCollection, pSoleObject, pBackgroundColor){
             var start = new Date().getTime();
+            alert(pBackgroundColor);
             Presentation.getDesignSpace().fillBackground(pBackgroundColor);
             Presentation.getDesignSpace().reduceAnchors();
 

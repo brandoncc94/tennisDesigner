@@ -64,8 +64,7 @@
         }
 
         function setBackgroundColor(pColor){
-            backgroundColor = pColor;
-        }
+            backgroundColor = pColor;        }
 
         function deleteLineObject(pId){mae
             linesCollection[pId] = "empty";            
@@ -203,16 +202,24 @@
             BusinessLogic.getDrawingManager().paintTennis(linesCollection, circlesCollection, borderCollection, sole, backgroundColor);
         }
 
+        function sortMultiDimensional(a,b){
+            return parseFloat(a["time"]) - parseFloat(b["time"]);
+        }
+
         function createTable() {
             var executionTimes = getExecutionTimes();
 
-            var sortable = [];
-            for (var vehicle in executionTimes)
-                  sortable.push([vehicle, executionTimes[vehicle]])
-            sortable.sort(function(a, b) {return a[1] - b[1]})
-            
-            executionTimes.sort(executionTimes[0][0]["time"]);
-            executionTimes.sort(executionTimes[1][0]["time"]);
+            var arcadeTimes = [];
+            var fireTimes = [];
+
+            for(var i = 0; i < executionTimes[0].length; i++)
+                arcadeTimes.push(executionTimes[0][i]);
+
+            for(var i = 0; i < executionTimes[1].length; i++)
+                fireTimes.push(executionTimes[1][i]);
+
+            arcadeTimes.sort(sortMultiDimensional);
+            fireTimes.sort(sortMultiDimensional);
 
             // Create a <table> element
             var table  = document.createElement("table");
@@ -222,18 +229,18 @@
             title.appendChild(document.createTextNode("Arcade"));
             table.appendChild(title);
             // create the rows
-            for (var i = 0; i < executionTimes[0].length; i++) {
+            for (var i = 0; i < arcadeTimes.length; i++) {
               // Crea las hileras de la tabla
               var row = document.createElement("tr");
            
               for (var j = 0; j < 1; j++) {
                 var column = document.createElement("td");
-                var columnText = document.createTextNode(executionTimes[0][i]["time"]);
+                var columnText = document.createTextNode(arcadeTimes[i]["time"]);
                 column.appendChild(columnText);
                 row.appendChild(column);
 
                 var column = document.createElement("td");
-                var columnText = document.createTextNode(executionTimes[0][i]["date"]);                
+                var columnText = document.createTextNode(arcadeTimes[i]["date"]);                
                 column.appendChild(columnText);
                 row.appendChild(column);
               }
@@ -244,18 +251,18 @@
             title.appendChild(document.createTextNode("Fire"));
             table.appendChild(title);
             // create the rows
-            for (var i = 0; i < executionTimes[1].length; i++) {
+            for (var i = 0; i < fireTimes.length; i++) {
               // Crea las hileras de la tabla
               var row = document.createElement("tr");
            
               for (var j = 0; j < 1; j++) {
                 var column = document.createElement("td");
-                var columnText = document.createTextNode(executionTimes[1][i]["time"]);
+                var columnText = document.createTextNode(fireTimes[i]["time"]);
                 column.appendChild(columnText);
                 row.appendChild(column);
 
                 var column = document.createElement("td");
-                var columnText = document.createTextNode(executionTimes[1][i]["date"]);                
+                var columnText = document.createTextNode(fireTimes[i]["date"]);                
                 column.appendChild(columnText);
                 row.appendChild(column);
               }

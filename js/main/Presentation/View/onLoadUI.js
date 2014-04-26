@@ -163,6 +163,28 @@ var Presentation = window.Presentation || {};
             $( "#imgLine" ).on( "click", function(){
                 Presentation.getAlertsUI().insertLineFeatureDialog(false);
             });
+
+            $( "#imgBack" ).on( "click", function(){
+                var index = $("#designs").prop("selectedIndex");
+                
+                index -=1;
+                if(index < 0)
+                    index = $('#designs > option').length - 1;
+                
+                var name = $('#designs option').eq(index).text();
+                $('#designs').val(name);
+                downloadDesign(name);
+            });
+
+            $( "#imgNext" ).on( "click", function(){                
+                var index = $("#designs").prop("selectedIndex");
+                index += 1;
+                if(index > $('#designs > option').length -1)
+                    index = 0;
+                var name = $('#designs option').eq(index).val();
+                $('#designs').val(name);
+                downloadDesign(name);
+            });
             
             $("#exportToExcel").click(function(){
                 var name = getDesignListSelected();

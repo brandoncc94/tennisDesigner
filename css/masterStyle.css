@@ -95,6 +95,17 @@ h2{
 	display: block;
 }
 
+#selectDesignName{
+	float: left;
+}
+
+#imgBack, #imgNext{
+	cursor: pointer;
+	float: left;
+	display: block;
+	margin: 20px 0 0 30px;
+}
+
 /***************************************************************
 					ADD DESIGN
 ***************************************************************/

@@ -719,7 +719,6 @@
             });
 
             backgroundLayer.add(poly);
-            poly.getParent().moveToBottom();
             backgroundLayer.draw();
         }
 
@@ -763,3 +762,4 @@
 var strokeWidthAlert = 0, radiusAlert = 0, strokeColorAlert = "", fillColorAlert = "";
 var idLabel = 0, nameCircle = 0, nameLine = 0, pts = [], pts1 = [];
 var pointIntersect = new Array(), idSector = 0;
+var parent;

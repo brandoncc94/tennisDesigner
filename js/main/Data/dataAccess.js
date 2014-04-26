@@ -135,8 +135,7 @@ var DataAccess = window.DataAccess || {};
                 else{
                     uploadParseData(pName,pPoints,pArrayCircles,pArrayLines,pArrayBorders,pSole,pBackgroundColor);
                     BusinessLogic.getParseBusinessLogic().storedDesign();
-                }
-                
+                }          
                 
               },
               error: function(error) {
