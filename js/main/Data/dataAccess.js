@@ -55,13 +55,14 @@ var DataAccess = window.DataAccess || {};
         Parse.$ = jQuery;
 
 
-        function uploadParseData(pName,pPoints,pArrayCircles,pArrayLines,pSole,pBackgroundColor){
+        function uploadParseData(pName,pPoints,pArrayCircles,pArrayLines,pArrayBorders,pSole,pBackgroundColor){
             var tempDesign = new TennisDesign();
             tempDesign.save({
                 Name : pName,
                 Points : pPoints,
                 Circles : pArrayCircles,
                 Lines : pArrayLines,
+                Borders : pArrayBorders,
                 Sole : pSole,
                 BackgroundColor : pBackgroundColor,
                 ArcadeTimes : [],
@@ -80,10 +81,11 @@ var DataAccess = window.DataAccess || {};
                     var name = designs[0].get("Name");
                     var arrayCircles = designs[0].get("Circles");
                     var arrayLines = designs[0].get("Lines");
+                    var arrayBorders = designs[0].get("Borders");
                     var sole = designs[0].get("Sole");
                     var backgroundColor = designs[0].get("BackgroundColor");
                     BusinessLogic.getParseBusinessLogic().loadDesign(name,points,arrayCircles,arrayLines,
-                      sole,backgroundColor); 
+                      arrayBorders,sole,backgroundColor); 
                 }
                 
               },
@@ -93,14 +95,14 @@ var DataAccess = window.DataAccess || {};
             });
         }
 
-        function updateDesign(pName,pPoints,pArrayCircles,pArrayLines,pSole,pBackgroundColor){
+        function updateDesign(pName,pPoints,pArrayCircles,pArrayLines,pArrayBorders,pSole,pBackgroundColor){
             var query_Name = new Parse.Query(TennisDesign);
             query_Name.equalTo("Name", pName);
             query_Name.find({
               success: function(designs) {
                 if(designs.length==1){
                     var design = designs[0];
-                    updateDesignAux(design,pPoints,pArrayCircles,pArrayLines,pSole,pBackgroundColor); 
+                    updateDesignAux(design,pPoints,pArrayCircles,pArrayLines,pArrayBorders,pSole,pBackgroundColor); 
                     bootbox.alert("Design saved successfully!");
                 }
                 
@@ -111,17 +113,18 @@ var DataAccess = window.DataAccess || {};
             });
         }
 
-        function updateDesignAux(design,pPoints,pArrayCircles,pArrayLines,pSole,pBackgroundColor){
+        function updateDesignAux(design,pPoints,pArrayCircles,pArrayLines,pArrayBorders,pSole,pBackgroundColor){
             design.save({
                 Points : pPoints,
                 Circles : pArrayCircles,
                 Lines : pArrayLines,
                 Sole : pSole,
-                BackgroundColor : pBackgroundColor
+                BackgroundColor : pBackgroundColor,
+                Borders : pArrayBorders
             });
         }
 
-        function saveDesign(pName,pPoints,pArrayCircles,pArrayLines,pSole,pBackgroundColor){
+        function saveDesign(pName,pPoints,pArrayCircles,pArrayLines,pArrayBorders,pSole,pBackgroundColor){
             var query_Name = new Parse.Query(TennisDesign);
             query_Name.equalTo("Name", pName);
             query_Name.count({
@@ -130,7 +133,7 @@ var DataAccess = window.DataAccess || {};
                      BusinessLogic.getParseBusinessLogic().nameDesignUsed();
                 }
                 else{
-                    uploadParseData(pName,pPoints,pArrayCircles,pArrayLines,pSole,pBackgroundColor);
+                    uploadParseData(pName,pPoints,pArrayCircles,pArrayLines,pArrayBorders,pSole,pBackgroundColor);
                     BusinessLogic.getParseBusinessLogic().storedDesign();
                 }
                 

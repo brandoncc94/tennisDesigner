@@ -115,6 +115,16 @@
             return arrayLineJson;
         }
 
+        function getArrayBordersJson(){
+            var arrayBordersJson =  new Array();
+            for (var i = 0; i < borderCollection.length; i++) {
+                if(borderCollection[i] != "empty"){
+                  arrayBordersJson.push(borderCollection[i].convertToJson());
+                }
+            }
+            return arrayBordersJson;
+        }
+
         function getSoleJson(){
             if(sole == null) return {
                 points : [],
@@ -163,6 +173,16 @@
               var strokeWidth = circle["strokeWidth"];
               var strokeColor = circle["strokeColor"];
               Presentation.getDesignSpaceHandler().sentDataToDrawLine(posX1,posY1,posX2,posY2,strokeWidth,strokeColor);
+            }
+        }
+
+        function loadDesignBorders(pBorders){
+            for (var i = 0; i < pBorders.length; i++) {
+              var border = pBorders[i];
+              var pointsBorder = border["pointsBorder"];
+              var fillColor = border["fillColor"];
+              var newBorder = LibraryData.createBorder(pointsBorder,fillColor);
+              insertBorder(newBorder);
             }
         }
 
@@ -381,6 +401,7 @@
             insertLine : insertLine,
             insertCircle : insertCircle,
             insertBorder : insertBorder,
+            insertSole : insertSole,
             deleteLineObject : deleteLineObject,
             deleteCircleObject : deleteCircleObject,
             deleteAllElements : deleteAllElements,
@@ -388,15 +409,16 @@
             restoreAllSectors : restoreAllSectors,
             getArrayCircleJson : getArrayCircleJson,
             getArrayLineJson : getArrayLineJson,
+            getArrayBordersJson : getArrayBordersJson,
             getSoleJson : getSoleJson,
             getBackgroundColorJson : getBackgroundColorJson,
             loadDesignCircles : loadDesignCircles,
             loadDesignLines : loadDesignLines,
+            loadDesignBorders : loadDesignBorders,
             loadDesignSole : loadDesignSole,
             loadDesignBackgroundColor : loadDesignBackgroundColor,
             sendToDrawingManager : sendToDrawingManager,
             setExecutionTimes : setExecutionTimes,
-            insertSole : insertSole,
             convertDataToExcel : convertDataToExcel,
             checkIfCollide : checkIfCollide,
             checkIfLinesCollide : checkIfLinesCollide,

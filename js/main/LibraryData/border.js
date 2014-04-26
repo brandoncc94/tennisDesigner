@@ -27,6 +27,15 @@
             this._super(pPointsFigure, 1, pFillColor);
         },
 
+        convertToJson : function(){
+              var points = this.getPointsFigure();
+              var lineJson = {
+                  pointsBorder : points,
+                  fillColor : this.strokeColor
+              };
+              return lineJson; 
+            },
+
         paint: function(){
             var polygons = this.getPointsFigure();
             var color = this.getStrokeColor();
