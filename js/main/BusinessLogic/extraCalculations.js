@@ -212,9 +212,6 @@
                 return -intersectsA + intersectsB;
                  
             })
-            for (var i = 0; i < lines.length; i++) {
-                alert(checkIntersectionsPath(path,lines[i].getAttr("points")).length);
-            };
             dividePath(arrayPath,lines);
         }
       
@@ -231,13 +228,11 @@
         }
 
        function dividePath(arrayPath,lines){
-            alert("lineas: "+ lines.length);
             if (lines.length== 0 ){
                 paintPath(arrayPath);
                 return;
             }
             var newArrayPath= new Array();
-            alert("# paths: "+arrayPath.length);
             for (var i = 0; i < arrayPath.length; i++) {
                 var pointIntersect = checkIntersectionsPath(arrayPath[i],lines[0].getAttr("points"));
                 if(pointIntersect.length>1){
@@ -252,7 +247,6 @@
                         var intersectPoint = checkLineIntersection(arrayPath[i][j],arrayPath[i][j+1],arrayPath[i][j+2]
                                 ,arrayPath[i][j+3],l[0],l[1],l[2],l[3]);
                         if(intersectPoint.onLine1 == true && intersectPoint.onLine2 == true){
-                            // alert("change");
                             path1.push(pointIntersect[0][0], pointIntersect[0][1]);
                             j+=2;
                             break;
@@ -268,7 +262,6 @@
                         var intersectPoint = checkLineIntersection(arrayPath[i][j],arrayPath[i][j+1],arrayPath[i][j+2]
                                 ,arrayPath[i][j+3],l[0],l[1],l[2],l[3]);
                         if(intersectPoint.onLine1 == true && intersectPoint.onLine2 == true){
-                           // alert("change");
 
                             path1.push(pointIntersect[1][0], pointIntersect[1][1]);
                             path1.push(arrayPath[i][j+2],arrayPath[i][j+3]);
@@ -290,7 +283,6 @@
                         var intersectPoint = checkLineIntersection(arrayPath[i][k],arrayPath[i][k+1],arrayPath[i][k+2]
                                 ,arrayPath[i][k+3],l[0],l[1],l[2],l[3]);
                         if(intersectPoint.onLine1 == true && intersectPoint.onLine2 == true){
-                            // alert("change1");
                            path2.push(pointIntersect[1][0], pointIntersect[1][1]);
                            path2.push(pointIntersect[0][0], pointIntersect[0][1]);
                             k+=2;
@@ -307,7 +299,6 @@
                         var intersectPoint = checkLineIntersection(arrayPath[i][k],arrayPath[i][k+1],arrayPath[i][k+2]
                                 ,arrayPath[i][k+3],l[0],l[1],l[2],l[3]);
                         if(intersectPoint.onLine1 == true && intersectPoint.onLine2 == true){
-                            // alert("change1");
                             path2.push(pointIntersect[1][0], pointIntersect[1][1]);
                            
                             break;
@@ -337,8 +328,6 @@
         }
 
         function paintPath(pArrayPath){
-            // var color = ["pink","yellow","green","blue","red","brown","pink","green","blue","red"];            
-            // alert(pArrayPath.length);
             for (var i = 0; i < pArrayPath.length; i++) {
                 Presentation.getDesignSpaceHandler().paintPolygon(pArrayPath[i],"white");
             }
