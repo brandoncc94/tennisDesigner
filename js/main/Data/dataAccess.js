@@ -55,7 +55,7 @@ var DataAccess = window.DataAccess || {};
         Parse.$ = jQuery;
 
 
-        function uploadParseData(pName,pPoints,pArrayCircles,pArrayLines,pSole){
+        function uploadParseData(pName,pPoints,pArrayCircles,pArrayLines,pSole,pBackgroundColor){
             var tempDesign = new TennisDesign();
             tempDesign.save({
                 Name : pName,
@@ -63,6 +63,7 @@ var DataAccess = window.DataAccess || {};
                 Circles : pArrayCircles,
                 Lines : pArrayLines,
                 Sole : pSole,
+                BackgroundColor : pBackgroundColor,
                 ArcadeTimes : [],
                 FireTimes : []
             });  
@@ -80,44 +81,47 @@ var DataAccess = window.DataAccess || {};
                     var arrayCircles = designs[0].get("Circles");
                     var arrayLines = designs[0].get("Lines");
                     var sole = designs[0].get("Sole");
-                    BusinessLogic.getParseBusinessLogic().loadDesign(name,points,arrayCircles,arrayLines,sole); 
+                    var backgroundColor = designs[0].get("BackgroundColor");
+                    BusinessLogic.getParseBusinessLogic().loadDesign(name,points,arrayCircles,arrayLines,
+                      sole,backgroundColor); 
                 }
                 
               },
               error: function(error) {
-                alert("Something bad happened.");
+                alert("Error in download design.");
               }
             });
         }
 
-        function updateDesign(pName,pPoints,pArrayCircles,pArrayLines,pSole){
+        function updateDesign(pName,pPoints,pArrayCircles,pArrayLines,pSole,pBackgroundColor){
             var query_Name = new Parse.Query(TennisDesign);
             query_Name.equalTo("Name", pName);
             query_Name.find({
               success: function(designs) {
                 if(designs.length==1){
                     var design = designs[0];
-                    updateDesignAux(design,pPoints,pArrayCircles,pArrayLines,pSole); 
+                    updateDesignAux(design,pPoints,pArrayCircles,pArrayLines,pSole,pBackgroundColor); 
                     bootbox.alert("Design saved successfully!");
                 }
                 
               },
               error: function(error) {
-                alert("Something bad happened.");
+                alert("Design did'nt save.");
               }
             });
         }
 
-        function updateDesignAux(design,pPoints,pArrayCircles,pArrayLines,pSole){
+        function updateDesignAux(design,pPoints,pArrayCircles,pArrayLines,pSole,pBackgroundColor){
             design.save({
                 Points : pPoints,
                 Circles : pArrayCircles,
                 Lines : pArrayLines,
-                Sole : pSole
+                Sole : pSole,
+                BackgroundColor : pBackgroundColor
             });
         }
 
-        function saveDesign(pName,pPoints,pArrayCircles,pArrayLines,pSole){
+        function saveDesign(pName,pPoints,pArrayCircles,pArrayLines,pSole,pBackgroundColor){
             var query_Name = new Parse.Query(TennisDesign);
             query_Name.equalTo("Name", pName);
             query_Name.count({
@@ -126,7 +130,7 @@ var DataAccess = window.DataAccess || {};
                      BusinessLogic.getParseBusinessLogic().nameDesignUsed();
                 }
                 else{
-                    uploadParseData(pName,pPoints,pArrayCircles,pArrayLines,pSole);
+                    uploadParseData(pName,pPoints,pArrayCircles,pArrayLines,pSole,pBackgroundColor);
                     BusinessLogic.getParseBusinessLogic().storedDesign();
                 }
                 

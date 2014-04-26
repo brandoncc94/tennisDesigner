@@ -207,11 +207,14 @@
             })
 
             lines.sort(function(a,b){
-                var intersectsA = checkIntersectionsPath(path,a);
-                var intersectsB = checkIntersectionsPath(path,b);
+                var intersectsA = checkIntersectionsPath(path,a.getAttr("points")).length;
+                var intersectsB = checkIntersectionsPath(path,b.getAttr("points")).length;
                 return -intersectsA + intersectsB;
                  
             })
+            for (var i = 0; i < lines.length; i++) {
+                alert(checkIntersectionsPath(path,lines[i].getAttr("points")).length);
+            };
             dividePath(arrayPath,lines);
         }
       
@@ -228,13 +231,13 @@
         }
 
        function dividePath(arrayPath,lines){
-            // alert("lineas: "+ lines.length);
+            alert("lineas: "+ lines.length);
             if (lines.length== 0 ){
                 paintPath(arrayPath);
                 return;
             }
             var newArrayPath= new Array();
-            // alert("# paths: "+arrayPath.length);
+            alert("# paths: "+arrayPath.length);
             for (var i = 0; i < arrayPath.length; i++) {
                 var pointIntersect = checkIntersectionsPath(arrayPath[i],lines[0].getAttr("points"));
                 if(pointIntersect.length>1){
@@ -268,12 +271,15 @@
                            // alert("change");
 
                             path1.push(pointIntersect[1][0], pointIntersect[1][1]);
+                            path1.push(arrayPath[i][j+2],arrayPath[i][j+3]);
                             isPath= true;
                         }       
                     }
 
 
                     // paintPolygon(path1,"red");
+
+                     // Presentation.getDesignSpaceHandler().paintPolygon(path1,"red");
                     
                     var path2 = new Array();
                     var isPath = false;
@@ -310,6 +316,7 @@
                     newArrayPath.push(path1);
                     newArrayPath.push(path2);
                      // paintPolygon(path2,"blue");   
+                     // Presentation.getDesignSpaceHandler().paintPolygon(path2,"blue");
                 }
                 else{
                     // alert("path :"+ i +" no intersectado");

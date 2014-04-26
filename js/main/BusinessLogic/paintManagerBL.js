@@ -41,6 +41,7 @@
         var linesCollection = new Array();
         var circlesCollection = new Array();
         var sole;
+        var backgroundColor;
         var executionTimes = new Array();
         var borderCollection = new Array();
         var borderCollectionBackUp = new Array();
@@ -60,6 +61,10 @@
 
         function insertSole(pSoleObject){
             sole = pSoleObject;
+        }
+
+        function setBackgroundColor(pColor){
+          backgroundColor = pColor;
         }
 
         function deleteLineObject(pId){
@@ -110,14 +115,7 @@
             return arrayLineJson;
         }
 
-        function setExecutionTimes(pExecutionTimes, pName){
-            executionTimes = pExecutionTimes;
-            convertDataToExcel('tmpTable', 'metrix-table', 'historyOf' + pName + '.xls');
-        }
 
-        function getExecutionTimes(){
-            return executionTimes;
-        }
 
         function getSoleJson(){
             if(sole == null) return {
@@ -127,6 +125,21 @@
             };
             var soleJson = sole.convertToJson();
             return soleJson;
+        }
+
+        function getBackgroundColorJson(){
+            return {
+              color : backgroundColor
+            };
+        }
+
+        function setExecutionTimes(pExecutionTimes, pName){
+            executionTimes = pExecutionTimes;
+            convertDataToExcel('tmpTable', 'metrix-table', 'historyOf' + pName + '.xls');
+        }
+
+        function getExecutionTimes(){
+            return executionTimes;
         }
 
         function loadDesignCircles(pArrayCircles,pArrayLines){
@@ -161,6 +174,11 @@
             var strokeWidth = pSole["strokeWidth"];
             var newSole = LibraryData.createSole(pointsSole,strokeWidth,strokeColor);
             insertSole(newSole);
+        }
+
+        function loadDesignBackgroundColor(pBackgroundColor){
+            var backgroundColor = pBackgroundColor["color"];
+            setBackgroundColor(backgroundColor);
         }
 
         function sendToDrawingManager(){
@@ -373,9 +391,11 @@
             getArrayCircleJson : getArrayCircleJson,
             getArrayLineJson : getArrayLineJson,
             getSoleJson : getSoleJson,
+            getBackgroundColorJson : getBackgroundColorJson,
             loadDesignCircles : loadDesignCircles,
             loadDesignLines : loadDesignLines,
             loadDesignSole : loadDesignSole,
+            loadDesignBackgroundColor : loadDesignBackgroundColor,
             sendToDrawingManager : sendToDrawingManager,
             setExecutionTimes : setExecutionTimes,
             insertSole : insertSole,

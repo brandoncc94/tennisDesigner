@@ -231,27 +231,19 @@ var Presentation = window.Presentation || {};
             Presentation.getOnLoadDesignsHandler().downloadDesign(pName);
         }
 
-        function loadDesignView(pName,pPoints,pArrayCircles,pArrayLines,pSole){
-            // $("#canvas-container").fadeOut(500,function(){
-                // Presentation.getDesignSpace().cleanFigures();
-                // var name = getDesignListSelected();
-                // $('#selectDesignName').text("Create your design: "+ name);
-                // Presentation.getPaintManagerHandler().loadDesignCircles(pArrayCircles);
-                // Presentation.getPaintManagerHandler().loadDesignLines(pArrayLines);
-                // Presentation.getPaintManagerHandler().loadDesignSole(pSole);
-                // loadPointsDesignView(pPoints);
-                // $("#canvas-container").fadeIn(500);
-                // Presentation.getDesignSpace().divideSegments();
-            // });
-            
+        function loadDesignView(pName,pPoints,pArrayCircles,pArrayLines,pSole,pBackgroundColor){
+            $("#canvas-container").fadeOut(500,function(){
                 Presentation.getDesignSpace().cleanFigures();
                 var name = getDesignListSelected();
                 $('#selectDesignName').text("Create your design: "+ name);
                 Presentation.getPaintManagerHandler().loadDesignCircles(pArrayCircles);
                 Presentation.getPaintManagerHandler().loadDesignLines(pArrayLines);
                 Presentation.getPaintManagerHandler().loadDesignSole(pSole);
+                Presentation.getPaintManagerHandler().loadDesignBackgroundColor(pBackgroundColor);
                 loadPointsDesignView(pPoints);
-                Presentation.getOnLoadHandler().executeDivideSegments();
+                $("#canvas-container").fadeIn(500);
+                // Presentation.getDesignSpace().divideSegments();
+            });
         }
 
         function loadPointsDesignView(pPoints){
@@ -281,7 +273,8 @@ var Presentation = window.Presentation || {};
             var arrayCircles = Presentation.getPaintManagerHandler().getCirclesFromPaintManager();
             var arrayLines = Presentation.getPaintManagerHandler().getLinesFromPaintManager();
             var sole = Presentation.getPaintManagerHandler().getSoleFromPaintManager();
-            Presentation.getOnLoadDesignsHandler().updateDesign(name,points,arrayCircles,arrayLines,sole);
+            var backgroundColor = Presentation.getPaintManagerHandler().getBackgroundColorFromPaintManager();
+            Presentation.getOnLoadDesignsHandler().updateDesign(name,points,arrayCircles,arrayLines,sole,backgroundColor);
         }
 
 
@@ -316,7 +309,9 @@ var Presentation = window.Presentation || {};
                 var arrayCircles = Presentation.getPaintManagerHandler().getCirclesFromPaintManager();
                 var arrayLines = Presentation.getPaintManagerHandler().getLinesFromPaintManager();
                 var sole = Presentation.getPaintManagerHandler().getSoleFromPaintManager();
-                Presentation.getOnLoadHandler().saveDesignToData($('#tbxDesignName').val(),pPoints,arrayCircles,arrayLines,sole);
+                var backgroundColor = Presentation.getPaintManagerHandler().getBackgroundColorFromPaintManager();
+                Presentation.getOnLoadHandler().saveDesignToData($('#tbxDesignName').val(),pPoints,arrayCircles,
+                    arrayLines,sole,backgroundColor);
             }else{
                 $('#tbxDesignName').effect( "shake", 1000 );
                 $('#tbxDesignName').val("");    

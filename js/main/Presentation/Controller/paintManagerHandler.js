@@ -82,6 +82,10 @@
           return BusinessLogic.getPaintManagerBL().getSoleJson();
         }
 
+        function getBackgroundColorFromPaintManager(){
+            return BusinessLogic.getPaintManagerBL().getBackgroundColorJson();
+        }
+
         function loadDesignCircles(pArrayCircles){
             BusinessLogic.getPaintManagerBL().loadDesignCircles(pArrayCircles);
         }
@@ -92,6 +96,10 @@
 
         function loadDesignSole(pSole){
           BusinessLogic.getPaintManagerBL().loadDesignSole(pSole);
+        }
+
+        function loadDesignBackgroundColor(pBackgroundColor){
+            BusinessLogic.getPaintManagerBL().loadDesignBackgroundColor(pBackgroundColor);
         }
 
         function sendToDrawingManager(){
@@ -139,9 +147,11 @@
             getCirclesFromPaintManager : getCirclesFromPaintManager,
             getLinesFromPaintManager : getLinesFromPaintManager,
             getSoleFromPaintManager : getSoleFromPaintManager,
+            getBackgroundColorFromPaintManager : getBackgroundColorFromPaintManager,
             loadDesignCircles : loadDesignCircles,
             loadDesignLines : loadDesignLines,
             loadDesignSole : loadDesignSole,
+            loadDesignBackgroundColor : loadDesignBackgroundColor,
             sendToDrawingManager : sendToDrawingManager,
             convertTableToExcel : convertTableToExcel,
             checkIfCollide : checkIfCollide,
