@@ -57,8 +57,9 @@
             BusinessLogic.getParseBusinessLogic().downloadDesign(pName);
         }
 
-        function updateDesign(pName,pPoints,pArrayCircles,pArrayLines,pSole,pBackgroundColor){
-            BusinessLogic.getParseBusinessLogic().updateDesign(pName,pPoints,pArrayCircles,pArrayLines,pSole,pBackgroundColor);
+        function updateDesign(pName,pPoints,pArrayCircles,pArrayLines,pArrayBorders,pSole,pBackgroundColor){
+            BusinessLogic.getParseBusinessLogic().updateDesign(pName,pPoints,pArrayCircles,pArrayLines,
+              pArrayBorders,pSole,pBackgroundColor);
         }
 
         function addExecutionTimeDesign(pName,pTypeAlgorithm,pTime){

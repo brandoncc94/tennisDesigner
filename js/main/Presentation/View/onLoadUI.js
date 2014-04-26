@@ -276,6 +276,7 @@ var Presentation = window.Presentation || {};
             var arrayBorders = Presentation.getPaintManagerHandler().getBordersFromPaintManager();
             var sole = Presentation.getPaintManagerHandler().getSoleFromPaintManager();
             var backgroundColor = Presentation.getPaintManagerHandler().getBackgroundColorFromPaintManager();
+            alert(backgroundColor["color"]);
             Presentation.getOnLoadDesignsHandler().updateDesign(name,points,arrayCircles,arrayLines,arrayBorders,
                 sole,backgroundColor);
         }

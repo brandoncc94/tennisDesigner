@@ -136,9 +136,10 @@
         }
 
         function getBackgroundColorJson(){
-            return {
+            var colorJson =  {
               color : backgroundColor
             };
+            return colorJson;
         }
 
         function setExecutionTimes(pExecutionTimes, pName){
