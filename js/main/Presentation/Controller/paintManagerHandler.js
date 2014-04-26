@@ -78,6 +78,10 @@
             return BusinessLogic.getPaintManagerBL().getArrayLineJson();
         }
 
+        function getBordersFromPaintManager(){
+            return BusinessLogic.getPaintManagerBL().getArrayBordersJson();
+        }
+
         function getSoleFromPaintManager(){
           return BusinessLogic.getPaintManagerBL().getSoleJson();
         }
@@ -92,6 +96,10 @@
 
         function loadDesignLines(pArrayLines){
             BusinessLogic.getPaintManagerBL().loadDesignLines(pArrayLines);
+        }
+
+        function loadDesignBorders(pArrayBorders){
+            BusinessLogic.getPaintManagerBL().loadDesignBorders(pArrayBorders);   
         }
 
         function loadDesignSole(pSole){
@@ -147,10 +155,12 @@
             getCirclesFromPaintManager : getCirclesFromPaintManager,
             getLinesFromPaintManager : getLinesFromPaintManager,
             getSoleFromPaintManager : getSoleFromPaintManager,
+            getBordersFromPaintManager : getBordersFromPaintManager,
             getBackgroundColorFromPaintManager : getBackgroundColorFromPaintManager,
             loadDesignCircles : loadDesignCircles,
             loadDesignLines : loadDesignLines,
             loadDesignSole : loadDesignSole,
+            loadDesignBorders : loadDesignBorders,
             loadDesignBackgroundColor : loadDesignBackgroundColor,
             sendToDrawingManager : sendToDrawingManager,
             convertTableToExcel : convertTableToExcel,

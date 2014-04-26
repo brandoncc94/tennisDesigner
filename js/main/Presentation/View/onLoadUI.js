@@ -231,7 +231,7 @@ var Presentation = window.Presentation || {};
             Presentation.getOnLoadDesignsHandler().downloadDesign(pName);
         }
 
-        function loadDesignView(pName,pPoints,pArrayCircles,pArrayLines,pSole,pBackgroundColor){
+        function loadDesignView(pName,pPoints,pArrayCircles,pArrayLines,pArrayBorders,pSole,pBackgroundColor){
             $("#canvas-container").fadeOut(500,function(){
                 Presentation.getDesignSpace().cleanFigures();
                 var name = getDesignListSelected();
@@ -239,6 +239,7 @@ var Presentation = window.Presentation || {};
                 Presentation.getPaintManagerHandler().loadDesignCircles(pArrayCircles);
                 Presentation.getPaintManagerHandler().loadDesignLines(pArrayLines);
                 Presentation.getPaintManagerHandler().loadDesignSole(pSole);
+                Presentation.getPaintManagerHandler().loadDesignBorders(pArrayBorders);
                 Presentation.getPaintManagerHandler().loadDesignBackgroundColor(pBackgroundColor);
                 loadPointsDesignView(pPoints);
                 $("#canvas-container").fadeIn(500);
@@ -272,9 +273,11 @@ var Presentation = window.Presentation || {};
             var points = getPoints();
             var arrayCircles = Presentation.getPaintManagerHandler().getCirclesFromPaintManager();
             var arrayLines = Presentation.getPaintManagerHandler().getLinesFromPaintManager();
+            var arrayBorders = Presentation.getPaintManagerHandler().getBordersFromPaintManager();
             var sole = Presentation.getPaintManagerHandler().getSoleFromPaintManager();
             var backgroundColor = Presentation.getPaintManagerHandler().getBackgroundColorFromPaintManager();
-            Presentation.getOnLoadDesignsHandler().updateDesign(name,points,arrayCircles,arrayLines,sole,backgroundColor);
+            Presentation.getOnLoadDesignsHandler().updateDesign(name,points,arrayCircles,arrayLines,arrayBorders,
+                sole,backgroundColor);
         }
 
 
@@ -308,10 +311,11 @@ var Presentation = window.Presentation || {};
                 var pPoints = getPoints();
                 var arrayCircles = Presentation.getPaintManagerHandler().getCirclesFromPaintManager();
                 var arrayLines = Presentation.getPaintManagerHandler().getLinesFromPaintManager();
+                var arrayBorders = Presentation.getPaintManagerHandler().getBordersFromPaintManager();
                 var sole = Presentation.getPaintManagerHandler().getSoleFromPaintManager();
                 var backgroundColor = Presentation.getPaintManagerHandler().getBackgroundColorFromPaintManager();
                 Presentation.getOnLoadHandler().saveDesignToData($('#tbxDesignName').val(),pPoints,arrayCircles,
-                    arrayLines,sole,backgroundColor);
+                    arrayLines,arrayBorders,sole,backgroundColor);
             }else{
                 $('#tbxDesignName').effect( "shake", 1000 );
                 $('#tbxDesignName').val("");    

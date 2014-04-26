@@ -56,25 +56,27 @@ var BusinessLogic = window.BusinessLogic || {};
             Presentation.getOnLoadHandler().storedDesign();
         }
 
-        function loadDesign(pName,pPoints,pArrayCircles,pArrayLines,pSole,pBackgroundColor){
+        function loadDesign(pName,pPoints,pArrayCircles,pArrayLines,pArrayBorders,pSole,pBackgroundColor){
             Presentation.getOnLoadDesignsHandler().loadDesign(pName,pPoints,pArrayCircles,pArrayLines,
-              pSole,pBackgroundColor);
+              pArrayBorders,pSole,pBackgroundColor);
         }
 
         function downloadDesign(pName){
             DataAccess.getParseDataAcces().downloadDesign(pName);
         }
         
-        function saveDesignParseData(pName,pPoints,pArrayCircles,pArrayLines,pSole,pBackgroundColor){
-            DataAccess.getParseDataAcces().saveDesign(pName,pPoints,pArrayCircles,pArrayLines,pSole,pBackgroundColor);
+        function saveDesignParseData(pName,pPoints,pArrayCircles,pArrayLines,pArrayBorders,pSole,pBackgroundColor){
+            DataAccess.getParseDataAcces().saveDesign(pName,pPoints,pArrayCircles,pArrayLines,pArrayBorders,
+              pSole,pBackgroundColor);
         }
 
         function downloadDesignsNameReference(){
             DataAccess.getParseDataAcces().downloadDesignsName();
         }
 
-        function updateDesign(pName,pPoints,pArrayCircles,pArrayLines,pSole,pBackgroundColor){
-            DataAccess.getParseDataAcces().updateDesign(pName,pPoints,pArrayCircles,pArrayLines,pSole,pBackgroundColor);
+        function updateDesign(pName,pPoints,pArrayCircles,pArrayLines,pArrayBorders,pSole,pBackgroundColor){
+            DataAccess.getParseDataAcces().updateDesign(pName,pPoints,pArrayCircles,pArrayLines,pArrayBorders
+              ,pSole,pBackgroundColor);
         }
 
         //Load the drop down list, send reference to controller onLoadHandler.js

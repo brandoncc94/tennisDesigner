@@ -7,7 +7,7 @@
  */
 
  /*
-  * Author:      brandonc94@gmail.com
+  * Author:      juancar199400@gmail.com
   * Date:        11/04/2014
   * Description: Main controller to connect the view with data
   */
@@ -48,9 +48,9 @@
             Presentation.getOnLoad().loadDesignDataList(pDesignList);  
         }
 
-        function loadDesign(pName,pPoints,pArrayCircles,pArrayLines,pSole,pBackgroundColor){
+        function loadDesign(pName,pPoints,pArrayCircles,pArrayLines,pArrayBorders,pSole,pBackgroundColor){
             Presentation.getOnLoad().loadDesignView(pName,pPoints,pArrayCircles,pArrayLines,
-              pSole,pBackgroundColor);
+              pArrayBorders,pSole,pBackgroundColor);
         }
 
         function downloadDesign(pName){
