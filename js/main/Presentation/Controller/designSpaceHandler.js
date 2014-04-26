@@ -85,6 +85,10 @@
             Presentation.getDesignSpace().paintSector(pPolygon, pColor); 
         }
 
+        function fillSole(pStrokeWidth, pStrokeColor){
+            Presentation.getDesignSpace().fillSole(pStrokeWidth, pStrokeColor);  
+        }
+
         return {
             sentDataToDrawCircle : sentDataToDrawCircle,
             sentDataToDrawLine : sentDataToDrawLine,
@@ -97,7 +101,8 @@
             drawRectangleArcade : drawRectangleArcade,
             drawLineFire : drawLineFire,
             paintPolygon : paintPolygon,
-            paintSector : paintSector
+            paintSector : paintSector,
+            fillSole : fillSole
         }; 
     })();    
 

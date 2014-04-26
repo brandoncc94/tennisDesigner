@@ -597,7 +597,7 @@
             lineLayer.draw();
         }
 
-        function fillSole(pColor, pStrokeWidth){
+        function fillSole(pStrokeWidth, pColor){
             var s = straight;
             var fillSole = new Kinetic.Line({
                 points: [s.end.attrs.x, s.end.attrs.y, s.control3.attrs.x, s.control3.attrs.y],
