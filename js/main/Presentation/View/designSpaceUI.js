@@ -325,6 +325,8 @@
                 straight.opacity(1);
                 figuresLayer.draw();
             });
+
+            
         }
 
         function updateLines() {

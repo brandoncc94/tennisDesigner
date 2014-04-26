@@ -164,6 +164,12 @@ var Presentation = window.Presentation || {};
                 Presentation.getAlertsUI().insertLineFeatureDialog(false);
             });
 
+            $( "#imgDivided" ).on( "click", function(){
+                Presentation.getPaintManagerHandler().deleteAllSectors();
+                Presentation.getOnLoadHandler().executeDivideSegments();
+            });
+
+
             $( "#imgBack" ).on( "click", function(){
                 var index = $("#designs").prop("selectedIndex");
                 
@@ -265,7 +271,6 @@ var Presentation = window.Presentation || {};
                 Presentation.getPaintManagerHandler().loadDesignBackgroundColor(pBackgroundColor);
                 loadPointsDesignView(pPoints);
                 $("#canvas-container").fadeIn(500);
-                Presentation.getOnLoadHandler().executeDivideSegments();
             });
         }
 

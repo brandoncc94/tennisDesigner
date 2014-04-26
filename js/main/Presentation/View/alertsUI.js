@@ -309,7 +309,12 @@
 
             colorPickersOriginal = colorPickers;
             
-            fillColorAlert = pBorderObj.getStrokeColor();
+            try{
+              fillColorAlert = pBorderObj.getStrokeColor();
+            }catch(error){
+              fillColorAlert= "";
+            }
+
 
             colorPickers += "<script> if(fillColorAlert === '')\
                                           document.getElementById('cbxEmpty').checked=true;\
