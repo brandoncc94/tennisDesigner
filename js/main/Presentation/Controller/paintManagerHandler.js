@@ -147,6 +147,7 @@
             getCirclesFromPaintManager : getCirclesFromPaintManager,
             getLinesFromPaintManager : getLinesFromPaintManager,
             getSoleFromPaintManager : getSoleFromPaintManager,
+            getBackgroundColorFromPaintManager : getBackgroundColorFromPaintManager,
             loadDesignCircles : loadDesignCircles,
             loadDesignLines : loadDesignLines,
             loadDesignSole : loadDesignSole,
