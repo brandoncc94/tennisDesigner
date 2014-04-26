@@ -132,6 +132,7 @@
 
             canvasContainer.addEventListener('drop',function(e){
                 e.preventDefault(); //Stops the reference to do the defult event
+                //Singleton method to retrieve only one reference
                 if (arguments.callee._singletonInstance )
                     return arguments.callee._singletonInstance;
                 arguments.callee._singletonInstance = this;
@@ -153,31 +154,33 @@
 
 
         function drawCircleFire(pPosX, pPosY, pRadius, pFillColor, pStrokeWidth, pStrokeColor){
-            var circle = new Kinetic.Circle({
-                x: pPosX,
-                y: pPosY,
-                radius: pRadius,
-                stroke: pStrokeColor,
-                strokeWidth: pStrokeWidth,
-                fill: pFillColor
+            var circle = new Kinetic.Circle({           // 1
+                x: pPosX,                               // + 1
+                y: pPosY,                               // + 1
+                radius: pRadius,                        // + 1
+                stroke: pStrokeColor,                   // + 1
+                strokeWidth: pStrokeWidth,              // + 1
+                fill: pFillColor                        // + 1
             });
 
-            figuresLayer.add(circle);
-            figuresLayer.draw();
+            figuresLayer.add(circle);                   // + 2 + 1
+            figuresLayer.draw();                        // + 2
+            //f(x) = 12 -> O(c)
         }
 
 
         function drawCircleArcade(pPosX, pPosY, pIndex, pStroke, pStrokeWidth){
-            var circle = new Kinetic.Circle({
-                x: pPosX,
-                y: pPosY,
-                radius: pIndex,
-                stroke: pStroke,
-                strokeWidth: pStrokeWidth
+            var circle = new Kinetic.Circle({           // 1
+                x: pPosX,                               // + 1
+                y: pPosY,                               // + 1
+                radius: pIndex,                         // + 1
+                stroke: pStroke,                        // + 1
+                strokeWidth: pStrokeWidth               // + 1
             });
 
-            figuresLayer.add(circle);
-            figuresLayer.draw();  
+            figuresLayer.add(circle);                   // + 2 + 1
+            figuresLayer.draw();                        // + 2
+            //f(x) 11 = -> O(c)
         }
 
         function drawCircle(pPosX, pPosY, pRadius, pFillColor, pStrokeWidth, pStrokeColor){
@@ -235,28 +238,30 @@
         }        
         
         function drawLineFire(pPosX1, pPosY1, pPosX2, pPosY2, pStrokeWidth, pStrokeColor){
-            var straight = new Kinetic.Line({
-                strokeWidth: pStrokeWidth,
-                stroke: pStrokeColor,
-                points: [pPosX1, pPosY1, pPosX2, pPosY2]
+            var straight = new Kinetic.Line({               // 1
+                strokeWidth: pStrokeWidth,                  // + 1
+                stroke: pStrokeColor,                       // + 1
+                points: [pPosX1, pPosY1, pPosX2, pPosY2]    // +1 + 1
             });
 
-            figuresLayer.add(straight);
-            figuresLayer.draw();
+            figuresLayer.add(straight);                     // + 2 + 1
+            figuresLayer.draw();                            // + 2
+            //f(x) = 9 -> O(c)
         }
 
         function drawRectangleArcade(pPosX, pPosY, pRectWidth, pStrokeWidth, pStrokeColor, pAngle){
-            var rectLine = new Kinetic.Rect({
-                x: pPosX,
-                y: pPosY,
-                width: pRectWidth,
-                height: pStrokeWidth,
-                fill: pStrokeColor
+            var rectLine = new Kinetic.Rect({               // 1
+                x: pPosX,                                   // + 1
+                y: pPosY,                                   // + 1
+                width: pRectWidth,                          // + 1
+                height: pStrokeWidth,                       // + 1
+                fill: pStrokeColor                          // + 1
             });    
 
-            rectLine.rotate(pAngle);
-            figuresLayer.add(rectLine);
-            figuresLayer.draw(); 
+            rectLine.rotate(pAngle);                        // + 2 + 1
+            figuresLayer.add(rectLine);                     // + 2 + 1
+            figuresLayer.draw();                            // + 2
+            //f(x) = 14 -> O(c)
         }
 
         function drawLine(pPosX1, pPosY1, pPosX2, pPosY2, pStrokeWidth, pStrokeColor){
@@ -325,8 +330,6 @@
                 straight.opacity(1);
                 figuresLayer.draw();
             });
-
-            
         }
 
         function updateLines() {
@@ -675,17 +678,17 @@
         }
 
         function paintSector(pPolygon, pColor){
-            var poly =  new Kinetic.Line({
-                points : pPolygon,
-                draggable : false, 
-                color: pColor,
-                opacity:1,   
-                closed:true,
-                name: "polygon",
-                fill: pColor
+            var poly =  new Kinetic.Line({      // + 1
+                points : pPolygon,              // + 1
+                color: pColor,                  // + 1
+                opacity:1,                      // + 1
+                closed:true,                    // + 1
+                name: "polygon",                // + 1
+                fill: pColor                    // + 1
             });
-            backgroundLayer.add(poly);
-            backgroundLayer.draw();
+            backgroundLayer.add(poly);          // + 1 + 2
+            backgroundLayer.draw();             // + 2
+            //f(x) = 12 -> O(c)
         }
 
         function paintPolygon(pPolygon, pColor){

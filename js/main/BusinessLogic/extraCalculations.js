@@ -117,7 +117,6 @@
                  pts1[i],pts1[i+1],pts1[i+2],pts1[i+3]);
                 if(results.onLine1 == true && results.onLine2 == true){
                     pointIntersect.push([results.x,results.y,2]);
-                    alert("yes collide");
                }
             };
 
@@ -134,71 +133,56 @@
                  pts[i],pts[i+1],pts[i+2],pts[i+3]);
                 if(results.onLine1 == true && results.onLine2 == true){
                     pointIntersect.push([results.x,results.y,4]);
-                    alert("yes collide");
                }
             };                   
             return pointIntersect;
         }
 
         function divideSegments(){
-            for(var j=0; j < pointIntersect.length - 1; j++){
-                for(var i=0; i < pointIntersect.length - 1; i++){
-                    if(pointIntersect[i][0][0] > pointIntersect[i + 1][0][0]){
-                        var tmpObject = pointIntersect[i];
-                        pointIntersect[i] = pointIntersect[i + 1];
-                        pointIntersect[i + 1] = tmpObject;
-                    }
-                }
-            }
-
-            for (var i = 0; i < pointIntersect.length; i++) {
-                Presentation.getExtraCalculationsHandler().paintPolygon(pointIntersect[i][0],pointIntersect[i][1]);
-            };
-
-            pointIntersect = [];
-        }
-
-        function divideSegments(){
-            var straight = Presentation.getDesignSpace().getStraight();
+            var straight = Presentation.getDesignSpace().getStraight();         // 1 + 2 + 2
 
             var ptsa =[straight.start.attrs.x,straight.start.attrs.y,
-             straight.start.attrs.x-(straight.start.attrs.x)/5, straight.start.attrs.y+
-             (straight.end.attrs.y-straight.start.attrs.y)/2,
-                straight.end.attrs.x,
-                straight.end.attrs.y];
-            var pts = getCurvePoints(ptsa, 1,false, 16);
+                      straight.start.attrs.x-(straight.start.attrs.x)/5, straight.start.attrs.y+
+                      (straight.end.attrs.y-straight.start.attrs.y)/2,
+                      straight.end.attrs.x, straight.end.attrs.y];
+
+            // + 2 + 6 + 3 + 2 + 2 
+
+            var pts = getCurvePoints(ptsa, 1,false, 16);        // + 1 + 2 + 4
 
             var ptsa1 = [straight.start.attrs.x,straight.start.attrs.y,
-            straight.control1.attrs.x-(-straight.start.attrs.x+straight.control1.attrs.x)/2, straight.start.attrs.y+
-             (straight.control1.attrs.y)/5,
-             straight.control1.attrs.x,
-            straight.control1.attrs.y];
+                        straight.control1.attrs.x-(-straight.start.attrs.x+straight.control1.attrs.x)/2, straight.start.attrs.y+
+                        (straight.control1.attrs.y)/5,
+                        straight.control1.attrs.x, straight.control1.attrs.y];
 
-            var pts1 = getCurvePoints(ptsa1, 1,false, 16);
+            // + 2 + 6 + 4 + 2 + 2
 
-            pts = getCurvePointsReverse(pts);
+            var pts1 = getCurvePoints(ptsa1, 1,false, 16);      // + 1 + 2 + 4
 
-            var path = new Array();
+            pts = getCurvePointsReverse(pts);                   // + 1 + 2 + 1
+
+            var path = new Array();                             // + 1
             path = path.concat(path,pts1,straight.control2.attrs.x,straight.control2.attrs.y,straight.control3.attrs.x,
-                straight.control3.attrs.y,pts);
+                straight.control3.attrs.y,pts);                 // + 1 + 2 + 7
 
-            var arrayPath = new Array();
-            arrayPath.push(path);
+            var arrayPath = new Array();                        // + 1
+            arrayPath.push(path);                               // + 2 + 1
 
-            var lines = getTypeFigure('Line');
-            lines.sort(function(lineA,lineB){
-                var pointsA = lineA.getAttr("points");
-                var pointsB = lineB.getAttr("points");
-                
-                if(pointsA[0]<pointsA[2]){
+
+
+            var lines = getTypeFigure('Line');                  // + 1 + 2 + 1
+            lines.sort(function(lineA,lineB){                   // + 2 + 1 + 2
+                var pointsA = lineA.getAttr("points");          // + 1 + 2 + 1
+                var pointsB = lineB.getAttr("points");          // + 1 + 2 + 1
+                if(pointsA[0]<pointsA[2]){                      // + 1 + 1 + 1
                     if(pointsB[0]<pointsB[2]){
                         return -pointsA[2] + pointsB[2];        
                     }else{
                         return -pointsA[2] + pointsB[0];
                     }
                 }else{
-                    if(pointsB[0]<pointsB[2]){
-                        return -pointsA[0] + pointsB[2];
+                    if(pointsB[0]<pointsB[2]){                  // + 1 + 1 + 1
+                        return -pointsA[0] + pointsB[2];        // + 2 + 4
                     }else{
                         return -pointsA[0] + pointsB[0];
                     }
@@ -206,13 +190,14 @@
                 }
             })
 
-            lines.sort(function(lineA,lineB){
-                var intersectsA = checkIntersectionsPath(path,lineA.getAttr("points")).length;
-                var intersectsB = checkIntersectionsPath(path,lineB.getAttr("points")).length;
+            lines.sort(function(lineA,lineB){                                                   // + 2 + 1 + 2
+                var intersectsA = checkIntersectionsPath(path,lineA.getAttr("points")).length;  // 1 + 2 + 2
+                var intersectsB = checkIntersectionsPath(path,lineB.getAttr("points")).length;  // 1 + 2 + 2
                 return -intersectsA + intersectsB;
                  
             })
-            dividePath(arrayPath,lines);
+            dividePath(arrayPath,lines);                        // + 2 + 2
+            //f(x) = O(c)
         }
       
         function checkIntersectionsPath(pPath,pLineObject){
@@ -268,7 +253,7 @@
                             isPath= true;
                         }       
                     }
-
+                    
                     var path2 = new Array();
                     var isPath = false;
                     var k = 0;

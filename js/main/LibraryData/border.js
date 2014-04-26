@@ -39,7 +39,7 @@
         paint: function(){
             var polygons = this.getPointsFigure();
             var color = this.getStrokeColor();
-            Presentation.getDesignSpaceHandler().paintSector(polygons, color); 
+            Presentation.getDesignSpaceHandler().paintSector(polygons, color);
         }
     });
 
