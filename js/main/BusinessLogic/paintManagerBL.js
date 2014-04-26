@@ -60,7 +60,6 @@
               if(borderCollectionBackUp[i].getPointsFigure().toString()
                 == pBorderObject.getPointsFigure().toString()){
                 if(borderCollectionBackUp[i].getStrokeColor()!=""){
-                  alert("iguales");
                   borderCollection.push(borderCollectionBackUp[i]);
                   return;
                 }else{

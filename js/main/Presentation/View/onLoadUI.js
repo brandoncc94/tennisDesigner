@@ -165,6 +165,7 @@ var Presentation = window.Presentation || {};
             });
 
             $( "#imgDivided" ).on( "click", function(){
+                Presentation.getDesignSpaceHandler().cleanSectors();
                 Presentation.getPaintManagerHandler().deleteAllSectors();
                 Presentation.getOnLoadHandler().executeDivideSegments();
             });
@@ -296,6 +297,9 @@ var Presentation = window.Presentation || {};
         }
 
         function updateDesign(){
+            Presentation.getDesignSpaceHandler().cleanSectors();
+            Presentation.getPaintManagerHandler().deleteAllSectors();
+            Presentation.getOnLoadHandler().executeDivideSegments();
             var name =  getDesignListSelected();
             var points = getPoints();
             var arrayCircles = Presentation.getPaintManagerHandler().getCirclesFromPaintManager();
@@ -336,6 +340,7 @@ var Presentation = window.Presentation || {};
             Presentation.getDesignSpace().cleanFigures();                
             if($('#tbxDesignName').val().length!=0){
                 //Sending the name design to parse
+                loadPointsDesignView([[150,100],[300,100],[375,175],[450,250],[150,250]]);
                 var pPoints = getPoints();
                 var arrayCircles = Presentation.getPaintManagerHandler().getCirclesFromPaintManager();
                 var arrayLines = Presentation.getPaintManagerHandler().getLinesFromPaintManager();

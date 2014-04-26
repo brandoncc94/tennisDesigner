@@ -77,6 +77,10 @@
             Presentation.getDesignSpace().drawCircleArcade(pPosX, pPosY, pIndex, pStroke, pStrokeWidth);
         }
 
+        function cleanSectors(){
+            Presentation.getDesignSpace().cleanSectors();
+        }
+
         function paintPolygon(pPolygon, pColor){
             Presentation.getDesignSpace().paintPolygon(pPolygon, pColor);
         }
@@ -100,6 +104,7 @@
             drawCircleArcade : drawCircleArcade,
             drawRectangleArcade : drawRectangleArcade,
             drawLineFire : drawLineFire,
+            cleanSectors : cleanSectors,
             paintPolygon : paintPolygon,
             paintSector : paintSector,
             fillSole : fillSole

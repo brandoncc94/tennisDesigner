@@ -462,8 +462,6 @@
                 drawCurves();
                 updateLines();
                 cleanSectors();
-                Presentation.getOnLoadHandler().executeDivideSegments();
-                Presentation.getPaintManagerHandler().restoreAllSectors();
                 anchorLayer.draw(); 
             });
 
@@ -647,7 +645,6 @@
 
         function cleanSectors(){
             var childrenSectors = backgroundLayer.get('Line');
-            Presentation.getPaintManagerHandler().deleteAllSectors();
             for(var i = 0; i < childrenSectors.length; i++){
                 if(childrenSectors[i].name() == "polygon")
                     childrenSectors[i].remove();
@@ -727,23 +724,6 @@
             backgroundLayer.draw();
         }
 
-
-        function compareArray(){
-            var borderObjA = LibraryData.createBorder([1,2,3,4],"");
-            var borderObjB = LibraryData.createBorder([1,2,3,4],"");
-            alert(borderObjB.toString());
-            alert(borderObjA.toString());
-            if(borderObjB.toString() == borderObjA.toString()){
-                alert(true);    
-            }else{
-                alert(false);
-            }
-
-        }
-
-
-            compareArray();
-
         function init(){
             drawCurves();
             updateLines();
@@ -765,6 +745,7 @@
             dragElementsIntoCanvas: dragElementsIntoCanvas,
             cleanFigures : cleanFigures,
             cleanJustFigures : cleanJustFigures,
+            cleanSectors : cleanSectors,
             fillBackground : fillBackground,
             fillSole : fillSole,
             reduceAnchors : reduceAnchors,
