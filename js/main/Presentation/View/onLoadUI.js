@@ -75,7 +75,7 @@ var Presentation = window.Presentation || {};
 
             $('#imgSaveDesign').click(function(){
                 updateDesign();
-                setTimeout(function(){$("#lieEdit a").click();}, 500);
+                setTimeout(function(){$("#lieEdit a").click();}, 1000);
             });
 
             $("#lieEdit a").click(function(){
@@ -84,8 +84,8 @@ var Presentation = window.Presentation || {};
                 try{
                     var name = getDesignListSelected();
 
-                    $("#canvas-container").fadeOut(500,function(){
-                        $("#canvas-container").fadeIn(500);
+                    $("#canvas-container").fadeOut(1000,function(){
+                        $("#canvas-container").fadeIn(1000);
                         reacomodeBackground();
                     });
                     downloadDesign(name);                   
