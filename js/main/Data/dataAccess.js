@@ -103,7 +103,6 @@ var DataAccess = window.DataAccess || {};
                 if(designs.length==1){
                     var design = designs[0];
                     updateDesignAux(design,pPoints,pArrayCircles,pArrayLines,pArrayBorders,pSole,pBackgroundColor); 
-                    alert(pBackgroundColor["color"]);
                     bootbox.alert("Design saved successfully!");
                 }
                 
