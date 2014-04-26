@@ -220,6 +220,18 @@
                 circleRef.setPointsFigure(LibraryData.createPoint(circle.getPosition().x, circle.getPosition().y));
                 Presentation.getPaintManagerHandler().checkIfCollide(this.name());
             });
+
+            circle.on('mouseover', function() {
+                circle.fill("97FFF1");
+                circle.opacity(0.8);
+                figuresLayer.draw();
+            });
+
+            circle.on('mouseout', function() {
+                circle.fill("");
+                circle.opacity(1);
+                figuresLayer.draw();
+            });
         }        
         
         function drawLineFire(pPosX1, pPosY1, pPosX2, pPosY2, pStrokeWidth, pStrokeColor){
@@ -301,6 +313,18 @@
                 Presentation.getExtraCalculationsHandler().checkIntersection(positionsArray);
                 Presentation.getExtraCalculationsHandler().checkIntersectionQuadratic(positionsArray);
             });         
+            
+            straight.on('mouseover', function() {
+                straight.stroke("0F9CA9");
+                straight.opacity(0.8);
+                figuresLayer.draw();
+            });
+
+            straight.on('mouseout', function() {
+                straight.stroke("black");
+                straight.opacity(1);
+                figuresLayer.draw();
+            });
         }
 
         function updateLines() {
@@ -429,8 +453,12 @@
 
             // when dragend redraw everything
             anchor.on('dragend', function() {
+                idSector = 0;
                 drawCurves();
                 updateLines();
+                cleanSectors();
+                Presentation.getOnLoadHandler().executeDivideSegments();
+                Presentation.getPaintManagerHandler().restoreAllSectors();
                 anchorLayer.draw(); 
             });
 
@@ -606,8 +634,20 @@
             backgroundLayer.draw();
             //Now let's update the paint manager
             idLabel= 0;
+            idSector = 0;
+
             Presentation.getPaintManagerHandler().deleteAllElements();
             defaultAnchors();
+        }
+
+        function cleanSectors(){
+            var childrenSectors = backgroundLayer.get('Line');
+            Presentation.getPaintManagerHandler().deleteAllSectors();
+            for(var i = 0; i < childrenSectors.length; i++){
+                if(childrenSectors[i].name() == "polygon")
+                    childrenSectors[i].remove();
+            }  
+            backgroundLayer.draw();
         }
 
         function cleanJustFigures(){
@@ -632,97 +672,54 @@
             children[pId2].id(children[pId]); 
         }
 
-
-        //Areas
-        function checkIntersection(pLineObject){
-            var lineIntersetions = new Array();
-
-            var lineChildren = lineLayer.getChildren();
-            var straightLine = lineLayer.get('#straightLine')[0];
-            var staticLines = lineChildren[0].getPoints();
-            
-            for( var i=0; i<6; i++){  // for each static straight line
-               var results = checkLineIntersection(pLineObject[0], pLineObject[1], pLineObject[2], pLineObject[3], 
-                           staticLines[i], staticLines[i + 1], staticLines[i + 2], staticLines[i + 3]);
-               if(results.onLine1 == true && results.onLine2 == true){
-                    lineIntersetions.push([results.x,results.y]);
-               }
-               i+=1;
-            }
-            return lineIntersetions;
+        function paintSector(pPolygon, pColor){
+            var poly =  new Kinetic.Line({
+                points : pPolygon,
+                draggable : false, 
+                color: pColor,
+                opacity:1,   
+                closed:true,
+                name: "polygon",
+                fill: pColor
+            });
+            backgroundLayer.add(poly);
+            backgroundLayer.draw();
         }
 
-        //Taken from http://jsfiddle.net/justin_c_rounds/Gd2S2/light/
-        function checkLineIntersection(pLine1StartX, pLine1StartY, pLine1EndX, pLine1EndY, pLine2StartX, pLine2StartY, pLine2EndX, pLine2EndY) {
-            
-            //alert(pLine2StartX + " " + pLine2StartY + " " + pLine2EndX + " " + pLine2EndY);
-            var denominator, a, b, numerator1, numerator2, result = {
-                x: null,        //  Position X of the intersection
-                y: null,        //  Position Y of the intersection
-                onLine1: false, 
-                onLine2: false
-            };
-            
-            denominator = ((pLine2EndY - pLine2StartY) * (pLine1EndX - pLine1StartX)) - ((pLine2EndX - pLine2StartX) * (pLine1EndY - pLine1StartY));
-            if (denominator == 0) {
-                return result;
-            }
-            a = pLine1StartY - pLine2StartY;
-            b = pLine1StartX - pLine2StartX;
-            numerator1 = ((pLine2EndX - pLine2StartX) * a) - ((pLine2EndY - pLine2StartY) * b);
-            numerator2 = ((pLine1EndX - pLine1StartX) * a) - ((pLine1EndY - pLine1StartY) * b);
-            a = numerator1 / denominator;
-            b = numerator2 / denominator;
-
-            // if we cast these lines infinitely in both directions, they intersect here:
-            result.x = pLine1StartX + (a * (pLine1EndX - pLine1StartX));
-            result.y = pLine1StartY + (a * (pLine1EndY - pLine1StartY));
-        
-            // if line1 is a segment and line2 is infinite, they intersect if:
-            if (a > 0 && a < 1) {
-                result.onLine1 = true;
-            }
-            // if line2 is a segment and line1 is infinite, they intersect if:
-            if (b > 0 && b < 1) {
-                result.onLine2 = true;
-            }            
-            //If both are true, they intersect each other
-            return result;
-        }        
-
-        function paintPolygon(polygon,color){
-            alert("pintado");
-            var context = backgroundLayer.getContext();
+        function paintPolygon(pPolygon, pColor){
             var poly =  new Kinetic.Line({
-                points : polygon,
-                draggable : true,   
-                stroke:"black",
-                strokeWidth :0,
-                color: color,
-                fill: color,
+                points : pPolygon,
+                draggable : false, 
+                color: pColor,
                 opacity:1,   
-                closed:true
-
+                closed:true,
+                name: "polygon",
+                id: idSector
             });
-            poly.on('mouseover', function() {
+            idSector += 1;
+
+            poly.on('mouseover', function(){
                 poly.fill("97FFF1");
                 poly.opacity(0.8);
                 backgroundLayer.drawScene();
             });
 
-
             poly.on('mouseout', function() {
-                poly.fill(poly.getAttr("color"));
+                poly.fill("");
                 poly.opacity(1);
                 backgroundLayer.drawScene();
             });
 
-            // when dragend redraw everything
+            var borderObj = LibraryData.createBorder(poly.getAttr("points"), "#000");
+            //Send the object created to the PAINT MANAGER that centralizes everything
+            Presentation.getPaintManagerHandler().sendBorderToPaintManager(borderObj);
+
             poly.on('click', function() {
-                alert(poly.getAttr("points")); 
+                Presentation.getAlertsUI().changeColorZones(borderObj, this.id());
             });
 
             backgroundLayer.add(poly);
+            poly.getParent().moveToBottom();
             backgroundLayer.draw();
         }
 
@@ -756,7 +753,8 @@
             getLineLayer : getLineLayer,
             paintPolygon : paintPolygon,
             drawRectangleArcade : drawRectangleArcade,
-            drawCircleArcade : drawCircleArcade
+            drawCircleArcade : drawCircleArcade,
+            paintSector : paintSector
         };            
     })()
 
@@ -764,4 +762,4 @@
 
 var strokeWidthAlert = 0, radiusAlert = 0, strokeColorAlert = "", fillColorAlert = "";
 var idLabel = 0, nameCircle = 0, nameLine = 0, pts = [], pts1 = [];
-var pointIntersect = new Array();
+var pointIntersect = new Array(), idSector = 0;

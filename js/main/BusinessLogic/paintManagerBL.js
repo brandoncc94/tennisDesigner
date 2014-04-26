@@ -43,6 +43,8 @@
         var sole;
         var backgroundColor;
         var executionTimes = new Array();
+        var borderCollection = new Array();
+        var borderCollectionBackUp = new Array();
 
         //Let's centralize everything
         function insertLine(pLineObject){
@@ -51,6 +53,10 @@
 
         function insertCircle(pCircleObject){
             circlesCollection.push(pCircleObject);
+        }
+
+        function insertBorder(pBorderObject){
+            borderCollection.push(pBorderObject);
         }
 
         function insertSole(pSoleObject){
@@ -72,20 +78,21 @@
         function deleteAllElements(){
             linesCollection = [];
             circlesCollection = [];
+            borderCollection = [];
         }
 
-        function printArray(){
-            for(var i = 0; i < linesCollection.length; i++){
-                if(linesCollection[i] != "empty")
-                    alert(linesCollection[i].getStrokeWidth());
-            }
+        function deleteAllSectors(){
+            borderCollectionBackUp = borderCollection;
+            borderCollection = [];          
         }
 
-        function printArray2(){
-            for(var i = 0; i < circlesCollection.length; i++){
-                if(circlesCollection[i] != "empty")
-                    alert(circlesCollection[i].getRadio());
-            }
+        function restoreAllSectors(){
+            if(borderCollectionBackUp.length == borderCollection.length)
+               borderCollection = borderCollectionBackUp;
+        }
+
+        function getSpecificBorder(pId){
+            Presentation.getAlertsUI().updateBorder(borderCollection[pId]);
         }
 
         function getArrayCircleJson(){
@@ -94,7 +101,7 @@
                 if(circlesCollection[i] != "empty"){
                   arrayCircleJson.push(circlesCollection[i].convertToJson());
                 }
-            };
+            }
             return arrayCircleJson;
         }
 
@@ -104,7 +111,7 @@
                 if(linesCollection[i] != "empty"){
                   arrayLineJson.push(linesCollection[i].convertToJson());
                 }
-            };
+            }
             return arrayLineJson;
         }
 
@@ -175,7 +182,7 @@
         }
 
         function sendToDrawingManager(){
-            BusinessLogic.getDrawingManager().paintTennis(linesCollection, circlesCollection, sole);
+            BusinessLogic.getDrawingManager().paintTennis(linesCollection, circlesCollection, borderCollection, sole);
         }
 
         function createTable() {
@@ -375,11 +382,12 @@
         return {
             insertLine : insertLine,
             insertCircle : insertCircle,
+            insertBorder : insertBorder,
             deleteLineObject : deleteLineObject,
             deleteCircleObject : deleteCircleObject,
-            printArray : printArray,
-            printArray2 : printArray2,
             deleteAllElements : deleteAllElements,
+            deleteAllSectors : deleteAllSectors,
+            restoreAllSectors : restoreAllSectors,
             getArrayCircleJson : getArrayCircleJson,
             getArrayLineJson : getArrayLineJson,
             getSoleJson : getSoleJson,
@@ -393,7 +401,8 @@
             insertSole : insertSole,
             convertDataToExcel : convertDataToExcel,
             checkIfCollide : checkIfCollide,
-            checkIfLinesCollide : checkIfLinesCollide
+            checkIfLinesCollide : checkIfLinesCollide,
+            getSpecificBorder : getSpecificBorder
         };  
     })();
 

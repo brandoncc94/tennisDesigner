@@ -242,11 +242,8 @@ var Presentation = window.Presentation || {};
                 Presentation.getPaintManagerHandler().loadDesignBackgroundColor(pBackgroundColor);
                 loadPointsDesignView(pPoints);
                 $("#canvas-container").fadeIn(500);
-                Presentation.getDesignSpace().divideSegments();
+                // Presentation.getDesignSpace().divideSegments();
             });
-            
-                
-                
         }
 
         function loadPointsDesignView(pPoints){
@@ -342,6 +339,7 @@ var Presentation = window.Presentation || {};
             borderSoleColorId = 0;
             idLabel = 0;      
             nameCircle = 0;
+            idSector = 0;
             nameLine = 0;
             labelsTextArray = [];
             labelsFrameArray = [];

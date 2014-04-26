@@ -40,12 +40,14 @@
         
         function sendLineToPaintManager(pLineObject){
             BusinessLogic.getPaintManagerBL().insertLine(pLineObject);
-            //BusinessLogic.getPaintManagerBL().printArray();
         }
 
         function sendCircleToPaintManager(pCircleObject){
             BusinessLogic.getPaintManagerBL().insertCircle(pCircleObject);
-            //BusinessLogic.getPaintManagerBL().printArray2();
+        }
+
+        function sendBorderToPaintManager(pBorderObject){
+            BusinessLogic.getPaintManagerBL().insertBorder(pBorderObject);   
         }
 
         function deleteLine(pId){
@@ -58,6 +60,14 @@
 
         function deleteAllElements(){
             BusinessLogic.getPaintManagerBL().deleteAllElements();  
+        }
+
+        function deleteAllSectors(){
+            BusinessLogic.getPaintManagerBL().deleteAllSectors();     
+        }
+
+        function restoreAllSectors(){
+            BusinessLogic.getPaintManagerBL().restoreAllSectors();
         }
 
         function getCirclesFromPaintManager(){
@@ -119,14 +129,21 @@
         function exchangeLinesIds(pId, pId2){
             Presentation.getDesignSpace().exchangeLinesIds(pId, pId2);  
         }
+        
+        function getSpecificBorder(pId){
+            BusinessLogic.getPaintManagerBL().getSpecificBorder(pId);
+        }
 
         return {
             sendLineToPaintManager : sendLineToPaintManager,
             sendCircleToPaintManager : sendCircleToPaintManager,
+            sendBorderToPaintManager : sendBorderToPaintManager,
             sendExecutionTimes : sendExecutionTimes,
             deleteLine : deleteLine,
             deleteCircle : deleteCircle,
             deleteAllElements: deleteAllElements,
+            deleteAllSectors : deleteAllSectors,
+            restoreAllSectors : restoreAllSectors,
             getCirclesFromPaintManager : getCirclesFromPaintManager,
             getLinesFromPaintManager : getLinesFromPaintManager,
             getSoleFromPaintManager : getSoleFromPaintManager,
@@ -139,7 +156,8 @@
             checkIfCollide : checkIfCollide,
             exchangeCircleIds : exchangeCircleIds,
             checkIfLinesCollide : checkIfLinesCollide,
-            exchangeLinesIds : exchangeLinesIds
+            exchangeLinesIds : exchangeLinesIds,
+            getSpecificBorder : getSpecificBorder
         }; 
     })();    
 
