@@ -184,13 +184,20 @@
         }
 
         function createTable() {
+            var executionTimes = getExecutionTimes();
+
+            var sortable = [];
+            for (var vehicle in executionTimes)
+                  sortable.push([vehicle, executionTimes[vehicle]])
+            sortable.sort(function(a, b) {return a[1] - b[1]})
+            
+            executionTimes.sort(executionTimes[0][0]["time"]);
+            executionTimes.sort(executionTimes[1][0]["time"]);
+
             // Create a <table> element
             var table  = document.createElement("table");
             //set an ID
-            table.setAttribute("id", "tmpTable");
-
-            var executionTimes = getExecutionTimes();
-                      
+            table.setAttribute("id", "tmpTable");                      
             var title = document.createElement("th");
             title.appendChild(document.createTextNode("Arcade"));
             table.appendChild(title);
