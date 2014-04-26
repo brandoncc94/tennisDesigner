@@ -43,14 +43,11 @@
             Presentation.getDesignSpace().fillBackground(pBackgroundColor);
             Presentation.getDesignSpace().reduceAnchors();
 
-            if(pSoleObject == null){
-                Presentation.getDesignSpace().fillSole("black", 2);
-            }else{
-                pSoleObject.paint();
-            }
             paintBorders(pBordersCollection);
             paintLines(pLinesCollection);
             paintCircles(pCirclesCollection);
+            pSoleObject.paint();
+            
             Presentation.getDesignSpace().fillExternBackground();
             var end = new Date().getTime();
             var time = end - start;
@@ -64,7 +61,7 @@
         }
 
         function paintLines(pLinesCollection){            
-            for(var i = 0; i < pLinesCollection.length; i++)
+            for(var i = 0; i < pLinesCollection.length; i++)  
                 pLinesCollection[i].paint();
         }
 

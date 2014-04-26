@@ -39,11 +39,13 @@
     var fireBL = (function(){
         
         function drawCircleFire(pPosX, pPosY, pRadius, pFillColor, pStrokeWidth, pStrokeColor){
-            Presentation.getDesignSpaceHandler().drawCircleFire(pPosX, pPosY, pRadius, pFillColor, pStrokeWidth, pStrokeColor);  
+            Presentation.getDesignSpaceHandler().drawCircleFire(pPosX, pPosY, pRadius, pFillColor, pStrokeWidth, pStrokeColor);  // + 2 + 2 + 6
+            //f(x) = 10 -> O(c)
         }
 
-        function drawLineFire(pPosX, pPosY, pRadius, pFillColor, pStrokeWidth, pStrokeColor){
-            Presentation.getDesignSpaceHandler().drawLineFire(pPosX, pPosY, pRadius, pFillColor, pStrokeWidth, pStrokeColor);  
+        function drawLineFire(pPosX1, pPosY1, pPosX2, pPosY2, pStrokeWidth, pStrokeColor){
+            Presentation.getDesignSpaceHandler().drawLineFire(pPosX1, pPosY1, pPosX2, pPosY2, pStrokeWidth, pStrokeColor);    // + 2 + 2 + 6
+            //f(x) = 10 -> O(c)
         }
 
         return {
