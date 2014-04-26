@@ -48,16 +48,17 @@
             Presentation.getOnLoad().loadDesignDataList(pDesignList);  
         }
 
-        function loadDesign(pName,pPoints,pArrayCircles,pArrayLines,pSole){
-            Presentation.getOnLoad().loadDesignView(pName,pPoints,pArrayCircles,pArrayLines,pSole);
+        function loadDesign(pName,pPoints,pArrayCircles,pArrayLines,pSole,pBackgroundColor){
+            Presentation.getOnLoad().loadDesignView(pName,pPoints,pArrayCircles,pArrayLines,
+              pSole,pBackgroundColor);
         }
 
         function downloadDesign(pName){
             BusinessLogic.getParseBusinessLogic().downloadDesign(pName);
         }
 
-        function updateDesign(pName,pPoints,pArrayCircles,pArrayLines,pSole){
-            BusinessLogic.getParseBusinessLogic().updateDesign(pName,pPoints,pArrayCircles,pArrayLines,pSole);
+        function updateDesign(pName,pPoints,pArrayCircles,pArrayLines,pSole,pBackgroundColor){
+            BusinessLogic.getParseBusinessLogic().updateDesign(pName,pPoints,pArrayCircles,pArrayLines,pSole,pBackgroundColor);
         }
 
         function addExecutionTimeDesign(pName,pTypeAlgorithm,pTime){

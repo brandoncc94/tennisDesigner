@@ -691,7 +691,7 @@
         }        
 
         function paintPolygon(polygon,color){
-            // alert("pintado");
+            alert("pintado");
             var context = backgroundLayer.getContext();
             var poly =  new Kinetic.Line({
                 points : polygon,
