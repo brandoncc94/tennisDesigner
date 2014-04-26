@@ -56,6 +56,19 @@
         }
 
         function insertBorder(pBorderObject){
+            for (var i = 0; i < borderCollectionBackUp.length; i++) {
+              if(borderCollectionBackUp[i].getPointsFigure().toString()
+                == pBorderObject.getPointsFigure().toString()){
+                if(borderCollectionBackUp[i].getStrokeColor()!=""){
+                  alert("iguales");
+                  borderCollection.push(borderCollectionBackUp[i]);
+                  return;
+                }else{
+                  borderCollection.push(pBorderObject);
+                  return;
+                }
+              }
+            }
             borderCollection.push(pBorderObject);
         }
 
@@ -82,7 +95,8 @@
 
         function deleteAllSectors(){
             borderCollectionBackUp = borderCollection;
-            borderCollection = [];          
+            borderCollection = [];
+            idSector = 0;          
         }
 
         function restoreAllSectors(){

@@ -724,6 +724,23 @@
             backgroundLayer.draw();
         }
 
+
+        function compareArray(){
+            var borderObjA = LibraryData.createBorder([1,2,3,4],"");
+            var borderObjB = LibraryData.createBorder([1,2,3,4],"");
+            alert(borderObjB.toString());
+            alert(borderObjA.toString());
+            if(borderObjB.toString() == borderObjA.toString()){
+                alert(true);    
+            }else{
+                alert(false);
+            }
+
+        }
+
+
+            compareArray();
+
         function init(){
             drawCurves();
             updateLines();

@@ -186,9 +186,9 @@
             arrayPath.push(path);
 
             var lines = getTypeFigure('Line');
-            lines.sort(function(a,b){
-                var pointsA = a.getAttr("points");
-                var pointsB = b.getAttr("points");
+            lines.sort(function(lineA,lineB){
+                var pointsA = lineA.getAttr("points");
+                var pointsB = lineB.getAttr("points");
                 
                 if(pointsA[0]<pointsA[2]){
                     if(pointsB[0]<pointsB[2]){
@@ -206,9 +206,9 @@
                 }
             })
 
-            lines.sort(function(a,b){
-                var intersectsA = checkIntersectionsPath(path,a.getAttr("points")).length;
-                var intersectsB = checkIntersectionsPath(path,b.getAttr("points")).length;
+            lines.sort(function(lineA,lineB){
+                var intersectsA = checkIntersectionsPath(path,lineA.getAttr("points")).length;
+                var intersectsB = checkIntersectionsPath(path,lineB.getAttr("points")).length;
                 return -intersectsA + intersectsB;
                  
             })
@@ -269,11 +269,6 @@
                         }       
                     }
 
-
-                    // paintPolygon(path1,"red");
-
-                     // Presentation.getDesignSpaceHandler().paintPolygon(path1,"red");
-                    
                     var path2 = new Array();
                     var isPath = false;
                     var k = 0;
@@ -306,11 +301,8 @@
                     }
                     newArrayPath.push(path1);
                     newArrayPath.push(path2);
-                     // paintPolygon(path2,"blue");   
-                     // Presentation.getDesignSpaceHandler().paintPolygon(path2,"blue");
                 }
                 else{
-                    // alert("path :"+ i +" no intersectado");
                     newArrayPath.push(arrayPath[i]);
                 }
 
@@ -328,8 +320,8 @@
         }
 
         function paintPath(pArrayPath){
-            for (var i = 0; i < pArrayPath.length; i++) {
-                Presentation.getDesignSpaceHandler().paintPolygon(pArrayPath[i],"white");
+            for (var numPath = 0; numPath < pArrayPath.length; numPath++) {
+                Presentation.getDesignSpaceHandler().paintPolygon(pArrayPath[numPath],"white");
             }
         }        
 
